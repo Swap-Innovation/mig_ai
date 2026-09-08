@@ -1,0 +1,139 @@
+{
+  "legacy_row_count": 6,
+  "product_row_count": 6,
+  "row_count_delta_pct": 0.0,
+  "key_set_match": true,
+  "keys_only_in_legacy": [],
+  "keys_only_in_migrated": [],
+  "tolerance_pct": 0.1,
+  "passed": true,
+  "product_kind": "party",
+  "product_id": 23,
+  "control_totals": {
+    "rows": 6
+  },
+  "legacy_pipeline": {
+    "label": "Legacy \u00b7 CRM Account Master",
+    "engine": "on-prem / SoR batch extract",
+    "status": "success",
+    "dataset": "landing.legacy_sdp_crm_account_master",
+    "sources": [
+      "sdp.crm_account_master"
+    ],
+    "stages": [
+      {
+        "name": "extract",
+        "status": "success",
+        "detail": "SoR nightly extract"
+      },
+      {
+        "name": "stage",
+        "status": "success",
+        "detail": "Load landing.legacy_sdp_crm_account_master"
+      },
+      {
+        "name": "publish",
+        "status": "success",
+        "detail": "6 bridge keys"
+      }
+    ],
+    "row_count": 6,
+    "key_count": 6
+  },
+  "migrated_pipeline": {
+    "label": "Migrated \u00b7 CRM Account Master",
+    "engine": "CNDI \u2192 landing \u2192 transform \u2192 product",
+    "status": "success",
+    "dataset": "sdp.crm_account_master",
+    "sources": [
+      "sdp.crm_account_master"
+    ],
+    "stages": [
+      {
+        "name": "ingest",
+        "status": "success",
+        "detail": "Ingestion validated and landed batch"
+      },
+      {
+        "name": "landing",
+        "status": "success",
+        "detail": "Landing zone updated"
+      },
+      {
+        "name": "transform",
+        "status": "success",
+        "detail": "Transform into SDP completed"
+      },
+      {
+        "name": "materialize",
+        "status": "success",
+        "detail": "SDP published \u00b7 CRM Account Master"
+      },
+      {
+        "name": "governance",
+        "status": "success",
+        "detail": "Policies applied (governance overlay \u2014 not a flow stage)"
+      }
+    ],
+    "row_count": 6,
+    "key_count": 6
+  },
+  "checks": [
+    {
+      "id": "row_count",
+      "label": "Row count within tolerance",
+      "passed": true,
+      "legacy": 6,
+      "migrated": 6,
+      "detail": "\u0394 0.0% (tol 0.1%)"
+    },
+    {
+      "id": "key_set",
+      "label": "Business key set match",
+      "passed": true,
+      "legacy": 6,
+      "migrated": 6,
+      "detail": "only_legacy=0 \u00b7 only_migrated=0"
+    }
+  ],
+  "product_name": "CRM Account Master",
+  "product_tier": "sdp",
+  "dataset_name": "sdp.crm_account_master",
+  "migrated_run_trail": [
+    {
+      "id": 68,
+      "stage": "governance",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.473231Z",
+      "message": "Policies applied (governance overlay \u2014 not a flow stage)"
+    },
+    {
+      "id": 67,
+      "stage": "materialize",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.473230Z",
+      "message": "SDP published \u00b7 CRM Account Master"
+    },
+    {
+      "id": 66,
+      "stage": "transform",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.473230Z",
+      "message": "Transform into SDP completed"
+    },
+    {
+      "id": 65,
+      "stage": "landing",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.473229Z",
+      "message": "Landing zone updated"
+    },
+    {
+      "id": 64,
+      "stage": "ingest",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.473225Z",
+      "message": "Ingestion validated and landed batch"
+    }
+  ]
+}

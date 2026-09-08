@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentRunOutput",
+  "type": "object",
+  "required": ["task", "confidence"],
+  "properties": {
+    "task": { "type": "string" },
+    "confidence": { "type": "number" },
+    "citations": { "type": "array" },
+    "review_items": { "type": "array" },
+    "gaps": { "type": "array" }
+  }
+}

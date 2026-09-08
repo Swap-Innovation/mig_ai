@@ -1,0 +1,7 @@
+glossary:
+  - term: Party
+    definition: An individual or organization of interest to the enterprise
+  - term: CustomerAccount
+    definition: A financial account used to manage a customer billing relationship
+  - term: System of Record
+    definition: Authoritative upstream source for an entity

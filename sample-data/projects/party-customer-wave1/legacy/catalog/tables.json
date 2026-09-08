@@ -1,0 +1,181 @@
+{
+  "tables": [
+    {
+      "schema": "legacy",
+      "name": "crm_cust_mstr",
+      "description": "CRM customer master",
+      "row_count": 125000,
+      "ddl_path": "sample-legacy/sql/ddl_customer.sql",
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR", "pk": true, "null_rate": 0, "distinct_count": 125000},
+        {"name": "cust_name", "type": "VARCHAR", "null_rate": 0.01, "distinct_count": 120000, "samples": ["Acme Telecom"]},
+        {"name": "email", "type": "VARCHAR", "null_rate": 0.05, "distinct_count": 118000},
+        {"name": "phone", "type": "VARCHAR", "null_rate": 0.1, "distinct_count": 110000},
+        {"name": "created_dt", "type": "DATE", "null_rate": 0}
+      ],
+      "profile": {"update_frequency": "daily", "date_range": ["2015-01-01", "2026-09-01"]}
+    },
+    {
+      "schema": "legacy",
+      "name": "crm_acct_mstr",
+      "description": "CRM account master",
+      "row_count": 210000,
+      "columns": [
+        {"name": "acct_id", "type": "VARCHAR", "pk": true, "null_rate": 0},
+        {"name": "cust_id", "type": "VARCHAR", "null_rate": 0},
+        {"name": "acct_status", "type": "VARCHAR", "null_rate": 0, "samples": ["ACTIVE", "SUSPENDED"]},
+        {"name": "billing_cycle", "type": "VARCHAR", "null_rate": 0.02},
+        {"name": "open_dt", "type": "DATE", "null_rate": 0}
+      ],
+      "profile": {"update_frequency": "daily"}
+    },
+    {
+      "schema": "legacy",
+      "name": "crm_party_role",
+      "description": "Party roles",
+      "row_count": 180000,
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR", "pk": true},
+        {"name": "role_cd", "type": "VARCHAR", "pk": true},
+        {"name": "eff_dt", "type": "DATE"}
+      ]
+    },
+    {
+      "schema": "legacy",
+      "name": "crm_cust_acct_bridge",
+      "description": "Customer-account bridge used by reports",
+      "row_count": 210000,
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR", "pk": true},
+        {"name": "acct_id", "type": "VARCHAR", "pk": true}
+      ]
+    },
+    {
+      "schema": "marts",
+      "name": "dm_cust_360_team_a",
+      "description": "Team A customer 360 mart (truncate-reload)",
+      "row_count": 125000,
+      "unsound_logic": true,
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR", "pk": true},
+        {"name": "cust_name", "type": "VARCHAR"},
+        {"name": "email", "type": "VARCHAR"},
+        {"name": "acct_cnt", "type": "INT"}
+      ]
+    },
+    {
+      "schema": "marts",
+      "name": "dm_cust_360_team_b",
+      "description": "Near-duplicate of Team A mart",
+      "row_count": 124800,
+      "duplicate_of": "marts.dm_cust_360_team_a",
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR", "pk": true},
+        {"name": "customer_name", "type": "VARCHAR"},
+        {"name": "email", "type": "VARCHAR"},
+        {"name": "acct_cnt", "type": "INT"}
+      ]
+    },
+    {
+      "schema": "legacy",
+      "name": "stg_cust_daily",
+      "description": "Daily staging extract",
+      "row_count": 5000,
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR"},
+        {"name": "cust_name", "type": "VARCHAR"},
+        {"name": "email", "type": "VARCHAR"},
+        {"name": "load_dt", "type": "DATE"}
+      ]
+    },
+    {
+      "schema": "legacy",
+      "name": "stg_acct_daily",
+      "description": "Account staging",
+      "row_count": 8000,
+      "columns": [
+        {"name": "acct_id", "type": "VARCHAR"},
+        {"name": "cust_id", "type": "VARCHAR"},
+        {"name": "acct_status", "type": "VARCHAR"},
+        {"name": "billing_cycle", "type": "VARCHAR"}
+      ]
+    },
+    {
+      "schema": "archive_src",
+      "name": "cust_hist_2012",
+      "description": "Historic customers — retention only",
+      "row_count": 40000,
+      "retention_required": true,
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR"},
+        {"name": "cust_name", "type": "VARCHAR"}
+      ]
+    },
+    {
+      "schema": "sandbox",
+      "name": "tmp_cust_experiment",
+      "description": "Unused experiment table",
+      "row_count": 100,
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR"},
+        {"name": "score", "type": "FLOAT"}
+      ]
+    },
+    {
+      "schema": "legacy",
+      "name": "crm_addr",
+      "description": "Customer addresses",
+      "row_count": 140000,
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR"},
+        {"name": "address_line", "type": "VARCHAR"},
+        {"name": "city", "type": "VARCHAR"},
+        {"name": "country_cd", "type": "VARCHAR"}
+      ]
+    },
+    {
+      "schema": "legacy",
+      "name": "crm_contact_pref",
+      "description": "Contact preferences",
+      "row_count": 90000,
+      "columns": [
+        {"name": "cust_id", "type": "VARCHAR"},
+        {"name": "channel", "type": "VARCHAR"},
+        {"name": "opt_in", "type": "BOOLEAN"}
+      ]
+    },
+    {
+      "schema": "legacy",
+      "name": "ref_acct_status",
+      "description": "Account status reference",
+      "row_count": 5,
+      "columns": [
+        {"name": "acct_status", "type": "VARCHAR", "pk": true},
+        {"name": "descr", "type": "VARCHAR"}
+      ]
+    },
+    {
+      "schema": "marts",
+      "name": "dm_billing_cust_snap",
+      "description": "Billing customer snapshot",
+      "row_count": 200000,
+      "columns": [
+        {"name": "acct_id", "type": "VARCHAR"},
+        {"name": "cust_id", "type": "VARCHAR"},
+        {"name": "balance", "type": "DECIMAL"},
+        {"name": "snap_dt", "type": "DATE"}
+      ]
+    },
+    {
+      "schema": "legacy",
+      "name": "device_msisdn_map",
+      "description": "Device/MSISDN — outside party pilot core",
+      "row_count": 500000,
+      "columns": [
+        {"name": "msisdn", "type": "VARCHAR"},
+        {"name": "cust_id", "type": "VARCHAR"},
+        {"name": "device_id", "type": "VARCHAR"}
+      ]
+    }
+  ]
+}

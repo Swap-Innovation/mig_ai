@@ -1,0 +1,19 @@
+{
+  "id": "usage_mart_daily",
+  "name": "Usage 360 Mart Daily",
+  "description": "Daily mart build joining usage events and invoice summary",
+  "schedule": "30 2 * * *",
+  "owner": "etl.usage@demo.local",
+  "tags": ["billing", "mart"],
+  "tasks": [
+    {
+      "id": "build_usage_mart",
+      "name": "Build mart_usage_360",
+      "script": "scripts/01_build_usage_mart.sh",
+      "sql": ["sql/mart_usage_360.sql"],
+      "depends_on": [],
+      "sla_minutes": 90,
+      "upstream_dags": ["usage_hourly"]
+    }
+  ]
+}

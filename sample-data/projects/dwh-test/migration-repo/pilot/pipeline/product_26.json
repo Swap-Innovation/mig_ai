@@ -1,0 +1,94 @@
+{
+  "landing_uri": "gs://landing/project_5/service/dt=20260908/extract.json",
+  "landing_counts": {
+    "legacy": 4,
+    "migrated": 4
+  },
+  "dag": {
+    "dag_id": "service_pipeline_p26",
+    "run_id": "service_pipeline_p26_20260908095914",
+    "status": "success",
+    "conf": {
+      "project_id": 5,
+      "product": "Service Inventory Extract",
+      "product_id": 26,
+      "kind": "service",
+      "dataset": "sdp.service_inventory_raw"
+    },
+    "started_at": "2026-09-08T09:59:14.539208"
+  },
+  "product": {
+    "rows_loaded": 4,
+    "legacy_rows": 4,
+    "dataset": "sdp.service_inventory_raw",
+    "legacy_dataset": "landing.legacy_sdp_service_inventory_raw",
+    "product_kind": "service",
+    "product_id": 26
+  },
+  "archive_uri": "gs://archive/project_5/retired/readme.txt",
+  "policy_tags": {
+    "BusinessInteraction": [
+      "sid:BusinessInteraction",
+      "domain:Common"
+    ],
+    "CustomerAccount": [
+      "sid:CustomerAccount",
+      "domain:Party"
+    ],
+    "CustomerBill": [
+      "sid:CustomerBill",
+      "domain:Customer"
+    ],
+    "CustomerUsage": [
+      "sid:CustomerUsage",
+      "domain:Customer"
+    ],
+    "Party": [
+      "PII",
+      "sid:Party",
+      "domain:Party"
+    ],
+    "RootEntity": [
+      "sid:RootEntity",
+      "domain:Common"
+    ],
+    "sdp.crm_customer_master.biz_key": [
+      "domain:party",
+      "retention:7y",
+      "product:CRM Customer Master",
+      "PII",
+      "sensitivity:personal"
+    ],
+    "sdp.crm_account_master.biz_key": [
+      "domain:party",
+      "retention:7y",
+      "product:CRM Account Master",
+      "PII",
+      "sensitivity:personal"
+    ],
+    "sdp.billing_usage_events.biz_key": [
+      "domain:usage_billing",
+      "retention:7y",
+      "product:Billing Usage Events"
+    ],
+    "sdp.billing_invoice_hdr.biz_key": [
+      "domain:usage_billing",
+      "retention:7y",
+      "product:Billing Invoice Header"
+    ],
+    "sdp.service_inventory_raw.biz_key": [
+      "domain:service",
+      "retention:7y",
+      "product:Service Inventory Extract"
+    ]
+  },
+  "product_kind": "service",
+  "product_id": 26,
+  "dataset_name": "sdp.service_inventory_raw",
+  "dual_run": {
+    "legacy_dataset": "landing.legacy_sdp_service_inventory_raw",
+    "migrated_dataset": "sdp.service_inventory_raw",
+    "legacy_rows": 4,
+    "migrated_rows": 4
+  }
+}

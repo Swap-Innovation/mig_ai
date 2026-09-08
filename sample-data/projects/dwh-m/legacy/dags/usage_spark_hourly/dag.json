@@ -1,0 +1,74 @@
+{
+  "id": "usage_spark_hourly",
+  "name": "Usage Events Hourly (Spark)",
+  "description": "Hourly usage CDR ingest and aggregation on Spark",
+  "schedule": "15 * * * *",
+  "owner": "etl.usage@demo.local",
+  "tags": [
+    "usage",
+    "spark",
+    "hourly"
+  ],
+  "timezone": "UTC",
+  "engine": "spark",
+  "tasks": [
+    {
+      "id": "spark_usage_load",
+      "name": "Spark \u00b7 Load usage events",
+      "script": "scripts/01_spark_usage_load.sh",
+      "sql": [
+        "sql/spark_usage_load.sql"
+      ],
+      "spark": "spark/spark_usage_load.py",
+      "depends_on": [],
+      "sla_minutes": 90,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "stg_usage_cdr",
+          "stg_usage_session",
+          "ref_uom",
+          "ref_network_cell",
+          "dim_account"
+        ],
+        "targets": [
+          "fact_usage_evt",
+          "fact_usage_session"
+        ]
+      },
+      "writes": [
+        "fact_usage_evt",
+        "fact_usage_session"
+      ]
+    },
+    {
+      "id": "spark_usage_agg",
+      "name": "Spark \u00b7 Usage hourly aggregates",
+      "script": "scripts/02_spark_usage_agg.sh",
+      "sql": [
+        "sql/spark_usage_agg.sql"
+      ],
+      "spark": "spark/spark_usage_agg.py",
+      "depends_on": [
+        "spark_usage_load"
+      ],
+      "sla_minutes": 90,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "fact_usage_evt",
+          "fact_usage_session",
+          "dim_account",
+          "ref_uom",
+          "bridge_acct_product"
+        ],
+        "targets": [
+          "agg_usage_hourly"
+        ]
+      },
+      "writes": [
+        "agg_usage_hourly"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5253 @@
+{
+  "disposition_status": "approved",
+  "register": [
+    {
+      "id": 115,
+      "object_id": 488,
+      "object_fqn": "dag.billing_finance_daily",
+      "object_type": "dag",
+      "recommendation": "migrate",
+      "override": "retire",
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 3,
+        "consumers": [
+          "billing",
+          "finance",
+          "spark"
+        ],
+        "dependents": [
+          "billing_finance_daily.spark_invoice_fact",
+          "billing_finance_daily.spark_payment_fact",
+          "billing_finance_daily.spark_finance_mart"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "dag",
+        "schema": "dags",
+        "rationale": "Airflow / orchestration DAG \u2014 convert into target scheduler",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 116,
+      "object_id": 495,
+      "object_fqn": "dag.crm_account_daily",
+      "object_type": "dag",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 3,
+        "consumers": [
+          "crm",
+          "account",
+          "spark"
+        ],
+        "dependents": [
+          "crm_account_daily.spark_account_dim",
+          "crm_account_daily.spark_acct_product",
+          "crm_account_daily.spark_cust_acct_bridge"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "dag",
+        "schema": "dags",
+        "rationale": "Airflow / orchestration DAG \u2014 convert into target scheduler",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 117,
+      "object_id": 502,
+      "object_fqn": "dag.crm_party_daily",
+      "object_type": "dag",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 3,
+        "consumers": [
+          "crm",
+          "party",
+          "spark"
+        ],
+        "dependents": [
+          "crm_party_daily.spark_party_dim",
+          "crm_party_daily.spark_party_id_bridge",
+          "crm_party_daily.spark_party_rel_mart"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "dag",
+        "schema": "dags",
+        "rationale": "Airflow / orchestration DAG \u2014 convert into target scheduler",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 118,
+      "object_id": 509,
+      "object_fqn": "dag.risk_compliance_weekly",
+      "object_type": "dag",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 2,
+        "consumers": [
+          "risk",
+          "compliance",
+          "spark"
+        ],
+        "dependents": [
+          "risk_compliance_weekly.spark_risk_score",
+          "risk_compliance_weekly.spark_compliance_snap"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "dag",
+        "schema": "dags",
+        "rationale": "Airflow / orchestration DAG \u2014 convert into target scheduler",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 119,
+      "object_id": 514,
+      "object_fqn": "dag.usage_spark_hourly",
+      "object_type": "dag",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 2,
+        "consumers": [
+          "usage",
+          "spark",
+          "hourly"
+        ],
+        "dependents": [
+          "usage_spark_hourly.spark_usage_load",
+          "usage_spark_hourly.spark_usage_agg"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "dag",
+        "schema": "dags",
+        "rationale": "Airflow / orchestration DAG \u2014 convert into target scheduler",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 120,
+      "object_id": 487,
+      "object_fqn": "git.dwh-m-spark-etl",
+      "object_type": "repo",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "dag.billing_finance_daily",
+          "dag.crm_account_daily",
+          "dag.crm_party_daily",
+          "dag.risk_compliance_weekly",
+          "dag.usage_spark_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "repo",
+        "schema": "git",
+        "rationale": "Git estate root \u2014 retain as migration source of truth",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 121,
+      "object_id": 489,
+      "object_fqn": "scripts.billing_finance_daily.01_spark_invoice_fact.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_invoice",
+          "legacy.fact_invoice_line"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 122,
+      "object_id": 491,
+      "object_fqn": "scripts.billing_finance_daily.02_spark_payment_fact.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_payment"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 123,
+      "object_id": 493,
+      "object_fqn": "scripts.billing_finance_daily.03_spark_finance_mart.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 124,
+      "object_id": 496,
+      "object_fqn": "scripts.crm_account_daily.01_spark_account_dim.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.dim_account",
+          "legacy.dim_account_status"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 125,
+      "object_id": 498,
+      "object_fqn": "scripts.crm_account_daily.02_spark_acct_product.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_acct_product"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 126,
+      "object_id": 500,
+      "object_fqn": "scripts.crm_account_daily.03_spark_cust_acct_bridge.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_cust_acct",
+          "legacy.mart_acct_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 127,
+      "object_id": 503,
+      "object_fqn": "scripts.crm_party_daily.01_spark_party_dim.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.dim_party",
+          "legacy.dim_party_addr"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 128,
+      "object_id": 505,
+      "object_fqn": "scripts.crm_party_daily.02_spark_party_id_bridge.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_party_id"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 129,
+      "object_id": 507,
+      "object_fqn": "scripts.crm_party_daily.03_spark_party_rel_mart.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_party_rel",
+          "legacy.mart_party_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 130,
+      "object_id": 510,
+      "object_fqn": "scripts.risk_compliance_weekly.01_spark_risk_score.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_risk_factor",
+          "legacy.fact_risk_score"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.risk_compliance_weekly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 131,
+      "object_id": 512,
+      "object_fqn": "scripts.risk_compliance_weekly.02_spark_compliance_snap.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.snap_compliance_weekly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.risk_compliance_weekly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 132,
+      "object_id": 515,
+      "object_fqn": "scripts.usage_spark_hourly.01_spark_usage_load.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_usage_evt",
+          "legacy.fact_usage_session"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.usage_spark_hourly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 133,
+      "object_id": 517,
+      "object_fqn": "scripts.usage_spark_hourly.02_spark_usage_agg.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.usage_spark_hourly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 134,
+      "object_id": 494,
+      "object_fqn": "spark.billing_finance_daily.spark_finance_mart",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 135,
+      "object_id": 490,
+      "object_fqn": "spark.billing_finance_daily.spark_invoice_fact",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 136,
+      "object_id": 492,
+      "object_fqn": "spark.billing_finance_daily.spark_payment_fact",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 137,
+      "object_id": 497,
+      "object_fqn": "spark.crm_account_daily.spark_account_dim",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 138,
+      "object_id": 499,
+      "object_fqn": "spark.crm_account_daily.spark_acct_product",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 139,
+      "object_id": 501,
+      "object_fqn": "spark.crm_account_daily.spark_cust_acct_bridge",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 140,
+      "object_id": 504,
+      "object_fqn": "spark.crm_party_daily.spark_party_dim",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 141,
+      "object_id": 506,
+      "object_fqn": "spark.crm_party_daily.spark_party_id_bridge",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 142,
+      "object_id": 508,
+      "object_fqn": "spark.crm_party_daily.spark_party_rel_mart",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 143,
+      "object_id": 513,
+      "object_fqn": "spark.risk_compliance_weekly.spark_compliance_snap",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.risk_compliance_weekly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 144,
+      "object_id": 511,
+      "object_fqn": "spark.risk_compliance_weekly.spark_risk_score",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.risk_compliance_weekly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 145,
+      "object_id": 518,
+      "object_fqn": "spark.usage_spark_hourly.spark_usage_agg",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.usage_spark_hourly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 146,
+      "object_id": 516,
+      "object_fqn": "spark.usage_spark_hourly.spark_usage_load",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.usage_spark_hourly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 147,
+      "object_id": 433,
+      "object_fqn": "legacy.agg_usage_hourly",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360",
+          "legacy.bridge_risk_factor",
+          "legacy.fact_risk_score"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 148,
+      "object_id": 435,
+      "object_fqn": "legacy.bridge_acct_product",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 149,
+      "object_id": 436,
+      "object_fqn": "legacy.bridge_cust_acct",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 150,
+      "object_id": 437,
+      "object_fqn": "legacy.bridge_party_id",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_cust_acct",
+          "legacy.mart_acct_360",
+          "legacy.fact_party_rel",
+          "legacy.mart_party_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 151,
+      "object_id": 438,
+      "object_fqn": "legacy.bridge_risk_factor",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.snap_compliance_weekly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 152,
+      "object_id": 439,
+      "object_fqn": "legacy.dim_account",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_invoice",
+          "legacy.fact_invoice_line",
+          "legacy.fact_payment",
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360",
+          "legacy.bridge_acct_product",
+          "legacy.bridge_cust_acct",
+          "legacy.mart_acct_360",
+          "legacy.snap_compliance_weekly",
+          "legacy.fact_usage_evt",
+          "legacy.fact_usage_session",
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 153,
+      "object_id": 440,
+      "object_fqn": "legacy.dim_account_status",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 154,
+      "object_id": 441,
+      "object_fqn": "legacy.dim_party",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.dim_account",
+          "legacy.dim_account_status",
+          "legacy.bridge_cust_acct",
+          "legacy.mart_acct_360",
+          "legacy.bridge_party_id",
+          "legacy.fact_party_rel",
+          "legacy.mart_party_360",
+          "legacy.snap_compliance_weekly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 155,
+      "object_id": 442,
+      "object_fqn": "legacy.dim_party_addr",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_party_rel",
+          "legacy.mart_party_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 156,
+      "object_id": 443,
+      "object_fqn": "legacy.fact_invoice",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_payment",
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 157,
+      "object_id": 444,
+      "object_fqn": "legacy.fact_invoice_line",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 158,
+      "object_id": 445,
+      "object_fqn": "legacy.fact_party_rel",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 159,
+      "object_id": 446,
+      "object_fqn": "legacy.fact_payment",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 160,
+      "object_id": 447,
+      "object_fqn": "legacy.fact_risk_score",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.snap_compliance_weekly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 161,
+      "object_id": 448,
+      "object_fqn": "legacy.fact_usage_evt",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 162,
+      "object_id": 449,
+      "object_fqn": "legacy.fact_usage_session",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 163,
+      "object_id": 450,
+      "object_fqn": "legacy.mart_acct_360",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_risk_factor",
+          "legacy.fact_risk_score"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 164,
+      "object_id": 451,
+      "object_fqn": "legacy.mart_ar_aging",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 165,
+      "object_id": 452,
+      "object_fqn": "legacy.mart_finance_360",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_risk_factor",
+          "legacy.fact_risk_score"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 166,
+      "object_id": 453,
+      "object_fqn": "legacy.mart_party_360",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 167,
+      "object_id": 470,
+      "object_fqn": "legacy.snap_compliance_weekly",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 168,
+      "object_id": 454,
+      "object_fqn": "ref.ref_acct_type",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 169,
+      "object_id": 455,
+      "object_fqn": "ref.ref_brand",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 170,
+      "object_id": 456,
+      "object_fqn": "ref.ref_charge_type",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 171,
+      "object_id": 457,
+      "object_fqn": "ref.ref_country",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 172,
+      "object_id": 458,
+      "object_fqn": "ref.ref_currency",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 173,
+      "object_id": 459,
+      "object_fqn": "ref.ref_id_type",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 174,
+      "object_id": 460,
+      "object_fqn": "ref.ref_network_cell",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 175,
+      "object_id": 461,
+      "object_fqn": "ref.ref_party_type",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 176,
+      "object_id": 462,
+      "object_fqn": "ref.ref_pay_method",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 177,
+      "object_id": 463,
+      "object_fqn": "ref.ref_prod_family",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 178,
+      "object_id": 464,
+      "object_fqn": "ref.ref_product",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 179,
+      "object_id": 465,
+      "object_fqn": "ref.ref_reg_rule",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 180,
+      "object_id": 466,
+      "object_fqn": "ref.ref_rel_type",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 181,
+      "object_id": 467,
+      "object_fqn": "ref.ref_risk_band",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 182,
+      "object_id": 468,
+      "object_fqn": "ref.ref_role_type",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 183,
+      "object_id": 469,
+      "object_fqn": "ref.ref_uom",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "ref",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 184,
+      "object_id": 434,
+      "object_fqn": "staging.audit_batch",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 185,
+      "object_id": 471,
+      "object_fqn": "staging.stg_acct_raw",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 186,
+      "object_id": 472,
+      "object_fqn": "staging.stg_acct_status",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 187,
+      "object_id": 473,
+      "object_fqn": "staging.stg_cust_acct",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 188,
+      "object_id": 474,
+      "object_fqn": "staging.stg_invoice_hdr",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 189,
+      "object_id": 475,
+      "object_fqn": "staging.stg_invoice_line",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 190,
+      "object_id": 476,
+      "object_fqn": "staging.stg_party_addr",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 191,
+      "object_id": 477,
+      "object_fqn": "staging.stg_party_contact",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 192,
+      "object_id": 478,
+      "object_fqn": "staging.stg_party_hist",
+      "object_type": "table",
+      "recommendation": "archive-only",
+      "override": null,
+      "final": "archive-only",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "Historical archive object \u2014 cold store unless still queried",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 193,
+      "object_id": 479,
+      "object_fqn": "staging.stg_party_id_map",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 194,
+      "object_id": 480,
+      "object_fqn": "staging.stg_party_raw",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 195,
+      "object_id": 481,
+      "object_fqn": "staging.stg_party_rel",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 196,
+      "object_id": 482,
+      "object_fqn": "staging.stg_payment",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 197,
+      "object_id": 483,
+      "object_fqn": "staging.stg_prod_hold",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 198,
+      "object_id": 484,
+      "object_fqn": "staging.stg_risk_signal",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 199,
+      "object_id": 485,
+      "object_fqn": "staging.stg_usage_cdr",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    },
+    {
+      "id": 200,
+      "object_id": 486,
+      "object_fqn": "staging.stg_usage_session",
+      "object_type": "table",
+      "recommendation": "retire",
+      "override": null,
+      "final": "retire",
+      "consolidate_into": null,
+      "retirement_state": "frozen",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "staging",
+        "rationale": "No consumption in observation window and no downstream dependency",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        }
+      }
+    }
+  ],
+  "survivors": [
+    {
+      "id": 116,
+      "object_id": 495,
+      "object_fqn": "dag.crm_account_daily",
+      "object_type": "dag",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 3,
+        "consumers": [
+          "crm",
+          "account",
+          "spark"
+        ],
+        "dependents": [
+          "crm_account_daily.spark_account_dim",
+          "crm_account_daily.spark_acct_product",
+          "crm_account_daily.spark_cust_acct_bridge"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "dag",
+        "schema": "dags",
+        "rationale": "Airflow / orchestration DAG \u2014 convert into target scheduler",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 117,
+      "object_id": 502,
+      "object_fqn": "dag.crm_party_daily",
+      "object_type": "dag",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 3,
+        "consumers": [
+          "crm",
+          "party",
+          "spark"
+        ],
+        "dependents": [
+          "crm_party_daily.spark_party_dim",
+          "crm_party_daily.spark_party_id_bridge",
+          "crm_party_daily.spark_party_rel_mart"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "dag",
+        "schema": "dags",
+        "rationale": "Airflow / orchestration DAG \u2014 convert into target scheduler",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 118,
+      "object_id": 509,
+      "object_fqn": "dag.risk_compliance_weekly",
+      "object_type": "dag",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 2,
+        "consumers": [
+          "risk",
+          "compliance",
+          "spark"
+        ],
+        "dependents": [
+          "risk_compliance_weekly.spark_risk_score",
+          "risk_compliance_weekly.spark_compliance_snap"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "dag",
+        "schema": "dags",
+        "rationale": "Airflow / orchestration DAG \u2014 convert into target scheduler",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 119,
+      "object_id": 514,
+      "object_fqn": "dag.usage_spark_hourly",
+      "object_type": "dag",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 2,
+        "consumers": [
+          "usage",
+          "spark",
+          "hourly"
+        ],
+        "dependents": [
+          "usage_spark_hourly.spark_usage_load",
+          "usage_spark_hourly.spark_usage_agg"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "dag",
+        "schema": "dags",
+        "rationale": "Airflow / orchestration DAG \u2014 convert into target scheduler",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 120,
+      "object_id": 487,
+      "object_fqn": "git.dwh-m-spark-etl",
+      "object_type": "repo",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "dag.billing_finance_daily",
+          "dag.crm_account_daily",
+          "dag.crm_party_daily",
+          "dag.risk_compliance_weekly",
+          "dag.usage_spark_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "repo",
+        "schema": "git",
+        "rationale": "Git estate root \u2014 retain as migration source of truth",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 121,
+      "object_id": 489,
+      "object_fqn": "scripts.billing_finance_daily.01_spark_invoice_fact.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_invoice",
+          "legacy.fact_invoice_line"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 122,
+      "object_id": 491,
+      "object_fqn": "scripts.billing_finance_daily.02_spark_payment_fact.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_payment"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 123,
+      "object_id": 493,
+      "object_fqn": "scripts.billing_finance_daily.03_spark_finance_mart.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 124,
+      "object_id": 496,
+      "object_fqn": "scripts.crm_account_daily.01_spark_account_dim.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.dim_account",
+          "legacy.dim_account_status"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 125,
+      "object_id": 498,
+      "object_fqn": "scripts.crm_account_daily.02_spark_acct_product.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_acct_product"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 126,
+      "object_id": 500,
+      "object_fqn": "scripts.crm_account_daily.03_spark_cust_acct_bridge.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_cust_acct",
+          "legacy.mart_acct_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 127,
+      "object_id": 503,
+      "object_fqn": "scripts.crm_party_daily.01_spark_party_dim.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.dim_party",
+          "legacy.dim_party_addr"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 128,
+      "object_id": 505,
+      "object_fqn": "scripts.crm_party_daily.02_spark_party_id_bridge.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_party_id"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 129,
+      "object_id": 507,
+      "object_fqn": "scripts.crm_party_daily.03_spark_party_rel_mart.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_party_rel",
+          "legacy.mart_party_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 130,
+      "object_id": 510,
+      "object_fqn": "scripts.risk_compliance_weekly.01_spark_risk_score.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_risk_factor",
+          "legacy.fact_risk_score"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.risk_compliance_weekly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 131,
+      "object_id": 512,
+      "object_fqn": "scripts.risk_compliance_weekly.02_spark_compliance_snap.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.snap_compliance_weekly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.risk_compliance_weekly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 132,
+      "object_id": 515,
+      "object_fqn": "scripts.usage_spark_hourly.01_spark_usage_load.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_usage_evt",
+          "legacy.fact_usage_session"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.usage_spark_hourly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 133,
+      "object_id": 517,
+      "object_fqn": "scripts.usage_spark_hourly.02_spark_usage_agg.sh",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "dags.usage_spark_hourly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 134,
+      "object_id": 494,
+      "object_fqn": "spark.billing_finance_daily.spark_finance_mart",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 135,
+      "object_id": 490,
+      "object_fqn": "spark.billing_finance_daily.spark_invoice_fact",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 136,
+      "object_id": 492,
+      "object_fqn": "spark.billing_finance_daily.spark_payment_fact",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.billing_finance_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 137,
+      "object_id": 497,
+      "object_fqn": "spark.crm_account_daily.spark_account_dim",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 138,
+      "object_id": 499,
+      "object_fqn": "spark.crm_account_daily.spark_acct_product",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 139,
+      "object_id": 501,
+      "object_fqn": "spark.crm_account_daily.spark_cust_acct_bridge",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_account_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 140,
+      "object_id": 504,
+      "object_fqn": "spark.crm_party_daily.spark_party_dim",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 141,
+      "object_id": 506,
+      "object_fqn": "spark.crm_party_daily.spark_party_id_bridge",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 142,
+      "object_id": 508,
+      "object_fqn": "spark.crm_party_daily.spark_party_rel_mart",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.crm_party_daily",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 143,
+      "object_id": 513,
+      "object_fqn": "spark.risk_compliance_weekly.spark_compliance_snap",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.risk_compliance_weekly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 144,
+      "object_id": 511,
+      "object_fqn": "spark.risk_compliance_weekly.spark_risk_score",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.risk_compliance_weekly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 145,
+      "object_id": 518,
+      "object_fqn": "spark.usage_spark_hourly.spark_usage_agg",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.usage_spark_hourly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 146,
+      "object_id": 516,
+      "object_fqn": "spark.usage_spark_hourly.spark_usage_load",
+      "object_type": "script",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 1,
+        "consumers": [],
+        "dependents": [],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "script",
+        "schema": "spark.usage_spark_hourly",
+        "rationale": "Script participates in active pipeline / has downstream dependents",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 147,
+      "object_id": 433,
+      "object_fqn": "legacy.agg_usage_hourly",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360",
+          "legacy.bridge_risk_factor",
+          "legacy.fact_risk_score"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 148,
+      "object_id": 435,
+      "object_fqn": "legacy.bridge_acct_product",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 150,
+      "object_id": 437,
+      "object_fqn": "legacy.bridge_party_id",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_cust_acct",
+          "legacy.mart_acct_360",
+          "legacy.fact_party_rel",
+          "legacy.mart_party_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 151,
+      "object_id": 438,
+      "object_fqn": "legacy.bridge_risk_factor",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.snap_compliance_weekly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 152,
+      "object_id": 439,
+      "object_fqn": "legacy.dim_account",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_invoice",
+          "legacy.fact_invoice_line",
+          "legacy.fact_payment",
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360",
+          "legacy.bridge_acct_product",
+          "legacy.bridge_cust_acct",
+          "legacy.mart_acct_360",
+          "legacy.snap_compliance_weekly",
+          "legacy.fact_usage_evt",
+          "legacy.fact_usage_session",
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 154,
+      "object_id": 441,
+      "object_fqn": "legacy.dim_party",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.dim_account",
+          "legacy.dim_account_status",
+          "legacy.bridge_cust_acct",
+          "legacy.mart_acct_360",
+          "legacy.bridge_party_id",
+          "legacy.fact_party_rel",
+          "legacy.mart_party_360",
+          "legacy.snap_compliance_weekly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 155,
+      "object_id": 442,
+      "object_fqn": "legacy.dim_party_addr",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_party_rel",
+          "legacy.mart_party_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 156,
+      "object_id": 443,
+      "object_fqn": "legacy.fact_invoice",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.fact_payment",
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 157,
+      "object_id": 444,
+      "object_fqn": "legacy.fact_invoice_line",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 159,
+      "object_id": 446,
+      "object_fqn": "legacy.fact_payment",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.mart_ar_aging",
+          "legacy.mart_finance_360"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 160,
+      "object_id": 447,
+      "object_fqn": "legacy.fact_risk_score",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.snap_compliance_weekly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 161,
+      "object_id": 448,
+      "object_fqn": "legacy.fact_usage_evt",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 162,
+      "object_id": 449,
+      "object_fqn": "legacy.fact_usage_session",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.agg_usage_hourly"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 163,
+      "object_id": 450,
+      "object_fqn": "legacy.mart_acct_360",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_risk_factor",
+          "legacy.fact_risk_score"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    },
+    {
+      "id": 165,
+      "object_id": 452,
+      "object_fqn": "legacy.mart_finance_360",
+      "object_type": "table",
+      "recommendation": "migrate",
+      "override": null,
+      "final": "migrate",
+      "consolidate_into": null,
+      "retirement_state": "none",
+      "approved": true,
+      "evidence": {
+        "access_count": 0,
+        "consumers": [],
+        "dependents": [
+          "legacy.bridge_risk_factor",
+          "legacy.fact_risk_score"
+        ],
+        "retention_required": false,
+        "last_accessed": null,
+        "duplicate_of": null,
+        "object_type": "table",
+        "schema": "legacy",
+        "rationale": "Actively consumed with sound logic",
+        "agent": {
+          "agents": [
+            "UsageProfiler",
+            "LineageImpactAgent",
+            "RetentionPolicyAgent",
+            "DispositionRecommender"
+          ],
+          "source": "disposition_analyze",
+          "hydrate": {
+            "hydrated_objects": 0,
+            "hydrated_edges": 0,
+            "source": "db"
+          }
+        },
+        "cutover_freeze": true
+      }
+    }
+  ]
+}

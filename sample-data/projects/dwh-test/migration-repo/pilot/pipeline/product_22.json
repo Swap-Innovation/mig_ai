@@ -1,0 +1,72 @@
+{
+  "landing_uri": "gs://landing/project_5/crm/dt=20260908/extract.json",
+  "landing_counts": {
+    "legacy": 5,
+    "migrated": 5
+  },
+  "dag": {
+    "dag_id": "party_pipeline_p22",
+    "run_id": "party_pipeline_p22_20260908095914",
+    "status": "success",
+    "conf": {
+      "project_id": 5,
+      "product": "CRM Customer Master",
+      "product_id": 22,
+      "kind": "party",
+      "dataset": "sdp.crm_customer_master"
+    },
+    "started_at": "2026-09-08T09:59:14.381054"
+  },
+  "product": {
+    "rows_loaded": 5,
+    "legacy_rows": 5,
+    "dataset": "sdp.crm_customer_master",
+    "legacy_dataset": "landing.legacy_sdp_crm_customer_master",
+    "product_kind": "party",
+    "product_id": 22
+  },
+  "archive_uri": "gs://archive/project_5/retired/readme.txt",
+  "policy_tags": {
+    "BusinessInteraction": [
+      "sid:BusinessInteraction",
+      "domain:Common"
+    ],
+    "CustomerAccount": [
+      "sid:CustomerAccount",
+      "domain:Party"
+    ],
+    "CustomerBill": [
+      "sid:CustomerBill",
+      "domain:Customer"
+    ],
+    "CustomerUsage": [
+      "sid:CustomerUsage",
+      "domain:Customer"
+    ],
+    "Party": [
+      "PII",
+      "sid:Party",
+      "domain:Party"
+    ],
+    "RootEntity": [
+      "sid:RootEntity",
+      "domain:Common"
+    ],
+    "sdp.crm_customer_master.biz_key": [
+      "domain:party",
+      "retention:7y",
+      "product:CRM Customer Master",
+      "PII",
+      "sensitivity:personal"
+    ]
+  },
+  "product_kind": "party",
+  "product_id": 22,
+  "dataset_name": "sdp.crm_customer_master",
+  "dual_run": {
+    "legacy_dataset": "landing.legacy_sdp_crm_customer_master",
+    "migrated_dataset": "sdp.crm_customer_master",
+    "legacy_rows": 5,
+    "migrated_rows": 5
+  }
+}

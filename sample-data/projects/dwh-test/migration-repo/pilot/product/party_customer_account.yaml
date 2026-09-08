@@ -1,0 +1,44 @@
+deprecation_policy: Breaking changes require 90-day deprecation window
+freshness_slo_hours: 24
+name: party_customer_account
+quality_rules:
+- party_id NOT NULL
+- account_id NOT NULL
+- account_status IN (ACTIVE,SUSPENDED,CLOSED)
+schema:
+- name: party_id
+  pk: true
+  semantic: Party.partyId
+  type: STRING
+- name: party_name
+  semantic: Party.partyName
+  type: STRING
+- name: email_address
+  pii: true
+  semantic: Party.emailAddress
+  type: STRING
+- name: account_id
+  pk: true
+  semantic: CustomerAccount.accountId
+  type: STRING
+- allowed_values:
+  - ACTIVE
+  - SUSPENDED
+  - CLOSED
+  name: account_status
+  semantic: CustomerAccount.accountStatus
+  type: STRING
+- name: billing_cycle
+  semantic: CustomerAccount.billingCycle
+  type: STRING
+- name: valid_from
+  semantic: SCD2
+  type: TIMESTAMP
+- name: valid_to
+  semantic: SCD2
+  type: TIMESTAMP
+- name: is_current
+  semantic: SCD2
+  type: BOOL
+version: 0.1.0
+versioning: semver

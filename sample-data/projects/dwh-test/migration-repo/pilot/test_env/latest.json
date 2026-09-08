@@ -1,0 +1,71 @@
+{
+  "stage": "pilot/test_env",
+  "section": "pilot",
+  "view": "test_env",
+  "project_id": 5,
+  "sample_slug": "dwh-test",
+  "status": "ready",
+  "run_id": null,
+  "written_at": "2026-09-08T11:23:38.605199Z",
+  "prior_stage": "pilot/product",
+  "prior_run_id": null,
+  "summary": {
+    "environment": "test",
+    "promoted_at": "2026-09-08T11:23:38.556812Z",
+    "promoted_by": "engineer@demo.local",
+    "product_ids": [
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ],
+    "products": [
+      {
+        "id": 22,
+        "name": "CRM Customer Master",
+        "dataset_name": "sdp.crm_customer_master",
+        "tier": "sdp"
+      },
+      {
+        "id": 23,
+        "name": "CRM Account Master",
+        "dataset_name": "sdp.crm_account_master",
+        "tier": "sdp"
+      },
+      {
+        "id": 24,
+        "name": "Billing Usage Events",
+        "dataset_name": "sdp.billing_usage_events",
+        "tier": "sdp"
+      },
+      {
+        "id": 25,
+        "name": "Billing Invoice Header",
+        "dataset_name": "sdp.billing_invoice_hdr",
+        "tier": "sdp"
+      },
+      {
+        "id": 26,
+        "name": "Service Inventory Extract",
+        "dataset_name": "sdp.service_inventory_raw",
+        "tier": "sdp"
+      },
+      {
+        "id": 27,
+        "name": "Trouble Ticket Extract",
+        "dataset_name": "sdp.trouble_ticket_raw",
+        "tier": "sdp"
+      }
+    ],
+    "spoke": "spoke-products-test",
+    "dual_run_enabled": true,
+    "notes": "Legacy + migrated pipelines can now execute in parallel on Test."
+  },
+  "artifacts": [
+    "promotion.json"
+  ],
+  "migration_repo": "../sample-data/projects/dwh-test/migration-repo",
+  "path": "migration-repo/pilot/test_env"
+}

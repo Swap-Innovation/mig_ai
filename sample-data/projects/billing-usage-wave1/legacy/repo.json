@@ -1,0 +1,19 @@
+{
+  "remote": "https://git.corp.example/dw/billing-usage-etl.git",
+  "default_branch": "main",
+  "warehouse": {
+    "engine": "oracle",
+    "environment": "on-prem",
+    "databases": ["legacy", "staging"],
+    "orchestration": "airflow-compatible DAGs in git"
+  },
+  "layout": {
+    "dags": "dags/",
+    "catalog": "catalog/",
+    "usage": "usage/"
+  },
+  "discovery": {
+    "scan": ["dags", "catalog", "usage"],
+    "notes": "Clone → discover DAGs → scripts → SQL → tables for billing usage migration."
+  }
+}

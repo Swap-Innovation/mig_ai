@@ -1,0 +1,2047 @@
+[
+  {
+    "seq": 1,
+    "name": "queued",
+    "status": "success",
+    "message": "Live Cursor discovery scan queued \u2014 leaf\u2192root (SQL \u2192 scripts \u2192 DAGs \u2192 catalog)",
+    "detail": {
+      "legacy_root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy",
+      "runtime": "cursor_sdk",
+      "pipeline": "discover",
+      "agents": [
+        "DiscoveryCoordinator",
+        "StructureAnalyst",
+        "SqlLeafScanner",
+        "ScriptScanner",
+        "OrchestrationScanner",
+        "CatalogUsageHarvester"
+      ]
+    }
+  },
+  {
+    "seq": 2,
+    "name": "agent.live.plan",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 DiscoveryCoordinator",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 3,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Activity \u00b7 discovery scan (Cursor agents)\n\u2500\u2500 DiscoveryCoordinator \u00b7 plan \u2500\u2500\n$ cursor agent create \u00b7 DiscoveryCoordinator \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy\n$ agent_id agent-e41550c3-68ea-4dd5-97f7-15a280afa218\n$ run run-8ca47640-2f17-4c54-8486-4a7c245acb4b \u00b7 streaming\u2026\nI've identified the legacy estate root at `/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy`. I'm now scanning its contents to map out the migration plan.\nI'm mapping the required leaf-to-root sequence: SQL \u2192 scripts \u2192 DAGs/orchestration \u2192 catalog \u2192 lineage \u2192 inventory. Next I'll list the top-level folders and assign agents per layer.Reading repo.json and a dag.json to understand the repository structure before assigning agents.Checking whether sql/, scripts/, spark/, and scheduler/ contain content.The estate is a legacy DWH-M Spark ETL repository.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 4,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Five DAGs live under dags/. Each DAG contains sql/, scripts/, and spark/ subfolders. Root-level sql/, scripts/, and spark/ directories are empty placeholders. The catalog holds 54 tables. Scheduler metadata and usage logs support lineage and inventory. The repo.json is the discovery manifest.\nThe leaf-to-root plan starts with SqlParserAgent on the thirteen SQL files. ShellAgent processes the shell scripts. SparkAgent handles the Python scripts. DagAgent and OrchestrationAgent inspect the DAG definitions and scheduler metadata.\nCatalogAgent ingests catalog/tables.json. LineageAgent stitches SQL reads and writes across DAGs. InventoryAgent aggregates repo.json and all prior outputs. sql/, scripts/, and spark/ are empty placeholders to skip. dags/, catalog/, scheduler/, and usage/ are the active discovery surfaces.\n**Estate:** `dwh-m/legacy` \u2014 Spark+Oracle on-prem, 5 Airflow DAGs, 13 jobs, 54 tables (`repo.json`).\n**Leaf\u2192root discovery plan**\n1. **SQL** \u2014 `SqlParserAgent` \u2192 `dags/**/sql/*.sql` (13 files); extract sources, targets, joins, DDL hints.\n2. **Scripts** \u2014 `ShellAgent` \u2192 `dags/**/scripts/*.sh`; map spark-submit args, env vars, paths to SQL/Spark.\n3. **Spark** \u2014 `SparkAgent` \u2192 `dags/**/spark/*.py`; confirm I/O, transforms, config overrides.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 5,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "4. **DAGs / orchestration** \u2014 `DagAgent` \u2192 `dags/**/dag.json`; `SchedulerAgent` \u2192 `scheduler/scheduler.json`; task deps, SLAs, schedules, owners.\n5. **Catalog** \u2014 `CatalogAgent` \u2192 `catalog/tables.json`; schemas, columns, PKs, row counts vs SQL/DAG writes.\n6. **Lineage** \u2014 `LineageAgent`; stitch SQL\u2194script\u2194spark\u2194DAG `params.sources`/`writes`; enrich with `usage/query_log.csv`, `usage/report_log.csv`.\n7. **Inventory** \u2014 `InventoryAgent`; roll up into estate manifest from `repo.json` + all agent outputs (assets, gaps, migration priority).\n**Top-level folders \u2192 agents**\n| Folder | Agent(s) | Notes |\n|--------|----------|-------|\n| `dags/` | SqlParser, Shell, Spark, Dag | Primary leaf surface (5 DAGs) |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 6,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| `catalog/` | Catalog | 54-table metadata |\n| `scheduler/` | Scheduler | Global schedule/calendar |\n| `usage/` | Lineage (+ Usage) | Query/report consumption signals |\n| `sql/`, `scripts/`, `spark/` | \u2014 | Empty placeholders; real assets under `dags/` |\n| `repo.json` | Inventory (coordinator) | Scan scope, stats, remote origin |\n$ agent DiscoveryCoordinator finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 7,
+    "name": "agent.live.plan.done",
+    "status": "success",
+    "message": "Cursor agent DiscoveryCoordinator completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-e41550c3-68ea-4dd5-97f7-15a280afa218",
+      "run_id": "run-8ca47640-2f17-4c54-8486-4a7c245acb4b",
+      "status": "finished",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 8,
+    "name": "agent.plan",
+    "status": "success",
+    "message": "Coordinator: leaf\u2192root estate scan \u2014 SQL \u2192 scripts \u2192 DAGs \u2192 catalog",
+    "detail": {
+      "pipeline": [
+        "StructureAnalyst",
+        "SqlLeafScanner",
+        "ScriptScanner",
+        "OrchestrationScanner",
+        "CatalogUsageHarvester"
+      ],
+      "strategy": "bottom_up",
+      "runtime": "cursor_sdk",
+      "flow": "discover",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 9,
+    "name": "agent.live.structure",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 StructureAnalyst",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 10,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 StructureAnalyst \u00b7 structure \u2500\u2500\n$ cursor agent create \u00b7 StructureAnalyst \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy\n$ agent_id agent-22d29339-0902-4bf4-b6d9-1f415214c197\n$ run run-23d98be0-5669-4cfc-ac21-34673b756e6c \u00b7 streaming\u2026\nMapping the repository layout under the current working directory.\nScanning the legacy DWH project for top-level folders, DAGs, SQL, scripts, catalog, and git remotes.Reading repo.json and a DAG file to identify the scheduler and dbt usage.Repository structure mapped. Ready to report top-level folders, DAGs, SQL, scripts, catalog, git remote, and likely technologies.\nTop folders include catalog/, dags/, scheduler/, usage/, and repo.json. sql/, scripts/, and spark/ exist only inside dags/. The parent git remote is origin \u2192 https://github.com/Swap-Innovation/Prem_to_Cloud_migration.git. A legacy remote is also documented in repo.json.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 11,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Likely technologies identified: SQL, shell scripts, and Spark Python. Five DAG JSON files use a custom JSON schema rather than standard Airflow. No dbt is present. usage/ contains CSV query logs. Root-level sql/, scripts/, and spark/ are empty placeholders; actual assets live under each DAG folder.\n## Repository layout \u2014 `dwh-m/legacy`\n**Path:** `sample-data/projects/dwh-m/legacy` \u00b7 **49 files**\n### Top-level folders\n| Folder | Contents |\n|--------|----------|\n| `dags/` | 5 pipeline domains (each: `dag.json`, `sql/`, `scripts/`, `spark/`) |\n| `catalog/` | `tables.json` (54 tables) |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 12,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| `scheduler/` | `scheduler.json` |\n| `usage/` | `query_log.csv`, `report_log.csv` |\n| `sql/`, `scripts/`, `spark/` | Empty at root; assets live under each DAG |\n**Metadata:** `repo.json` (warehouse, layout, stats)\n### Key directories\n- **dags/** \u2014 yes \u00b7 5 DAGs: `billing_finance_daily`, `crm_account_daily`, `crm_party_daily`, `risk_compliance_weekly`, `usage_spark_hourly`\n- **sql/** \u2014 yes \u00b7 13 `.sql` (2\u20133 per DAG)\n- **scripts/** \u2014 yes \u00b7 13 `.sh` wrappers (spark-submit)",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 13,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "- **catalog/** \u2014 yes \u00b7 `tables.json`\n### Git remote\n- **Parent repo:** `origin` \u2192 `https://github.com/Swap-Innovation/Prem_to_Cloud_migration.git`\n- **Legacy (in `repo.json`):** `https://git.corp.example/dw/dwh-m-spark-etl.git`\n### Likely technologies\n| Tech | Evidence |\n|------|----------|\n| **SQL** | 13 `.sql` transformation defs per task |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 14,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| **Airflow-style orchestration** | 5 `dag.json` (cron, tasks, deps); not Python DAGs |\n| **Shell** | 13 `.sh` launchers |\n| **Spark (PySpark)** | 13 `.py` jobs; `engine: spark` |\n| **dbt** | Not present (no `dbt_project.yml`, models, macros) |\n**Pattern:** On-prem Spark+Oracle ETL \u2014 Airflow-style JSON DAGs \u2192 shell \u2192 PySpark, with SQL as job logic.\n$ agent StructureAnalyst finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 15,
+    "name": "agent.live.structure.done",
+    "status": "success",
+    "message": "Cursor agent StructureAnalyst completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-22d29339-0902-4bf4-b6d9-1f415214c197",
+      "run_id": "run-23d98be0-5669-4cfc-ac21-34673b756e6c",
+      "status": "finished",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 16,
+    "name": "structure.understand",
+    "status": "success",
+    "message": "Mapped estate layout under legacy: 49 files",
+    "detail": {
+      "root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy",
+      "files": 49,
+      "sql": 13,
+      "scripts": 13,
+      "spark": 13,
+      "schedulers": 1,
+      "dags": 5,
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "warehouse": "spark+oracle",
+      "folders": [
+        "catalog",
+        "dags",
+        "scheduler",
+        "usage"
+      ],
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 17,
+    "name": "structure.detect_tech",
+    "status": "success",
+    "message": "Detected technologies: sql, spark, shell, airflow, scheduler, cognos, catalog",
+    "detail": {
+      "technologies": [
+        {
+          "id": "sql",
+          "evidence": "13 SQL files",
+          "role": "leaf"
+        },
+        {
+          "id": "spark",
+          "evidence": "Spark / PySpark artifacts",
+          "role": "compute"
+        },
+        {
+          "id": "shell",
+          "evidence": "13 shell wrappers",
+          "role": "script"
+        },
+        {
+          "id": "airflow",
+          "evidence": "DAG definitions under dags/",
+          "role": "orchestration"
+        },
+        {
+          "id": "scheduler",
+          "evidence": "Scheduler definitions",
+          "role": "orchestration"
+        },
+        {
+          "id": "cognos",
+          "evidence": "BI / Cognos-style report usage log",
+          "role": "bi"
+        },
+        {
+          "id": "catalog",
+          "evidence": "Warehouse table catalog",
+          "role": "metadata"
+        }
+      ],
+      "agent": "StructureAnalyst",
+      "phase": "structure",
+      "tech": "sql,spark,shell,airflow,scheduler,cognos,catalog"
+    }
+  },
+  {
+    "seq": 18,
+    "name": "discover.clear_jobs",
+    "status": "success",
+    "message": "Cleared prior orchestration jobs (0)",
+    "detail": {
+      "cleared_jobs": 0,
+      "agent": "DiscoveryCoordinator",
+      "phase": "prepare"
+    }
+  },
+  {
+    "seq": 19,
+    "name": "agent.live.sql",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 SqlLeafScanner",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 20,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 SqlLeafScanner \u00b7 sql \u2500\u2500\n$ cursor agent create \u00b7 SqlLeafScanner \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy\n$ agent_id agent-2659c557-a4af-4285-a572-49070ecc7207\n$ run run-05029c3a-ec78-43c3-b2c9-3ddb7b1aa510 \u00b7 streaming\u2026\nScanning the legacy directory for SQL files to identify tables and paths.\nReading the SQL files to extract table names from CREATE, INSERT, and FROM statements.All 13 SQL files are loaded. INSERT, FROM, and JOIN patterns have been extracted.\nNo CREATE TABLE statements were found. All files contain INSERT ... FROM ... JOIN patterns. The 13 SQL files are grouped into five domains: crm_party_daily, crm_account_daily, usage_spark_hourly, billing_finance_daily, and risk_compliance_weekly.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 21,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "## SqlLeafScanner \u2014 13 SQL files\n**Root:** `dags/<domain>/sql/*.sql` \u2014 all Spark `INSERT \u2026 SELECT` (no `CREATE TABLE`).\n### crm_party_daily\n| File | OUT | IN (primary) |\n|------|-----|--------------|\n| `spark_party_dim.sql` | `dim_party`, `dim_party_addr` | `stg_party_raw`, `stg_party_addr`, `stg_party_contact`, refs |\n| `spark_party_id_bridge.sql` | `bridge_party_id` | `dim_party`, `stg_party_id_map`, `stg_party_hist`, `audit_batch` |\n| `spark_party_rel_mart.sql` | `fact_party_rel`, `mart_party_360` | `dim_party`, `dim_party_addr`, `bridge_party_id`, `stg_party_rel` |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 22,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "### crm_account_daily\n| File | OUT | IN (primary) |\n|------|-----|--------------|\n| `spark_account_dim.sql` | `dim_account`, `dim_account_status` | `stg_acct_raw`, `stg_acct_status`, `dim_party` |\n| `spark_acct_product.sql` | `bridge_acct_product` | `dim_account`, `stg_prod_hold`, `ref_product` |\n| `spark_cust_acct_bridge.sql` | `bridge_cust_acct`, `mart_acct_360` | `dim_party`, `dim_account`, `stg_cust_acct`, `bridge_party_id` |\n### usage_spark_hourly\n| File | OUT | IN (primary) |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 23,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "|------|-----|--------------|\n| `spark_usage_load.sql` | `fact_usage_evt`, `fact_usage_session` | `stg_usage_cdr`, `stg_usage_session`, `dim_account` |\n| `spark_usage_agg.sql` | `agg_usage_hourly` | `fact_usage_evt`, `fact_usage_session`, `bridge_acct_product` |\n### billing_finance_daily\n| File | OUT | IN (primary) |\n|------|-----|--------------|\n| `spark_invoice_fact.sql` | `fact_invoice`, `fact_invoice_line` | `stg_invoice_hdr`, `stg_invoice_line`, `dim_account` |\n| `spark_payment_fact.sql` | `fact_payment` | `stg_payment`, `fact_invoice`, `dim_account` |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 24,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| `spark_finance_mart.sql` | `mart_finance_360`, `mart_ar_aging` | `fact_invoice`, `fact_payment`, `agg_usage_hourly` |\n### risk_compliance_weekly\n| File | OUT | IN (primary) |\n|------|-----|--------------|\n| `spark_risk_score.sql` | `fact_risk_score`, `bridge_risk_factor` | `mart_acct_360`, `mart_finance_360`, `agg_usage_hourly`, `stg_risk_signal` |\n| `spark_compliance_snap.sql` | `snap_compliance_weekly` | `fact_risk_score`, `bridge_risk_factor`, `dim_party`, `dim_account`, `ref_reg_rule` |\n**DAG hint:** `stg_*` \u2192 dims/facts \u2192 marts/agg \u2192 risk/compliance snap.\n$ agent SqlLeafScanner finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 25,
+    "name": "agent.live.sql.done",
+    "status": "success",
+    "message": "Cursor agent SqlLeafScanner completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-2659c557-a4af-4285-a572-49070ecc7207",
+      "run_id": "run-05029c3a-ec78-43c3-b2c9-3ddb7b1aa510",
+      "status": "finished",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 26,
+    "name": "sql.begin",
+    "status": "success",
+    "message": "SqlLeafScanner: 13 SQL leaves (sources \u2192 targets)",
+    "detail": {
+      "count": 13,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 27,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/billing_finance_daily/sql/spark_finance_mart.sql: 5 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/billing_finance_daily/sql/spark_finance_mart.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "agg_usage_hourly",
+        "dim_account",
+        "fact_invoice",
+        "fact_invoice_line",
+        "fact_payment"
+      ],
+      "targets": [
+        "mart_ar_aging",
+        "mart_finance_360"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 28,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/billing_finance_daily/sql/spark_invoice_fact.sql: 5 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/billing_finance_daily/sql/spark_invoice_fact.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "dim_account",
+        "ref_charge_type",
+        "ref_currency",
+        "stg_invoice_hdr",
+        "stg_invoice_line"
+      ],
+      "targets": [
+        "fact_invoice",
+        "fact_invoice_line"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 29,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/billing_finance_daily/sql/spark_payment_fact.sql: 5 inputs \u2192 1 outputs",
+    "detail": {
+      "path": "dags/billing_finance_daily/sql/spark_payment_fact.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "dim_account",
+        "fact_invoice",
+        "ref_currency",
+        "ref_pay_method",
+        "stg_payment"
+      ],
+      "targets": [
+        "fact_payment"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 30,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/crm_account_daily/sql/spark_account_dim.sql: 5 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/crm_account_daily/sql/spark_account_dim.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "dim_party",
+        "ref_acct_type",
+        "ref_brand",
+        "stg_acct_raw",
+        "stg_acct_status"
+      ],
+      "targets": [
+        "dim_account",
+        "dim_account_status"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 31,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/crm_account_daily/sql/spark_acct_product.sql: 4 inputs \u2192 1 outputs",
+    "detail": {
+      "path": "dags/crm_account_daily/sql/spark_acct_product.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "dim_account",
+        "ref_prod_family",
+        "ref_product",
+        "stg_prod_hold"
+      ],
+      "targets": [
+        "bridge_acct_product"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 32,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/crm_account_daily/sql/spark_cust_acct_bridge.sql: 5 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/crm_account_daily/sql/spark_cust_acct_bridge.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "bridge_party_id",
+        "dim_account",
+        "dim_party",
+        "ref_role_type",
+        "stg_cust_acct"
+      ],
+      "targets": [
+        "bridge_cust_acct",
+        "mart_acct_360"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 33,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/crm_party_daily/sql/spark_party_dim.sql: 5 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/crm_party_daily/sql/spark_party_dim.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "ref_country",
+        "ref_party_type",
+        "stg_party_addr",
+        "stg_party_contact",
+        "stg_party_raw"
+      ],
+      "targets": [
+        "dim_party",
+        "dim_party_addr"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 34,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/crm_party_daily/sql/spark_party_id_bridge.sql: 5 inputs \u2192 1 outputs",
+    "detail": {
+      "path": "dags/crm_party_daily/sql/spark_party_id_bridge.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "audit_batch",
+        "dim_party",
+        "ref_id_type",
+        "stg_party_hist",
+        "stg_party_id_map"
+      ],
+      "targets": [
+        "bridge_party_id"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 35,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/crm_party_daily/sql/spark_party_rel_mart.sql: 5 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/crm_party_daily/sql/spark_party_rel_mart.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "bridge_party_id",
+        "dim_party",
+        "dim_party_addr",
+        "ref_rel_type",
+        "stg_party_rel"
+      ],
+      "targets": [
+        "fact_party_rel",
+        "mart_party_360"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 36,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/risk_compliance_weekly/sql/spark_compliance_snap.sql: 5 inputs \u2192 1 outputs",
+    "detail": {
+      "path": "dags/risk_compliance_weekly/sql/spark_compliance_snap.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "bridge_risk_factor",
+        "dim_account",
+        "dim_party",
+        "fact_risk_score",
+        "ref_reg_rule"
+      ],
+      "targets": [
+        "snap_compliance_weekly"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 37,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/risk_compliance_weekly/sql/spark_risk_score.sql: 5 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/risk_compliance_weekly/sql/spark_risk_score.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "agg_usage_hourly",
+        "mart_acct_360",
+        "mart_finance_360",
+        "ref_risk_band",
+        "stg_risk_signal"
+      ],
+      "targets": [
+        "bridge_risk_factor",
+        "fact_risk_score"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 38,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/usage_spark_hourly/sql/spark_usage_agg.sql: 5 inputs \u2192 1 outputs",
+    "detail": {
+      "path": "dags/usage_spark_hourly/sql/spark_usage_agg.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "bridge_acct_product",
+        "dim_account",
+        "fact_usage_evt",
+        "fact_usage_session",
+        "ref_uom"
+      ],
+      "targets": [
+        "agg_usage_hourly"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 39,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/usage_spark_hourly/sql/spark_usage_load.sql: 5 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/usage_spark_hourly/sql/spark_usage_load.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "dim_account",
+        "ref_network_cell",
+        "ref_uom",
+        "stg_usage_cdr",
+        "stg_usage_session"
+      ],
+      "targets": [
+        "fact_usage_evt",
+        "fact_usage_session"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 40,
+    "name": "agent.live.scripts",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 ScriptScanner",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 41,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 ScriptScanner \u00b7 scripts \u2500\u2500\n$ cursor agent create \u00b7 ScriptScanner \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy\n$ agent_id agent-d2c676b6-9dbd-4cf8-8ec9-fdb84da2c845\n$ run run-dd93022e-86cf-4cea-87f0-e3afa8b097b0 \u00b7 streaming\u2026\nI am ScriptScanner. I will search the current working directory for shell and Python ETL scripts.\nI will extract SQL invocations and table references from each script. The output must stay under 25 lines and remain read-only. The workspace likely contains 13 SQL files paired with 13 ETL scripts.Found 26 scripts total: 13 shell and 13 Python.\nShell scripts invoke SQL files via `--sql` flags. Python scripts may reference SQL or tables directly. Reading a few examples now.Python scripts contain SOURCES and TARGETS constants.All information is gathered. The response will be kept to \u226425 lines.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 42,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "26 ETL scripts found: 13 shell wrappers and 13 Python Spark jobs. Each wrapper invokes a matching SQL file via `--sql`. Python jobs declare SOURCES and TARGETS tables. Results will be grouped by DAG or listed as compact pairs.\n**ScriptScanner \u2014 `legacy/` ETL inventory (26 scripts: 13 shell + 13 Python)**\n| Script | SQL invoked | Tables (SOURCES \u2192 TARGETS) |\n|--------|-------------|----------------------------|\n| `dags/crm_party_daily/scripts/01_spark_party_dim.sh` | `sql/spark_party_dim.sql` | \u2014 |\n| `dags/crm_party_daily/spark/spark_party_dim.py` | \u2014 | stg_party_raw, stg_party_addr, stg_party_contact, ref_country, ref_party_type \u2192 dim_party, dim_party_addr |\n| `dags/crm_party_daily/scripts/02_spark_party_id_bridge.sh` | `sql/spark_party_id_bridge.sql` | \u2014 |\n| `dags/crm_party_daily/spark/spark_party_id_bridge.py` | \u2014 | dim_party, stg_party_id_map, ref_id_type, stg_party_hist, audit_batch \u2192 bridge_party_id |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 43,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| `dags/crm_party_daily/scripts/03_spark_party_rel_mart.sh` | `sql/spark_party_rel_mart.sql` | \u2014 |\n| `dags/crm_party_daily/spark/spark_party_rel_mart.py` | \u2014 | dim_party, dim_party_addr, bridge_party_id, stg_party_rel, ref_rel_type \u2192 fact_party_rel, mart_party_360 |\n| `dags/crm_account_daily/scripts/01_spark_account_dim.sh` | `sql/spark_account_dim.sql` | \u2014 |\n| `dags/crm_account_daily/spark/spark_account_dim.py` | \u2014 | stg_acct_raw, stg_acct_status, ref_acct_type, ref_brand, dim_party \u2192 dim_account, dim_account_status |\n| `dags/crm_account_daily/scripts/02_spark_acct_product.sh` | `sql/spark_acct_product.sql` | \u2014 |\n| `dags/crm_account_daily/spark/spark_acct_product.py` | \u2014 | dim_account, stg_prod_hold, ref_product, ref_prod_family \u2192 bridge_acct_product |\n| `dags/crm_account_daily/scripts/03_spark_cust_acct_bridge.sh` | `sql/spark_cust_acct_bridge.sql` | \u2014 |\n| `dags/crm_account_daily/spark/spark_cust_acct_bridge.py` | \u2014 | dim_party, dim_account, stg_cust_acct, ref_role_type, bridge_party_id \u2192 bridge_cust_acct, mart_acct_360 |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 44,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| `dags/usage_spark_hourly/scripts/01_spark_usage_load.sh` | `sql/spark_usage_load.sql` | \u2014 |\n| `dags/usage_spark_hourly/spark/spark_usage_load.py` | \u2014 | stg_usage_cdr, stg_usage_session, ref_uom, ref_network_cell, dim_account \u2192 fact_usage_evt, fact_usage_session |\n| `dags/usage_spark_hourly/scripts/02_spark_usage_agg.sh` | `sql/spark_usage_agg.sql` | \u2014 |\n| `dags/usage_spark_hourly/spark/spark_usage_agg.py` | \u2014 | fact_usage_evt, fact_usage_session, dim_account, ref_uom, bridge_acct_product \u2192 agg_usage_hourly |\n| `dags/billing_finance_daily/scripts/01_spark_invoice_fact.sh` | `sql/spark_invoice_fact.sql` | \u2014 |\n| `dags/billing_finance_daily/spark/spark_invoice_fact.py` | \u2014 | stg_invoice_hdr, stg_invoice_line, dim_account, ref_charge_type, ref_currency \u2192 fact_invoice, fact_invoice_line |\n| `dags/billing_finance_daily/scripts/02_spark_payment_fact.sh` | `sql/spark_payment_fact.sql` | \u2014 |\n| `dags/billing_finance_daily/spark/spark_payment_fact.py` | \u2014 | stg_payment, fact_invoice, dim_account, ref_pay_method, ref_currency \u2192 fact_payment |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 45,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| `dags/billing_finance_daily/scripts/03_spark_finance_mart.sh` | `sql/spark_finance_mart.sql` | \u2014 |\n| `dags/billing_finance_daily/spark/spark_finance_mart.py` | \u2014 | fact_invoice, fact_invoice_line, fact_payment, dim_account, agg_usage_hourly \u2192 mart_finance_360, mart_ar_aging |\n| `dags/risk_compliance_weekly/scripts/01_spark_risk_score.sh` | `sql/spark_risk_score.sql` | \u2014 |\n| `dags/risk_compliance_weekly/spark/spark_risk_score.py` | \u2014 | mart_acct_360, mart_finance_360, agg_usage_hourly, stg_risk_signal, ref_risk_band \u2192 fact_risk_score, bridge_risk_factor |\n| `dags/risk_compliance_weekly/scripts/02_spark_compliance_snap.sh` | `sql/spark_compliance_snap.sql` | \u2014 |\n| `dags/risk_compliance_weekly/spark/spark_compliance_snap.py` | \u2014 | fact_risk_score, bridge_risk_factor, dim_party, dim_account, ref_reg_rule \u2192 snap_compliance_weekly |\n**Pattern:** Each `.sh` runs `spark-submit` with `--sql ${DAG_DIR}/sql/<job>.sql`. Python jobs declare `SOURCES`/`TARGETS` only; SQL is passed via CLI, not embedded in `.py`.\n$ agent ScriptScanner finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 46,
+    "name": "agent.live.scripts.done",
+    "status": "success",
+    "message": "Cursor agent ScriptScanner completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-d2c676b6-9dbd-4cf8-8ec9-fdb84da2c845",
+      "run_id": "run-dd93022e-86cf-4cea-87f0-e3afa8b097b0",
+      "status": "finished",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 47,
+    "name": "script.begin",
+    "status": "success",
+    "message": "ScriptScanner: 13 wrappers linking DAGs to SQL",
+    "detail": {
+      "count": 13,
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "shell"
+    }
+  },
+  {
+    "seq": 48,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/billing_finance_daily/scripts/01_spark_invoice_fact.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/billing_finance_daily/scripts/01_spark_invoice_fact.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 49,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/billing_finance_daily/scripts/02_spark_payment_fact.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/billing_finance_daily/scripts/02_spark_payment_fact.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 50,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/billing_finance_daily/scripts/03_spark_finance_mart.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/billing_finance_daily/scripts/03_spark_finance_mart.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 51,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/crm_account_daily/scripts/01_spark_account_dim.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/crm_account_daily/scripts/01_spark_account_dim.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 52,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/crm_account_daily/scripts/02_spark_acct_product.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/crm_account_daily/scripts/02_spark_acct_product.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 53,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/crm_account_daily/scripts/03_spark_cust_acct_bridge.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/crm_account_daily/scripts/03_spark_cust_acct_bridge.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 54,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/crm_party_daily/scripts/01_spark_party_dim.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/crm_party_daily/scripts/01_spark_party_dim.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 55,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/crm_party_daily/scripts/02_spark_party_id_bridge.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/crm_party_daily/scripts/02_spark_party_id_bridge.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 56,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/crm_party_daily/scripts/03_spark_party_rel_mart.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/crm_party_daily/scripts/03_spark_party_rel_mart.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 57,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/risk_compliance_weekly/scripts/01_spark_risk_score.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/risk_compliance_weekly/scripts/01_spark_risk_score.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 58,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/risk_compliance_weekly/scripts/02_spark_compliance_snap.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/risk_compliance_weekly/scripts/02_spark_compliance_snap.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 59,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/usage_spark_hourly/scripts/01_spark_usage_load.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/usage_spark_hourly/scripts/01_spark_usage_load.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 60,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/usage_spark_hourly/scripts/02_spark_usage_agg.sh: Spark submit wrapper",
+    "detail": {
+      "path": "dags/usage_spark_hourly/scripts/02_spark_usage_agg.sh",
+      "kind": "spark_submit",
+      "engine": "spark",
+      "params": [
+        "DAG_DIR",
+        "DWH_BATCH_ID",
+        "DWH_WAREHOUSE",
+        "SCRIPT_DIR",
+        "SPARK_HOME"
+      ],
+      "control_flow": [],
+      "credential_refs": [],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 61,
+    "name": "agent.live.spark",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 ScriptScanner",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "ScriptScanner",
+      "phase": "spark"
+    }
+  },
+  {
+    "seq": 62,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 ScriptScanner \u00b7 spark \u2500\u2500\n$ cursor agent create \u00b7 ScriptScanner \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy\n$ agent_id agent-fadb95e6-0a39-40ea-b783-304fae2144dd\n$ run run-aabe915a-8d15-45b7-ba63-3f85188c627a \u00b7 streaming\u2026\nScanning the current working directory for shell and Python ETL scripts.\nSearching the legacy DWH project directory for shell and Python ETL scripts. SQL and table references will be extracted. Results will stay under 25 lines.Reading Python Spark files to identify direct table mentions and referenced SQL files.Reading a shell script and a Python file to understand patterns. Grepping SQL files for table names.Grepping Python files for SOURCES and TARGETS constants to identify referenced tables.All information is gathered. I will list script paths and SQL or table references in \u226425 lines.\n26 files total: 13 shell wrappers and 13 Python Spark jobs. Each shell invokes a corresponding SQL file via --sql. I will group them by DAG and list each job with its shell wrapper, Python driver, and external SQL.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "spark"
+    }
+  },
+  {
+    "seq": 63,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "**ScriptScanner \u2014 legacy/dwh-m (26 scripts, 13 Spark jobs)**\n| DAG | Shell wrapper | Python driver | SQL invoked | Tables (SOURCES \u2192 TARGETS) |\n|-----|---------------|---------------|-------------|----------------------------|\n| **crm_party_daily** | `01_spark_party_dim.sh` | `spark_party_dim.py` | `spark_party_dim.sql` | stg_party_*, ref_country, ref_party_type \u2192 dim_party, dim_party_addr |\n| | `02_spark_party_id_bridge.sh` | `spark_party_id_bridge.py` | `spark_party_id_bridge.sql` | dim_party, stg_party_id_map, ref_id_type, stg_party_hist, audit_batch \u2192 bridge_party_id |\n| | `03_spark_party_rel_mart.sh` | `spark_party_rel_mart.py` | `spark_party_rel_mart.sql` | dim_party, dim_party_addr, bridge_party_id, stg_party_rel, ref_rel_type \u2192 fact_party_rel, mart_party_360 |\n| **crm_account_daily** | `01_spark_account_dim.sh` | `spark_account_dim.py` | `spark_account_dim.sql` | stg_acct_*, ref_acct_type, ref_brand, dim_party \u2192 dim_account, dim_account_status |\n| | `02_spark_acct_product.sh` | `spark_acct_product.py` | `spark_acct_product.sql` | dim_account, stg_prod_hold, ref_product, ref_prod_family \u2192 bridge_acct_product |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "spark"
+    }
+  },
+  {
+    "seq": 64,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| | `03_spark_cust_acct_bridge.sh` | `spark_cust_acct_bridge.py` | `spark_cust_acct_bridge.sql` | dim_party, dim_account, stg_cust_acct, ref_role_type, bridge_party_id \u2192 bridge_cust_acct, mart_acct_360 |\n| **usage_spark_hourly** | `01_spark_usage_load.sh` | `spark_usage_load.py` | `spark_usage_load.sql` | stg_usage_cdr, stg_usage_session, ref_uom, ref_network_cell, dim_account \u2192 fact_usage_evt, fact_usage_session |\n| | `02_spark_usage_agg.sh` | `spark_usage_agg.py` | `spark_usage_agg.sql` | fact_usage_evt, fact_usage_session, dim_account, ref_uom, bridge_acct_product \u2192 agg_usage_hourly |\n| **billing_finance_daily** | `01_spark_invoice_fact.sh` | `spark_invoice_fact.py` | `spark_invoice_fact.sql` | stg_invoice_*, dim_account, ref_charge_type, ref_currency \u2192 fact_invoice, fact_invoice_line |\n| | `02_spark_payment_fact.sh` | `spark_payment_fact.py` | `spark_payment_fact.sql` | stg_payment, fact_invoice, dim_account, ref_pay_method, ref_currency \u2192 fact_payment |\n| | `03_spark_finance_mart.sh` | `spark_finance_mart.py` | `spark_finance_mart.sql` | fact_invoice, fact_invoice_line, fact_payment, dim_account, agg_usage_hourly \u2192 mart_finance_360, mart_ar_aging |\n| **risk_compliance_weekly** | `01_spark_risk_score.sh` | `spark_risk_score.py` | `spark_risk_score.sql` | mart_acct_360, mart_finance_360, agg_usage_hourly, stg_risk_signal, ref_risk_band \u2192 fact_risk_score, bridge_risk_factor |\n| | `02_spark_compliance_snap.sh` | `spark_compliance_snap.py` | `spark_compliance_snap.sql` | fact",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "spark"
+    }
+  },
+  {
+    "seq": 65,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "**Pattern:** Each `.sh` runs `spark-submit` \u2192 paired `.py` with `--sql ${DAG_DIR}/sql/<name>.sql`. Python declares `SOURCES`/`TARGETS`; SQL files hold `INSERT INTO \u2026 SELECT \u2026 FROM \u2026 JOIN \u2026` logic. No inline SQL in scripts.\n$ agent ScriptScanner finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "spark"
+    }
+  },
+  {
+    "seq": 66,
+    "name": "agent.live.spark.done",
+    "status": "success",
+    "message": "Cursor agent ScriptScanner completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-fadb95e6-0a39-40ea-b783-304fae2144dd",
+      "run_id": "run-aabe915a-8d15-45b7-ba63-3f85188c627a",
+      "status": "finished",
+      "agent": "ScriptScanner",
+      "phase": "spark"
+    }
+  },
+  {
+    "seq": 67,
+    "name": "spark.begin",
+    "status": "success",
+    "message": "SparkScanner: 13 Spark / PySpark jobs",
+    "detail": {
+      "count": 13,
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 68,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/billing_finance_daily/spark/spark_finance_mart.py: 5 sources \u2192 2 targets",
+    "detail": {
+      "path": "dags/billing_finance_daily/spark/spark_finance_mart.py",
+      "kind": "pyspark",
+      "sources": [
+        "fact_invoice",
+        "fact_invoice_line",
+        "fact_payment",
+        "dim_account",
+        "agg_usage_hourly"
+      ],
+      "targets": [
+        "mart_finance_360",
+        "mart_ar_aging"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 69,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/billing_finance_daily/spark/spark_invoice_fact.py: 5 sources \u2192 2 targets",
+    "detail": {
+      "path": "dags/billing_finance_daily/spark/spark_invoice_fact.py",
+      "kind": "pyspark",
+      "sources": [
+        "stg_invoice_hdr",
+        "stg_invoice_line",
+        "dim_account",
+        "ref_charge_type",
+        "ref_currency"
+      ],
+      "targets": [
+        "fact_invoice",
+        "fact_invoice_line"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 70,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/billing_finance_daily/spark/spark_payment_fact.py: 5 sources \u2192 1 targets",
+    "detail": {
+      "path": "dags/billing_finance_daily/spark/spark_payment_fact.py",
+      "kind": "pyspark",
+      "sources": [
+        "stg_payment",
+        "fact_invoice",
+        "dim_account",
+        "ref_pay_method",
+        "ref_currency"
+      ],
+      "targets": [
+        "fact_payment"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 71,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/crm_account_daily/spark/spark_account_dim.py: 5 sources \u2192 2 targets",
+    "detail": {
+      "path": "dags/crm_account_daily/spark/spark_account_dim.py",
+      "kind": "pyspark",
+      "sources": [
+        "stg_acct_raw",
+        "stg_acct_status",
+        "ref_acct_type",
+        "ref_brand",
+        "dim_party"
+      ],
+      "targets": [
+        "dim_account",
+        "dim_account_status"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 72,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/crm_account_daily/spark/spark_acct_product.py: 4 sources \u2192 1 targets",
+    "detail": {
+      "path": "dags/crm_account_daily/spark/spark_acct_product.py",
+      "kind": "pyspark",
+      "sources": [
+        "dim_account",
+        "stg_prod_hold",
+        "ref_product",
+        "ref_prod_family"
+      ],
+      "targets": [
+        "bridge_acct_product"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 73,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/crm_account_daily/spark/spark_cust_acct_bridge.py: 5 sources \u2192 2 targets",
+    "detail": {
+      "path": "dags/crm_account_daily/spark/spark_cust_acct_bridge.py",
+      "kind": "pyspark",
+      "sources": [
+        "dim_party",
+        "dim_account",
+        "stg_cust_acct",
+        "ref_role_type",
+        "bridge_party_id"
+      ],
+      "targets": [
+        "bridge_cust_acct",
+        "mart_acct_360"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 74,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/crm_party_daily/spark/spark_party_dim.py: 5 sources \u2192 2 targets",
+    "detail": {
+      "path": "dags/crm_party_daily/spark/spark_party_dim.py",
+      "kind": "pyspark",
+      "sources": [
+        "stg_party_raw",
+        "stg_party_addr",
+        "stg_party_contact",
+        "ref_country",
+        "ref_party_type"
+      ],
+      "targets": [
+        "dim_party",
+        "dim_party_addr"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 75,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/crm_party_daily/spark/spark_party_id_bridge.py: 5 sources \u2192 1 targets",
+    "detail": {
+      "path": "dags/crm_party_daily/spark/spark_party_id_bridge.py",
+      "kind": "pyspark",
+      "sources": [
+        "dim_party",
+        "stg_party_id_map",
+        "ref_id_type",
+        "stg_party_hist",
+        "audit_batch"
+      ],
+      "targets": [
+        "bridge_party_id"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 76,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/crm_party_daily/spark/spark_party_rel_mart.py: 5 sources \u2192 2 targets",
+    "detail": {
+      "path": "dags/crm_party_daily/spark/spark_party_rel_mart.py",
+      "kind": "pyspark",
+      "sources": [
+        "dim_party",
+        "dim_party_addr",
+        "bridge_party_id",
+        "stg_party_rel",
+        "ref_rel_type"
+      ],
+      "targets": [
+        "fact_party_rel",
+        "mart_party_360"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 77,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/risk_compliance_weekly/spark/spark_compliance_snap.py: 5 sources \u2192 1 targets",
+    "detail": {
+      "path": "dags/risk_compliance_weekly/spark/spark_compliance_snap.py",
+      "kind": "pyspark",
+      "sources": [
+        "fact_risk_score",
+        "bridge_risk_factor",
+        "dim_party",
+        "dim_account",
+        "ref_reg_rule"
+      ],
+      "targets": [
+        "snap_compliance_weekly"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 78,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/risk_compliance_weekly/spark/spark_risk_score.py: 5 sources \u2192 2 targets",
+    "detail": {
+      "path": "dags/risk_compliance_weekly/spark/spark_risk_score.py",
+      "kind": "pyspark",
+      "sources": [
+        "mart_acct_360",
+        "mart_finance_360",
+        "agg_usage_hourly",
+        "stg_risk_signal",
+        "ref_risk_band"
+      ],
+      "targets": [
+        "fact_risk_score",
+        "bridge_risk_factor"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 79,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/usage_spark_hourly/spark/spark_usage_agg.py: 5 sources \u2192 1 targets",
+    "detail": {
+      "path": "dags/usage_spark_hourly/spark/spark_usage_agg.py",
+      "kind": "pyspark",
+      "sources": [
+        "fact_usage_evt",
+        "fact_usage_session",
+        "dim_account",
+        "ref_uom",
+        "bridge_acct_product"
+      ],
+      "targets": [
+        "agg_usage_hourly"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 80,
+    "name": "spark.parse",
+    "status": "success",
+    "message": "dags/usage_spark_hourly/spark/spark_usage_load.py: 5 sources \u2192 2 targets",
+    "detail": {
+      "path": "dags/usage_spark_hourly/spark/spark_usage_load.py",
+      "kind": "pyspark",
+      "sources": [
+        "stg_usage_cdr",
+        "stg_usage_session",
+        "ref_uom",
+        "ref_network_cell",
+        "dim_account"
+      ],
+      "targets": [
+        "fact_usage_evt",
+        "fact_usage_session"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "spark"
+    }
+  },
+  {
+    "seq": 81,
+    "name": "sql.tables_inferred",
+    "status": "success",
+    "message": "Inferred 54 tables from SQL / Spark lineage",
+    "detail": {
+      "tables": [
+        "agg_usage_hourly",
+        "audit_batch",
+        "bridge_acct_product",
+        "bridge_cust_acct",
+        "bridge_party_id",
+        "bridge_risk_factor",
+        "dim_account",
+        "dim_account_status",
+        "dim_party",
+        "dim_party_addr",
+        "fact_invoice",
+        "fact_invoice_line",
+        "fact_party_rel",
+        "fact_payment",
+        "fact_risk_score",
+        "fact_usage_evt",
+        "fact_usage_session",
+        "mart_acct_360",
+        "mart_ar_aging",
+        "mart_finance_360",
+        "mart_party_360",
+        "ref_acct_type",
+        "ref_brand",
+        "ref_charge_type",
+        "ref_country",
+        "ref_currency",
+        "ref_id_type",
+        "ref_network_cell",
+        "ref_party_type",
+        "ref_pay_method",
+        "ref_prod_family",
+        "ref_product",
+        "ref_reg_rule",
+        "ref_rel_type",
+        "ref_risk_band",
+        "ref_role_type",
+        "ref_uom",
+        "snap_compliance_weekly",
+        "stg_acct_raw",
+        "stg_acct_status",
+        "stg_cust_acct",
+        "stg_invoice_hdr",
+        "stg_invoice_line",
+        "stg_party_addr",
+        "stg_party_contact",
+        "stg_party_hist",
+        "stg_party_id_map",
+        "stg_party_raw",
+        "stg_party_rel",
+        "stg_payment",
+        "stg_prod_hold",
+        "stg_risk_signal",
+        "stg_usage_cdr",
+        "stg_usage_session"
+      ],
+      "count": 54,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 82,
+    "name": "agent.live.orchestration",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 OrchestrationScanner",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 83,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 OrchestrationScanner \u00b7 orchestration \u2500\u2500\n$ cursor agent create \u00b7 OrchestrationScanner \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy\n$ agent_id agent-7af19143-ecc5-491c-90ea-cb56f6a9f9b8\n$ run run-4eb7e6da-c540-436e-8c34-971e9fb5ab38 \u00b7 streaming\u2026\nScanning the current directory for DAG and scheduler definitions.\nThe target directory contains five DAG directories and one scheduler file. I am now inspecting the directory structure to locate the DAG and scheduler definitions.Reading all five DAG JSON files and the scheduler JSON to extract DAG IDs, schedules, and task-to-script links.All required information has been gathered.\nThe scanner will list DAG IDs, schedules, and task-to-script links in \u226430 lines. It reads dag.json from five DAG directories and scheduler.json from the single scheduler file.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 84,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "## OrchestrationScanner \u2014 `legacy/`\n**Sources:** `dags/*/dag.json` (5) \u00b7 `scheduler/scheduler.json` (1, 13 jobs)\n| DAG ID | Schedule | Tasks \u2192 Scripts |\n|--------|----------|-----------------|\n| **crm_party_daily** | `0 2 * * *` | spark_party_dim \u2192 `scripts/01_spark_party_dim.sh` \u00b7 spark_party_id_bridge \u2192 `02_...` \u00b7 spark_party_rel_mart \u2192 `03_...` |\n| **crm_account_daily** | `30 2 * * *` | spark_account_dim \u2192 `01_spark_account_dim.sh` \u00b7 spark_acct_product \u2192 `02_...` \u00b7 spark_cust_acct_bridge \u2192 `03_...` |\n| **usage_spark_hourly** | `15 * * * *` | spark_usage_load \u2192 `01_spark_usage_load.sh` \u00b7 spark_usage_agg \u2192 `02_...` |\n| **billing_finance_daily** | `0 4 * * *` | spark_invoice_fact \u2192 `01_spark_invoice_fact.sh` \u00b7 spark_payment_fact \u2192 `02_...` \u00b7 spark_finance_mart \u2192 `03_...` |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 85,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| **risk_compliance_weekly** | `0 6 * * 1` | spark_risk_score \u2192 `01_spark_risk_score.sh` \u00b7 spark_compliance_snap \u2192 `02_...` |\n**Scheduler mirror:** same schedules; scripts as `dags/<dag>/scripts/<file>.sh` (e.g. `dags/crm_party_daily/scripts/01_spark_party_dim.sh`). Job names: `<dag_id>.<task_id>`.\n**Cross-DAG deps (via data, not explicit):** usage \u2192 billing (`agg_usage_hourly`); account/party \u2192 risk (`mart_acct_360`, `mart_finance_360`). All tasks: engine=spark, UTC.\n$ agent OrchestrationScanner finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 86,
+    "name": "agent.live.orchestration.done",
+    "status": "success",
+    "message": "Cursor agent OrchestrationScanner completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-7af19143-ecc5-491c-90ea-cb56f6a9f9b8",
+      "run_id": "run-4eb7e6da-c540-436e-8c34-971e9fb5ab38",
+      "status": "finished",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 87,
+    "name": "orch.begin",
+    "status": "success",
+    "message": "OrchestrationScanner: 5 DAGs / schedulers and task dependencies",
+    "detail": {
+      "dags": 5,
+      "schedulers": 1,
+      "agent": "OrchestrationScanner",
+      "phase": "top",
+      "tech": "airflow"
+    }
+  },
+  {
+    "seq": 88,
+    "name": "orch.dag",
+    "status": "success",
+    "message": "DAG billing_finance_daily: 3 tasks \u00b7 deps \u00b7 0 4 * * *",
+    "detail": {
+      "dag_id": "billing_finance_daily",
+      "dag_name": "Billing & Finance Daily (Spark)",
+      "engine": "spark",
+      "tasks": [
+        "billing_finance_daily.spark_invoice_fact",
+        "billing_finance_daily.spark_payment_fact",
+        "billing_finance_daily.spark_finance_mart"
+      ],
+      "task_names": [
+        "Spark \u00b7 Invoice facts",
+        "Spark \u00b7 Payment facts",
+        "Spark \u00b7 Finance 360 mart"
+      ],
+      "spark_jobs": [
+        "spark/spark_invoice_fact.py",
+        "spark/spark_payment_fact.py",
+        "spark/spark_finance_mart.py"
+      ],
+      "task_deps": {
+        "billing_finance_daily.spark_invoice_fact": [],
+        "billing_finance_daily.spark_payment_fact": [
+          "billing_finance_daily.spark_invoice_fact"
+        ],
+        "billing_finance_daily.spark_finance_mart": [
+          "billing_finance_daily.spark_payment_fact"
+        ]
+      },
+      "schedule": "0 4 * * *",
+      "owner": "etl.finance@demo.local",
+      "tags": [
+        "billing",
+        "finance",
+        "spark"
+      ],
+      "agent": "OrchestrationScanner",
+      "phase": "top",
+      "tech": "airflow"
+    }
+  },
+  {
+    "seq": 89,
+    "name": "orch.dag",
+    "status": "success",
+    "message": "DAG crm_account_daily: 3 tasks \u00b7 deps \u00b7 30 2 * * *",
+    "detail": {
+      "dag_id": "crm_account_daily",
+      "dag_name": "CRM Account Daily (Spark)",
+      "engine": "spark",
+      "tasks": [
+        "crm_account_daily.spark_account_dim",
+        "crm_account_daily.spark_acct_product",
+        "crm_account_daily.spark_cust_acct_bridge"
+      ],
+      "task_names": [
+        "Spark \u00b7 Account dimension",
+        "Spark \u00b7 Account product holdings",
+        "Spark \u00b7 Customer\u2013account bridge"
+      ],
+      "spark_jobs": [
+        "spark/spark_account_dim.py",
+        "spark/spark_acct_product.py",
+        "spark/spark_cust_acct_bridge.py"
+      ],
+      "task_deps": {
+        "crm_account_daily.spark_account_dim": [],
+        "crm_account_daily.spark_acct_product": [
+          "crm_account_daily.spark_account_dim"
+        ],
+        "crm_account_daily.spark_cust_acct_bridge": [
+          "crm_account_daily.spark_acct_product"
+        ]
+      },
+      "schedule": "30 2 * * *",
+      "owner": "etl.account@demo.local",
+      "tags": [
+        "crm",
+        "account",
+        "spark"
+      ],
+      "agent": "OrchestrationScanner",
+      "phase": "top",
+      "tech": "airflow"
+    }
+  },
+  {
+    "seq": 90,
+    "name": "orch.dag",
+    "status": "success",
+    "message": "DAG crm_party_daily: 3 tasks \u00b7 deps \u00b7 0 2 * * *",
+    "detail": {
+      "dag_id": "crm_party_daily",
+      "dag_name": "CRM Party Daily (Spark)",
+      "engine": "spark",
+      "tasks": [
+        "crm_party_daily.spark_party_dim",
+        "crm_party_daily.spark_party_id_bridge",
+        "crm_party_daily.spark_party_rel_mart"
+      ],
+      "task_names": [
+        "Spark \u00b7 Build party dimensions",
+        "Spark \u00b7 Party identity bridge",
+        "Spark \u00b7 Party relationship mart"
+      ],
+      "spark_jobs": [
+        "spark/spark_party_dim.py",
+        "spark/spark_party_id_bridge.py",
+        "spark/spark_party_rel_mart.py"
+      ],
+      "task_deps": {
+        "crm_party_daily.spark_party_dim": [],
+        "crm_party_daily.spark_party_id_bridge": [
+          "crm_party_daily.spark_party_dim"
+        ],
+        "crm_party_daily.spark_party_rel_mart": [
+          "crm_party_daily.spark_party_id_bridge"
+        ]
+      },
+      "schedule": "0 2 * * *",
+      "owner": "etl.party@demo.local",
+      "tags": [
+        "crm",
+        "party",
+        "spark"
+      ],
+      "agent": "OrchestrationScanner",
+      "phase": "top",
+      "tech": "airflow"
+    }
+  },
+  {
+    "seq": 91,
+    "name": "orch.dag",
+    "status": "success",
+    "message": "DAG risk_compliance_weekly: 2 tasks \u00b7 deps \u00b7 0 6 * * 1",
+    "detail": {
+      "dag_id": "risk_compliance_weekly",
+      "dag_name": "Risk & Compliance Weekly (Spark)",
+      "engine": "spark",
+      "tasks": [
+        "risk_compliance_weekly.spark_risk_score",
+        "risk_compliance_weekly.spark_compliance_snap"
+      ],
+      "task_names": [
+        "Spark \u00b7 Risk score factors",
+        "Spark \u00b7 Compliance snapshot"
+      ],
+      "spark_jobs": [
+        "spark/spark_risk_score.py",
+        "spark/spark_compliance_snap.py"
+      ],
+      "task_deps": {
+        "risk_compliance_weekly.spark_risk_score": [],
+        "risk_compliance_weekly.spark_compliance_snap": [
+          "risk_compliance_weekly.spark_risk_score"
+        ]
+      },
+      "schedule": "0 6 * * 1",
+      "owner": "etl.risk@demo.local",
+      "tags": [
+        "risk",
+        "compliance",
+        "spark"
+      ],
+      "agent": "OrchestrationScanner",
+      "phase": "top",
+      "tech": "airflow"
+    }
+  },
+  {
+    "seq": 92,
+    "name": "orch.dag",
+    "status": "success",
+    "message": "DAG usage_spark_hourly: 2 tasks \u00b7 deps \u00b7 15 * * * *",
+    "detail": {
+      "dag_id": "usage_spark_hourly",
+      "dag_name": "Usage Events Hourly (Spark)",
+      "engine": "spark",
+      "tasks": [
+        "usage_spark_hourly.spark_usage_load",
+        "usage_spark_hourly.spark_usage_agg"
+      ],
+      "task_names": [
+        "Spark \u00b7 Load usage events",
+        "Spark \u00b7 Usage hourly aggregates"
+      ],
+      "spark_jobs": [
+        "spark/spark_usage_load.py",
+        "spark/spark_usage_agg.py"
+      ],
+      "task_deps": {
+        "usage_spark_hourly.spark_usage_load": [],
+        "usage_spark_hourly.spark_usage_agg": [
+          "usage_spark_hourly.spark_usage_load"
+        ]
+      },
+      "schedule": "15 * * * *",
+      "owner": "etl.usage@demo.local",
+      "tags": [
+        "usage",
+        "spark",
+        "hourly"
+      ],
+      "agent": "OrchestrationScanner",
+      "phase": "top",
+      "tech": "airflow"
+    }
+  },
+  {
+    "seq": 93,
+    "name": "orch.repo_meta",
+    "status": "success",
+    "message": "Git warehouse repo \u00b7 spark+oracle",
+    "detail": {
+      "remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "branch": "main",
+      "databases": [
+        "staging",
+        "ref",
+        "legacy"
+      ],
+      "agent": "OrchestrationScanner",
+      "phase": "top"
+    }
+  },
+  {
+    "seq": 94,
+    "name": "agent.live.catalog",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 CatalogUsageHarvester",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "CatalogUsageHarvester",
+      "phase": "catalog"
+    }
+  },
+  {
+    "seq": 95,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 CatalogUsageHarvester \u00b7 catalog \u2500\u2500\n$ cursor agent create \u00b7 CatalogUsageHarvester \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy\n$ agent_id agent-cf132b0f-f613-440f-8742-130cb5bc4700\n$ run run-644184bc-5a26-4b3f-b5f5-6055e0b4aad7 \u00b7 streaming\u2026\nScanning the current working directory for catalog, BI metadata, or usage hints.\nExploring the legacy DWH migration project directory for catalog, BI metadata, and usage hints.Found useful metadata. Now reading key files to summarize.\nChecking repo.json, catalog/tables.json, usage/query_log.csv, report_log.csv, and dag.json for BI metadata and usage hints.Checking schema distribution, consumer patterns in the catalog, and additional report entries.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "CatalogUsageHarvester",
+      "phase": "catalog"
+    }
+  },
+  {
+    "seq": 96,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Also checking dag.json for lineage hints.Gathering unique consumer values and schema breakdowns for a richer summary.Enough information was found to summarize within the 20-line limit.Found 54 table access records in the catalog metadata. Each record corresponds to one of 54 tables.\nrepo.json holds repository and warehouse metadata. catalog/tables.json contains 54 tables across legacy, staging, and ref schemas with column details, row counts, null rates, update frequency, and consumers. usage/query_log.csv tracks analyst query access patterns per table. usage/report_log.csv maps three BI reports to tables and owners. DAG JSON files provide lineage hints via sources and targets. scheduler.json stores job scheduling metadata.\n**CatalogUsageHarvester summary** \u2014 metadata found under `legacy/`:\n**Repo manifest (`repo.json`)**\nOn-prem Spark+Oracle DWH; schemas `staging`, `ref`, `legacy`. 5 Airflow DAGs, 13 Spark scripts, **54 tables**. Discovery paths: `dags/`, `catalog/`, `usage/`.\n**Catalog (`catalog/tables.json`)**\nFull table dictionary: schema, name, description, row counts, column types/PK/null rates, `update_frequency`, and **consumers** (`dwh_analytics`, `migration_wave1`).\nSchema split: **legacy 21**, **staging 17**, **ref 16**. Includes dims/facts/bridges, usage tables (`agg_usage_hourly`, `fact_usage_*`, `stg_usage_*`), and marts (`mart_party_360`, `mart_acct_360`, `mart_finance_360`, `mart_ar_aging`).",
+    "detail": {
+      "kind": "terminal",
+      "agent": "CatalogUsageHarvester",
+      "phase": "catalog"
+    }
+  },
+  {
+    "seq": 97,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "**BI / usage hints (`usage/`)**\n- `query_log.csv` \u2014 54 rows: `analyst@demo.local` access counts per table (2026-09-01).\n- `report_log.csv` \u2014 3 named reports: Party 360, Account 360, Finance AR \u2192 mart/dim tables with owners (`cx@`, `crm@`, `finance@demo.local`).\n**Lineage / orchestration**\nDAG `dag.json` files declare task `sources`/`targets`/`writes` (implicit lineage). `scheduler/scheduler.json` lists Spark job schedule and dependencies. SQL/Spark scripts echo source tables in comments.\n$ agent CatalogUsageHarvester finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "CatalogUsageHarvester",
+      "phase": "catalog"
+    }
+  },
+  {
+    "seq": 98,
+    "name": "agent.live.catalog.done",
+    "status": "success",
+    "message": "Cursor agent CatalogUsageHarvester completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-cf132b0f-f613-440f-8742-130cb5bc4700",
+      "run_id": "run-644184bc-5a26-4b3f-b5f5-6055e0b4aad7",
+      "status": "finished",
+      "agent": "CatalogUsageHarvester",
+      "phase": "catalog"
+    }
+  },
+  {
+    "seq": 99,
+    "name": "meta.catalog",
+    "status": "success",
+    "message": "Catalog: 54 tables",
+    "detail": {
+      "tables": [
+        "agg_usage_hourly",
+        "audit_batch",
+        "bridge_acct_product",
+        "bridge_cust_acct",
+        "bridge_party_id",
+        "bridge_risk_factor",
+        "dim_account",
+        "dim_account_status",
+        "dim_party",
+        "dim_party_addr",
+        "fact_invoice",
+        "fact_invoice_line",
+        "fact_party_rel",
+        "fact_payment",
+        "fact_risk_score",
+        "fact_usage_evt",
+        "fact_usage_session",
+        "mart_acct_360",
+        "mart_ar_aging",
+        "mart_finance_360",
+        "mart_party_360",
+        "ref_acct_type",
+        "ref_brand",
+        "ref_charge_type",
+        "ref_country",
+        "ref_currency",
+        "ref_id_type",
+        "ref_network_cell",
+        "ref_party_type",
+        "ref_pay_method",
+        "ref_prod_family",
+        "ref_product",
+        "ref_reg_rule",
+        "ref_rel_type",
+        "ref_risk_band",
+        "ref_role_type",
+        "ref_uom",
+        "snap_compliance_weekly",
+        "stg_acct_raw",
+        "stg_acct_status",
+        "stg_cust_acct",
+        "stg_invoice_hdr",
+        "stg_invoice_line",
+        "stg_party_addr",
+        "stg_party_contact",
+        "stg_party_hist",
+        "stg_party_id_map",
+        "stg_party_raw",
+        "stg_party_rel",
+        "stg_payment",
+        "stg_prod_hold",
+        "stg_risk_signal",
+        "stg_usage_cdr",
+        "stg_usage_session"
+      ],
+      "agent": "CatalogUsageHarvester",
+      "phase": "metadata",
+      "tech": "catalog"
+    }
+  },
+  {
+    "seq": 100,
+    "name": "meta.usage_bi",
+    "status": "success",
+    "message": "Usage & BI harvest: 0 objects \u00b7 0 consumers (incl. Cognos-style reports)",
+    "detail": {
+      "objects_with_usage": 0,
+      "consumers_sample": [],
+      "agent": "CatalogUsageHarvester",
+      "phase": "metadata",
+      "tech": "cognos"
+    }
+  },
+  {
+    "seq": 101,
+    "name": "discover.jobs",
+    "status": "success",
+    "message": "Orchestration findings: 18 DAG/task nodes",
+    "detail": {
+      "jobs": 18,
+      "dags": 5,
+      "agent": "OrchestrationScanner",
+      "phase": "top"
+    }
+  },
+  {
+    "seq": 102,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Discovery scan complete.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "complete"
+    }
+  },
+  {
+    "seq": 103,
+    "name": "complete",
+    "status": "success",
+    "message": "Discovery scan complete \u2014 run Inventory agents for inventory & lineage",
+    "detail": {
+      "pipeline": "discover",
+      "objects": 0,
+      "jobs": 18,
+      "sql_files": 13,
+      "scripts": 13,
+      "spark_files": 13,
+      "tables_inferred": 54,
+      "schedulers": 0,
+      "dags": 5,
+      "lineage_edges": 0,
+      "technologies": [
+        "sql",
+        "spark",
+        "shell",
+        "airflow",
+        "scheduler",
+        "cognos",
+        "catalog"
+      ],
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "warehouse_engine": "spark+oracle",
+      "run_id": 47,
+      "runtime": "cursor_sdk",
+      "confidence": 0.94,
+      "outcomes": {
+        "scan": true,
+        "inventory": false,
+        "lineage": false
+      },
+      "terminal_open": true,
+      "agent": "DiscoveryCoordinator",
+      "phase": "complete"
+    }
+  }
+]

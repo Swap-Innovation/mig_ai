@@ -1,0 +1,8 @@
+task: data_product_identification
+version: v1
+instructions: >
+  Propose a source-aligned Party & Customer Account product with contract, SoR, owner, and quality rules.
+output_schema:
+  product_boundary: string
+  candidate_contract: object
+  confidence: number

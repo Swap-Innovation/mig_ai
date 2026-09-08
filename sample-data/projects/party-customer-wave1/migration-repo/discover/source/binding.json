@@ -1,0 +1,12 @@
+{
+  "project_id": 1,
+  "name": "Party & Customer Account Wave-1",
+  "legacy_source_type": "sample",
+  "legacy_root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-customer-wave1/legacy",
+  "sample_slug": "party-customer-wave1",
+  "estate_label": "Sample: party-customer-wave1",
+  "git_url": "",
+  "git_branch": "main",
+  "git_commit": "",
+  "bound_at": "2026-09-08T05:53:37.094558Z"
+}

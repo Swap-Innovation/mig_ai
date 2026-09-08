@@ -1,0 +1,33 @@
+{
+  "jobs": [
+    {
+      "name": "job_stg_cust_ingest",
+      "schedule": "0 2 * * *",
+      "sla_minutes": 60,
+      "script": "scripts/run_cust_load.sh",
+      "depends_on": [],
+      "params": {"RUN_DATE": "${ds}"}
+    },
+    {
+      "name": "job_load_cust_acct",
+      "schedule": "30 2 * * *",
+      "sla_minutes": 90,
+      "script": "sql/load_customer_account.sql",
+      "depends_on": ["job_stg_cust_ingest"]
+    },
+    {
+      "name": "job_mart_cust_360",
+      "schedule": "0 4 * * *",
+      "sla_minutes": 120,
+      "script": "scripts/run_marts.sh",
+      "depends_on": ["job_load_cust_acct"]
+    },
+    {
+      "name": "job_billing_snap",
+      "schedule": "0 5 * * *",
+      "sla_minutes": 60,
+      "script": "sql/billing_snap.sql",
+      "depends_on": ["job_load_cust_acct"]
+    }
+  ]
+}

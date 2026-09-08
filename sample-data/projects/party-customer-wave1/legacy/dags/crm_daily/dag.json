@@ -1,0 +1,36 @@
+{
+  "id": "crm_daily",
+  "name": "CRM Daily Load",
+  "description": "On-prem CRM warehouse daily: land files → customer/account load → cust 360 marts",
+  "schedule": "0 2 * * *",
+  "timezone": "UTC",
+  "owner": "etl.crm@demo.local",
+  "tags": ["crm", "party", "on-prem"],
+  "tasks": [
+    {
+      "id": "stg_cust_ingest",
+      "name": "Stage customer landing file",
+      "script": "scripts/01_stg_cust_ingest.sh",
+      "sql": [],
+      "depends_on": [],
+      "sla_minutes": 60,
+      "writes": ["legacy.stg_cust_daily"]
+    },
+    {
+      "id": "load_cust_acct",
+      "name": "Load customer & account masters",
+      "script": "scripts/02_load_cust_acct.sh",
+      "sql": ["sql/load_customer_account.sql"],
+      "depends_on": ["stg_cust_ingest"],
+      "sla_minutes": 90
+    },
+    {
+      "id": "mart_cust_360",
+      "name": "Build cust 360 marts (team A/B)",
+      "script": "scripts/03_mart_cust_360.sh",
+      "sql": ["sql/mart_cust_360_team_a.sql", "sql/mart_cust_360_team_b.sql"],
+      "depends_on": ["load_cust_acct"],
+      "sla_minutes": 120
+    }
+  ]
+}

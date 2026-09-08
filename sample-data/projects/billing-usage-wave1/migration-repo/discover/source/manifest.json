@@ -1,0 +1,29 @@
+{
+  "stage": "discover/source",
+  "section": "discover",
+  "view": "source",
+  "project_id": 3,
+  "sample_slug": "billing-usage-wave1",
+  "status": "ready",
+  "run_id": null,
+  "written_at": "2026-09-08T06:15:09.188192Z",
+  "prior_stage": null,
+  "prior_run_id": null,
+  "summary": {
+    "project_id": 3,
+    "name": "DWH-M",
+    "legacy_source_type": "sample",
+    "legacy_root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy",
+    "sample_slug": "billing-usage-wave1",
+    "estate_label": "Sample: billing-usage-wave1",
+    "git_url": "",
+    "git_branch": "main",
+    "git_commit": "",
+    "bound_at": "2026-09-08T06:15:09.187705Z"
+  },
+  "artifacts": [
+    "binding.json"
+  ],
+  "migration_repo": "../sample-data/projects/billing-usage-wave1/migration-repo",
+  "path": "migration-repo/discover/source"
+}

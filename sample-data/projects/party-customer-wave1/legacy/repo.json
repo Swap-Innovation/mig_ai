@@ -1,0 +1,20 @@
+{
+  "remote": "https://git.corp.example/dw/crm-onprem-etl.git",
+  "default_branch": "main",
+  "clone_path": ".",
+  "warehouse": {
+    "engine": "teradata",
+    "environment": "on-prem",
+    "databases": ["legacy", "marts", "staging"],
+    "orchestration": "control-m / airflow-compatible DAGs"
+  },
+  "layout": {
+    "dags": "dags/",
+    "catalog": "catalog/",
+    "usage": "usage/"
+  },
+  "discovery": {
+    "scan": ["dags", "catalog", "usage"],
+    "notes": "Migration AI clones this repo and walks every DAG → script → SQL → table edge."
+  }
+}

@@ -1,0 +1,7 @@
+object_fqn,report_name,dashboard,access_count,last_accessed
+legacy.crm_cust_mstr,Customer 360 Report,exec_crm,890,2026-08-29
+legacy.crm_acct_mstr,Account Health Pack,billing_workspace,1200,2026-08-30
+legacy.crm_cust_acct_bridge,Billing Join Report,billing_workspace,640,2026-08-28
+marts.dm_cust_360_team_a,Self-serve 360,powerbi_crm,1100,2026-08-27
+marts.dm_billing_cust_snap,Month-end Billing Snap,finance_pack,420,2026-08-28
+legacy.device_msisdn_map,Network Device Map,network_ops_bi,2200,2026-08-31

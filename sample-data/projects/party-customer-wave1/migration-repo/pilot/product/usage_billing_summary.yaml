@@ -1,0 +1,36 @@
+deprecation_policy: Breaking changes require 90-day deprecation window
+freshness_slo_hours: 24
+name: usage_billing_summary
+quality_rules:
+- account_id NOT NULL
+- usage_date NOT NULL
+- usage_amount >= 0
+schema:
+- name: account_id
+  pk: true
+  semantic: CustomerAccount.accountId
+  type: STRING
+- name: usage_date
+  pk: true
+  semantic: CustomerUsage.usageDate
+  type: DATE
+- name: usage_quantity
+  semantic: CustomerUsage.usageQuantity
+  type: NUMERIC
+- name: usage_amount
+  semantic: CustomerUsage.usageAmount
+  type: NUMERIC
+- name: invoice_id
+  semantic: CustomerBill.invoiceId
+  type: STRING
+- name: invoice_amount
+  semantic: CustomerBill.invoiceAmount
+  type: NUMERIC
+- name: valid_from
+  semantic: SCD2
+  type: TIMESTAMP
+- name: is_current
+  semantic: SCD2
+  type: BOOL
+version: 0.1.0
+versioning: semver

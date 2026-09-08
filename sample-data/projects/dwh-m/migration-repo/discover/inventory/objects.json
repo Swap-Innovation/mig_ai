@@ -1,0 +1,395 @@
+[
+  {
+    "id": 425,
+    "object_type": "table",
+    "name": "bill_usage_evt",
+    "fully_qualified_name": "legacy.bill_usage_evt",
+    "schema_name": "legacy",
+    "source_path": "",
+    "row_count": 8500000,
+    "access_count": 541,
+    "profile": {
+      "update_frequency": "hourly",
+      "column_count": 5,
+      "pk_columns": [
+        "evt_id"
+      ],
+      "pii_columns": [],
+      "usage_sources": [
+        "usage/query_log.csv",
+        "usage/report_log.csv"
+      ],
+      "profiled_at": "2026-09-08T07:25:59.129211Z",
+      "date_range": null,
+      "columns": {
+        "evt_id": {
+          "null_rate": 0,
+          "distinct_count": 8075000,
+          "cardinality": "unique",
+          "pii_hint": null,
+          "is_pk": true,
+          "data_type": "VARCHAR"
+        },
+        "acct_id": {
+          "null_rate": 0,
+          "distinct_count": 3400000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "VARCHAR"
+        },
+        "usage_qty": {
+          "null_rate": 0.001,
+          "distinct_count": 3400000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "DECIMAL"
+        },
+        "usage_uom": {
+          "null_rate": 0,
+          "distinct_count": 3400000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "VARCHAR"
+        },
+        "evt_ts": {
+          "null_rate": 0,
+          "distinct_count": 3400000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "TIMESTAMP"
+        }
+      }
+    },
+    "discovery_run_id": 46,
+    "columns": [
+      {
+        "name": "evt_id",
+        "data_type": "VARCHAR",
+        "nullable": true,
+        "is_pk": true,
+        "null_rate": 0.0,
+        "distinct_count": 8075000
+      },
+      {
+        "name": "acct_id",
+        "data_type": "VARCHAR",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.0,
+        "distinct_count": 3400000
+      },
+      {
+        "name": "usage_qty",
+        "data_type": "DECIMAL",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.001,
+        "distinct_count": 3400000
+      },
+      {
+        "name": "usage_uom",
+        "data_type": "VARCHAR",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.0,
+        "distinct_count": 3400000
+      },
+      {
+        "name": "evt_ts",
+        "data_type": "TIMESTAMP",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.0,
+        "distinct_count": 3400000
+      }
+    ]
+  },
+  {
+    "id": 426,
+    "object_type": "table",
+    "name": "bill_inv_sum",
+    "fully_qualified_name": "legacy.bill_inv_sum",
+    "schema_name": "legacy",
+    "source_path": "",
+    "row_count": 420000,
+    "access_count": 311,
+    "profile": {
+      "update_frequency": "daily",
+      "column_count": 5,
+      "pk_columns": [
+        "inv_id"
+      ],
+      "pii_columns": [],
+      "usage_sources": [
+        "usage/query_log.csv",
+        "usage/report_log.csv"
+      ],
+      "profiled_at": "2026-09-08T07:25:59.130910Z",
+      "date_range": null,
+      "columns": {
+        "inv_id": {
+          "null_rate": 0,
+          "distinct_count": 399000,
+          "cardinality": "unique",
+          "pii_hint": null,
+          "is_pk": true,
+          "data_type": "VARCHAR"
+        },
+        "acct_id": {
+          "null_rate": 0,
+          "distinct_count": 168000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "VARCHAR"
+        },
+        "cycle_cd": {
+          "null_rate": 0,
+          "distinct_count": 168000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "VARCHAR"
+        },
+        "amount_due": {
+          "null_rate": 0,
+          "distinct_count": 168000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "DECIMAL"
+        },
+        "due_dt": {
+          "null_rate": 0,
+          "distinct_count": 168000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "DATE"
+        }
+      }
+    },
+    "discovery_run_id": 46,
+    "columns": [
+      {
+        "name": "inv_id",
+        "data_type": "VARCHAR",
+        "nullable": true,
+        "is_pk": true,
+        "null_rate": 0.0,
+        "distinct_count": 399000
+      },
+      {
+        "name": "acct_id",
+        "data_type": "VARCHAR",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.0,
+        "distinct_count": 168000
+      },
+      {
+        "name": "cycle_cd",
+        "data_type": "VARCHAR",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.0,
+        "distinct_count": 168000
+      },
+      {
+        "name": "amount_due",
+        "data_type": "DECIMAL",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.0,
+        "distinct_count": 168000
+      },
+      {
+        "name": "due_dt",
+        "data_type": "DATE",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.0,
+        "distinct_count": 168000
+      }
+    ]
+  },
+  {
+    "id": 427,
+    "object_type": "table",
+    "name": "mart_usage_360",
+    "fully_qualified_name": "legacy.mart_usage_360",
+    "schema_name": "legacy",
+    "source_path": "",
+    "row_count": 210000,
+    "access_count": 981,
+    "profile": {
+      "update_frequency": "daily",
+      "column_count": 4,
+      "pk_columns": [
+        "acct_id",
+        "cycle_cd"
+      ],
+      "pii_columns": [],
+      "usage_sources": [
+        "usage/query_log.csv",
+        "usage/report_log.csv"
+      ],
+      "profiled_at": "2026-09-08T07:25:59.131715Z",
+      "date_range": null,
+      "columns": {
+        "acct_id": {
+          "null_rate": null,
+          "distinct_count": 199500,
+          "cardinality": "unique",
+          "pii_hint": null,
+          "is_pk": true,
+          "data_type": "VARCHAR"
+        },
+        "cycle_cd": {
+          "null_rate": null,
+          "distinct_count": 199500,
+          "cardinality": "unique",
+          "pii_hint": null,
+          "is_pk": true,
+          "data_type": "VARCHAR"
+        },
+        "total_mb": {
+          "null_rate": 0.02,
+          "distinct_count": 84000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "DECIMAL"
+        },
+        "total_min": {
+          "null_rate": 0.02,
+          "distinct_count": 84000,
+          "cardinality": "high",
+          "pii_hint": null,
+          "is_pk": false,
+          "data_type": "DECIMAL"
+        }
+      }
+    },
+    "discovery_run_id": 46,
+    "columns": [
+      {
+        "name": "acct_id",
+        "data_type": "VARCHAR",
+        "nullable": true,
+        "is_pk": true,
+        "null_rate": null,
+        "distinct_count": 199500
+      },
+      {
+        "name": "cycle_cd",
+        "data_type": "VARCHAR",
+        "nullable": true,
+        "is_pk": true,
+        "null_rate": null,
+        "distinct_count": 199500
+      },
+      {
+        "name": "total_mb",
+        "data_type": "DECIMAL",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.02,
+        "distinct_count": 84000
+      },
+      {
+        "name": "total_min",
+        "data_type": "DECIMAL",
+        "nullable": true,
+        "is_pk": false,
+        "null_rate": 0.02,
+        "distinct_count": 84000
+      }
+    ]
+  },
+  {
+    "id": 428,
+    "object_type": "repo",
+    "name": "billing-usage-etl",
+    "fully_qualified_name": "git.billing-usage-etl",
+    "schema_name": "git",
+    "source_path": "https://git.corp.example/dw/billing-usage-etl.git",
+    "row_count": null,
+    "access_count": 0,
+    "profile": {
+      "engine": "oracle",
+      "environment": "on-prem",
+      "databases": [
+        "legacy",
+        "staging"
+      ],
+      "orchestration": "airflow-compatible DAGs in git"
+    },
+    "discovery_run_id": 46,
+    "columns": []
+  },
+  {
+    "id": 429,
+    "object_type": "dag",
+    "name": "usage_hourly",
+    "fully_qualified_name": "dag.usage_hourly",
+    "schema_name": "dags",
+    "source_path": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy/dags/usage_hourly/dag.json",
+    "row_count": null,
+    "access_count": 1,
+    "profile": {
+      "schedule": "0 * * * *",
+      "owner": "etl.usage@demo.local",
+      "engine": "spark"
+    },
+    "discovery_run_id": 46,
+    "columns": []
+  },
+  {
+    "id": 430,
+    "object_type": "script",
+    "name": "01_load_bill_usage.sh",
+    "fully_qualified_name": "scripts.usage_hourly.01_load_bill_usage.sh",
+    "schema_name": "dags.usage_hourly",
+    "source_path": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy/dags/usage_hourly/scripts/01_load_bill_usage.sh",
+    "row_count": null,
+    "access_count": 0,
+    "profile": {},
+    "discovery_run_id": 46,
+    "columns": []
+  },
+  {
+    "id": 431,
+    "object_type": "dag",
+    "name": "usage_mart_daily",
+    "fully_qualified_name": "dag.usage_mart_daily",
+    "schema_name": "dags",
+    "source_path": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy/dags/usage_mart_daily/dag.json",
+    "row_count": null,
+    "access_count": 1,
+    "profile": {
+      "schedule": "30 2 * * *",
+      "owner": "etl.usage@demo.local",
+      "engine": "spark"
+    },
+    "discovery_run_id": 46,
+    "columns": []
+  },
+  {
+    "id": 432,
+    "object_type": "script",
+    "name": "01_build_usage_mart.sh",
+    "fully_qualified_name": "scripts.usage_mart_daily.01_build_usage_mart.sh",
+    "schema_name": "dags.usage_mart_daily",
+    "source_path": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy/dags/usage_mart_daily/scripts/01_build_usage_mart.sh",
+    "row_count": null,
+    "access_count": 0,
+    "profile": {},
+    "discovery_run_id": 46,
+    "columns": []
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "project_id": 4,
+  "name": "DWH-M",
+  "legacy_source_type": "sample",
+  "legacy_root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy",
+  "sample_slug": "dwh-m",
+  "workspace_slug": "dwh-m",
+  "source_sample_id": "dwh-m",
+  "estate_label": "Sample: dwh-m",
+  "git_url": "",
+  "git_branch": "main",
+  "git_commit": "",
+  "bound_at": "2026-09-08T06:53:59.396698Z",
+  "migration_repo": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/migration-repo"
+}

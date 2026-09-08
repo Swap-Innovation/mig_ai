@@ -1,0 +1,5 @@
+domain_spoke: party
+hub_policies:
+  - iam_least_privilege
+  - region_pin: europe-west2
+product: party_customer_account

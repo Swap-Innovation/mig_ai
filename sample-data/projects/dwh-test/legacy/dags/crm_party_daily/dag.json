@@ -1,0 +1,105 @@
+{
+  "id": "crm_party_daily",
+  "name": "CRM Party Daily (Spark)",
+  "description": "Party master, addresses, and identity bridge via Spark ETL",
+  "schedule": "0 2 * * *",
+  "owner": "etl.party@demo.local",
+  "tags": [
+    "crm",
+    "party",
+    "spark"
+  ],
+  "timezone": "UTC",
+  "engine": "spark",
+  "tasks": [
+    {
+      "id": "spark_party_dim",
+      "name": "Spark \u00b7 Build party dimensions",
+      "script": "scripts/01_spark_party_dim.sh",
+      "sql": [
+        "sql/spark_party_dim.sql"
+      ],
+      "spark": "spark/spark_party_dim.py",
+      "depends_on": [],
+      "sla_minutes": 180,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "stg_party_raw",
+          "stg_party_addr",
+          "stg_party_contact",
+          "ref_country",
+          "ref_party_type"
+        ],
+        "targets": [
+          "dim_party",
+          "dim_party_addr"
+        ]
+      },
+      "writes": [
+        "dim_party",
+        "dim_party_addr"
+      ]
+    },
+    {
+      "id": "spark_party_id_bridge",
+      "name": "Spark \u00b7 Party identity bridge",
+      "script": "scripts/02_spark_party_id_bridge.sh",
+      "sql": [
+        "sql/spark_party_id_bridge.sql"
+      ],
+      "spark": "spark/spark_party_id_bridge.py",
+      "depends_on": [
+        "spark_party_dim"
+      ],
+      "sla_minutes": 180,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "dim_party",
+          "stg_party_id_map",
+          "ref_id_type",
+          "stg_party_hist",
+          "audit_batch"
+        ],
+        "targets": [
+          "bridge_party_id"
+        ]
+      },
+      "writes": [
+        "bridge_party_id"
+      ]
+    },
+    {
+      "id": "spark_party_rel_mart",
+      "name": "Spark \u00b7 Party relationship mart",
+      "script": "scripts/03_spark_party_rel_mart.sh",
+      "sql": [
+        "sql/spark_party_rel_mart.sql"
+      ],
+      "spark": "spark/spark_party_rel_mart.py",
+      "depends_on": [
+        "spark_party_id_bridge"
+      ],
+      "sla_minutes": 180,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "dim_party",
+          "dim_party_addr",
+          "bridge_party_id",
+          "stg_party_rel",
+          "ref_rel_type"
+        ],
+        "targets": [
+          "fact_party_rel",
+          "mart_party_360"
+        ]
+      },
+      "writes": [
+        "fact_party_rel",
+        "mart_party_360"
+      ]
+    }
+  ]
+}

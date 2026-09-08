@@ -1,0 +1,139 @@
+{
+  "legacy_row_count": 7,
+  "product_row_count": 7,
+  "row_count_delta_pct": 0.0,
+  "key_set_match": true,
+  "keys_only_in_legacy": [],
+  "keys_only_in_migrated": [],
+  "tolerance_pct": 0.1,
+  "passed": true,
+  "product_kind": "usage_billing",
+  "product_id": 24,
+  "control_totals": {
+    "rows": 7
+  },
+  "legacy_pipeline": {
+    "label": "Legacy \u00b7 Billing Usage Events",
+    "engine": "on-prem / SoR batch extract",
+    "status": "success",
+    "dataset": "landing.legacy_sdp_billing_usage_events",
+    "sources": [
+      "sdp.billing_usage_events"
+    ],
+    "stages": [
+      {
+        "name": "extract",
+        "status": "success",
+        "detail": "SoR nightly extract"
+      },
+      {
+        "name": "stage",
+        "status": "success",
+        "detail": "Load landing.legacy_sdp_billing_usage_events"
+      },
+      {
+        "name": "publish",
+        "status": "success",
+        "detail": "7 bridge keys"
+      }
+    ],
+    "row_count": 7,
+    "key_count": 7
+  },
+  "migrated_pipeline": {
+    "label": "Migrated \u00b7 Billing Usage Events",
+    "engine": "CNDI \u2192 landing \u2192 transform \u2192 product",
+    "status": "success",
+    "dataset": "sdp.billing_usage_events",
+    "sources": [
+      "sdp.billing_usage_events"
+    ],
+    "stages": [
+      {
+        "name": "ingest",
+        "status": "success",
+        "detail": "Ingestion validated and landed batch"
+      },
+      {
+        "name": "landing",
+        "status": "success",
+        "detail": "Landing zone updated"
+      },
+      {
+        "name": "transform",
+        "status": "success",
+        "detail": "Transform into SDP completed"
+      },
+      {
+        "name": "materialize",
+        "status": "success",
+        "detail": "SDP published \u00b7 Billing Usage Events"
+      },
+      {
+        "name": "governance",
+        "status": "success",
+        "detail": "Policies applied (governance overlay \u2014 not a flow stage)"
+      }
+    ],
+    "row_count": 7,
+    "key_count": 7
+  },
+  "checks": [
+    {
+      "id": "row_count",
+      "label": "Row count within tolerance",
+      "passed": true,
+      "legacy": 7,
+      "migrated": 7,
+      "detail": "\u0394 0.0% (tol 0.1%)"
+    },
+    {
+      "id": "key_set",
+      "label": "Business key set match",
+      "passed": true,
+      "legacy": 7,
+      "migrated": 7,
+      "detail": "only_legacy=0 \u00b7 only_migrated=0"
+    }
+  ],
+  "product_name": "Billing Usage Events",
+  "product_tier": "sdp",
+  "dataset_name": "sdp.billing_usage_events",
+  "migrated_run_trail": [
+    {
+      "id": 73,
+      "stage": "governance",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.497040Z",
+      "message": "Policies applied (governance overlay \u2014 not a flow stage)"
+    },
+    {
+      "id": 72,
+      "stage": "materialize",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.497039Z",
+      "message": "SDP published \u00b7 Billing Usage Events"
+    },
+    {
+      "id": 71,
+      "stage": "transform",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.497038Z",
+      "message": "Transform into SDP completed"
+    },
+    {
+      "id": 70,
+      "stage": "landing",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.497038Z",
+      "message": "Landing zone updated"
+    },
+    {
+      "id": 69,
+      "stage": "ingest",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.497035Z",
+      "message": "Ingestion validated and landed batch"
+    }
+  ]
+}

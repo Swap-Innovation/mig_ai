@@ -1,0 +1,429 @@
+{
+  "project_id": 3,
+  "by_product": [
+    {
+      "product_id": 11,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for Service Inventory Snapshot",
+          "done": false
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote Service Inventory Snapshot to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 12,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for Trouble Ticket 360",
+          "done": false
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote Trouble Ticket 360 to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 13,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for CRM Customer Master",
+          "done": true
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote CRM Customer Master to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 14,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for CRM Account Master",
+          "done": true
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote CRM Account Master to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 15,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for Billing Usage Events",
+          "done": true
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote Billing Usage Events to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 16,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for Billing Invoice Header",
+          "done": true
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote Billing Invoice Header to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 17,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for Service Inventory Extract",
+          "done": true
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote Service Inventory Extract to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 18,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for Trouble Ticket Extract",
+          "done": true
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote Trouble Ticket Extract to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 19,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for Party & Customer Account",
+          "done": false
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote Party & Customer Account to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    }
+  ],
+  "written_at": "2026-09-08T07:49:14.977589Z"
+}

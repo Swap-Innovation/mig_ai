@@ -1,0 +1,74 @@
+{
+  "id": "risk_compliance_weekly",
+  "name": "Risk & Compliance Weekly (Spark)",
+  "description": "Weekly risk scoring and compliance snapshot",
+  "schedule": "0 6 * * 1",
+  "owner": "etl.risk@demo.local",
+  "tags": [
+    "risk",
+    "compliance",
+    "spark"
+  ],
+  "timezone": "UTC",
+  "engine": "spark",
+  "tasks": [
+    {
+      "id": "spark_risk_score",
+      "name": "Spark \u00b7 Risk score factors",
+      "script": "scripts/01_spark_risk_score.sh",
+      "sql": [
+        "sql/spark_risk_score.sql"
+      ],
+      "spark": "spark/spark_risk_score.py",
+      "depends_on": [],
+      "sla_minutes": 180,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "mart_acct_360",
+          "mart_finance_360",
+          "agg_usage_hourly",
+          "stg_risk_signal",
+          "ref_risk_band"
+        ],
+        "targets": [
+          "fact_risk_score",
+          "bridge_risk_factor"
+        ]
+      },
+      "writes": [
+        "fact_risk_score",
+        "bridge_risk_factor"
+      ]
+    },
+    {
+      "id": "spark_compliance_snap",
+      "name": "Spark \u00b7 Compliance snapshot",
+      "script": "scripts/02_spark_compliance_snap.sh",
+      "sql": [
+        "sql/spark_compliance_snap.sql"
+      ],
+      "spark": "spark/spark_compliance_snap.py",
+      "depends_on": [
+        "spark_risk_score"
+      ],
+      "sla_minutes": 180,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "fact_risk_score",
+          "bridge_risk_factor",
+          "dim_party",
+          "dim_account",
+          "ref_reg_rule"
+        ],
+        "targets": [
+          "snap_compliance_weekly"
+        ]
+      },
+      "writes": [
+        "snap_compliance_weekly"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,484 @@
+{
+  "project_id": 1,
+  "by_product": [
+    {
+      "product_id": 1,
+      "status": "open",
+      "items": [
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": true
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for Party & Customer Account",
+          "done": true
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote Party & Customer Account to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 2,
+      "status": "open",
+      "items": [
+        {
+          "id": "dual_run",
+          "label": "Parallel run started for Usage & Billing Summary",
+          "done": false
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers migrated to new contract",
+          "done": false
+        },
+        {
+          "id": "reconcile",
+          "label": "Reconciliation passed within tolerance",
+          "done": false
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen",
+          "done": false
+        },
+        {
+          "id": "archive",
+          "label": "Retired objects archived",
+          "done": false
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer sign-off recorded",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change board sign-off",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Promote Usage & Billing Summary to production",
+          "done": false,
+          "group": "prepare"
+        }
+      ]
+    },
+    {
+      "product_id": 3,
+      "status": "open",
+      "items": [
+        {
+          "id": "prod_promote",
+          "label": "Promote Service Inventory Snapshot to production",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "dual_run",
+          "label": "Pilot dual-run evidence accepted for Service Inventory Snapshot",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "reconcile",
+          "label": "Production reconcile within tolerance",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers switched to production contract",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen for cutover window",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer owners signed off",
+          "done": false,
+          "group": "gate"
+        },
+        {
+          "id": "signoff",
+          "label": "Change Board production cutover sign-off",
+          "done": false,
+          "group": "gate"
+        }
+      ]
+    },
+    {
+      "product_id": 4,
+      "status": "open",
+      "items": [
+        {
+          "id": "prod_promote",
+          "label": "Promote Trouble Ticket 360 to production",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "dual_run",
+          "label": "Pilot dual-run evidence accepted for Trouble Ticket 360",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "reconcile",
+          "label": "Production reconcile within tolerance",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers switched to production contract",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen for cutover window",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer owners signed off",
+          "done": false,
+          "group": "gate"
+        },
+        {
+          "id": "signoff",
+          "label": "Change Board production cutover sign-off",
+          "done": false,
+          "group": "gate"
+        }
+      ]
+    },
+    {
+      "product_id": 5,
+      "status": "open",
+      "items": [
+        {
+          "id": "prod_promote",
+          "label": "Promote CRM Customer Master to production",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "dual_run",
+          "label": "Pilot dual-run evidence accepted for CRM Customer Master",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "reconcile",
+          "label": "Production reconcile within tolerance",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers switched to production contract",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen for cutover window",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer owners signed off",
+          "done": false,
+          "group": "gate"
+        },
+        {
+          "id": "signoff",
+          "label": "Change Board production cutover sign-off",
+          "done": false,
+          "group": "gate"
+        }
+      ]
+    },
+    {
+      "product_id": 6,
+      "status": "open",
+      "items": [
+        {
+          "id": "prod_promote",
+          "label": "Promote CRM Account Master to production",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "dual_run",
+          "label": "Pilot dual-run evidence accepted for CRM Account Master",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "reconcile",
+          "label": "Production reconcile within tolerance",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers switched to production contract",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen for cutover window",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer owners signed off",
+          "done": false,
+          "group": "gate"
+        },
+        {
+          "id": "signoff",
+          "label": "Change Board production cutover sign-off",
+          "done": false,
+          "group": "gate"
+        }
+      ]
+    },
+    {
+      "product_id": 7,
+      "status": "open",
+      "items": [
+        {
+          "id": "prod_promote",
+          "label": "Promote Billing Usage Events to production",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "dual_run",
+          "label": "Pilot dual-run evidence accepted for Billing Usage Events",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "reconcile",
+          "label": "Production reconcile within tolerance",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers switched to production contract",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen for cutover window",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer owners signed off",
+          "done": false,
+          "group": "gate"
+        },
+        {
+          "id": "signoff",
+          "label": "Change Board production cutover sign-off",
+          "done": false,
+          "group": "gate"
+        }
+      ]
+    },
+    {
+      "product_id": 8,
+      "status": "open",
+      "items": [
+        {
+          "id": "prod_promote",
+          "label": "Promote Billing Invoice Header to production",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "dual_run",
+          "label": "Pilot dual-run evidence accepted for Billing Invoice Header",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "reconcile",
+          "label": "Production reconcile within tolerance",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers switched to production contract",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen for cutover window",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer owners signed off",
+          "done": false,
+          "group": "gate"
+        },
+        {
+          "id": "signoff",
+          "label": "Change Board production cutover sign-off",
+          "done": false,
+          "group": "gate"
+        }
+      ]
+    },
+    {
+      "product_id": 9,
+      "status": "open",
+      "items": [
+        {
+          "id": "prod_promote",
+          "label": "Promote Service Inventory Extract to production",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "dual_run",
+          "label": "Pilot dual-run evidence accepted for Service Inventory Extract",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "reconcile",
+          "label": "Production reconcile within tolerance",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers switched to production contract",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen for cutover window",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer owners signed off",
+          "done": false,
+          "group": "gate"
+        },
+        {
+          "id": "signoff",
+          "label": "Change Board production cutover sign-off",
+          "done": false,
+          "group": "gate"
+        }
+      ]
+    },
+    {
+      "product_id": 10,
+      "status": "open",
+      "items": [
+        {
+          "id": "prod_promote",
+          "label": "Promote Trouble Ticket Extract to production",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "dual_run",
+          "label": "Pilot dual-run evidence accepted for Trouble Ticket Extract",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "reconcile",
+          "label": "Production reconcile within tolerance",
+          "done": false,
+          "group": "prepare"
+        },
+        {
+          "id": "consumers",
+          "label": "Consumers switched to production contract",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy objects frozen for cutover window",
+          "done": false,
+          "group": "cutover"
+        },
+        {
+          "id": "consumer_signoff",
+          "label": "Consumer owners signed off",
+          "done": false,
+          "group": "gate"
+        },
+        {
+          "id": "signoff",
+          "label": "Change Board production cutover sign-off",
+          "done": false,
+          "group": "gate"
+        }
+      ]
+    }
+  ],
+  "written_at": "2026-09-08T07:49:14.883395Z"
+}

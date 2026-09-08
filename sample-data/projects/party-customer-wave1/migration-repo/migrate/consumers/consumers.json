@@ -1,0 +1,128 @@
+{
+  "Account Health Pack": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877545Z",
+    "updated_by": "architect@demo.local"
+  },
+  "Billing Join Report": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877550Z",
+    "updated_by": "architect@demo.local"
+  },
+  "Customer 360 Report": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877552Z",
+    "updated_by": "architect@demo.local"
+  },
+  "Month-end Billing Snap": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877553Z",
+    "updated_by": "architect@demo.local"
+  },
+  "Network Device Map": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877554Z",
+    "updated_by": "architect@demo.local"
+  },
+  "Self-serve 360": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877555Z",
+    "updated_by": "architect@demo.local"
+  },
+  "adhoc_analyst": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877556Z",
+    "updated_by": "architect@demo.local"
+  },
+  "assurance_desk": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877557Z",
+    "updated_by": "architect@demo.local"
+  },
+  "billing": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877558Z",
+    "updated_by": "architect@demo.local"
+  },
+  "billing_reports": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877559Z",
+    "updated_by": "architect@demo.local"
+  },
+  "care_desktop": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877560Z",
+    "updated_by": "architect@demo.local"
+  },
+  "crm": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877561Z",
+    "updated_by": "architect@demo.local"
+  },
+  "crm_360": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877561Z",
+    "updated_by": "architect@demo.local"
+  },
+  "etl_ops": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877562Z",
+    "updated_by": "architect@demo.local"
+  },
+  "marketing": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877563Z",
+    "updated_by": "architect@demo.local"
+  },
+  "network_ops": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877564Z",
+    "updated_by": "architect@demo.local"
+  },
+  "on-prem": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877565Z",
+    "updated_by": "architect@demo.local"
+  },
+  "party": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-08T07:49:14.877566Z",
+    "updated_by": "architect@demo.local"
+  }
+}

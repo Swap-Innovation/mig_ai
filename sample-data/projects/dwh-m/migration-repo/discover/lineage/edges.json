@@ -1,0 +1,90 @@
+[
+  {
+    "source_fqn": "legacy.staging_usage",
+    "target_fqn": "legacy.bill_usage_evt",
+    "job_name": "usage_hourly.load_bill_usage",
+    "edge_type": "data",
+    "transformation": "WHERE src.evt_ts >= CURRENT_DATE - 1",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "legacy.bill_inv_sum",
+    "target_fqn": "legacy.mart_usage_360",
+    "job_name": "usage_mart_daily.build_usage_mart",
+    "edge_type": "data",
+    "transformation": "",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "legacy.bill_usage_evt",
+    "target_fqn": "legacy.mart_usage_360",
+    "job_name": "usage_mart_daily.build_usage_mart",
+    "edge_type": "data",
+    "transformation": "",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "git.billing-usage-etl",
+    "target_fqn": "dag.usage_hourly",
+    "job_name": "dag.usage_hourly",
+    "edge_type": "job",
+    "transformation": "git discover",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "dag.usage_hourly",
+    "target_fqn": "usage_hourly.load_bill_usage",
+    "job_name": "usage_hourly.load_bill_usage",
+    "edge_type": "job",
+    "transformation": "dag task",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "usage_hourly.load_bill_usage",
+    "target_fqn": "scripts.usage_hourly.01_load_bill_usage.sh",
+    "job_name": "usage_hourly.load_bill_usage",
+    "edge_type": "job",
+    "transformation": "runs script",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "scripts.usage_hourly.01_load_bill_usage.sh",
+    "target_fqn": "legacy.bill_usage_evt",
+    "job_name": "usage_hourly.load_bill_usage",
+    "edge_type": "data",
+    "transformation": "load_bill_usage.sql",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "git.billing-usage-etl",
+    "target_fqn": "dag.usage_mart_daily",
+    "job_name": "dag.usage_mart_daily",
+    "edge_type": "job",
+    "transformation": "git discover",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "dag.usage_mart_daily",
+    "target_fqn": "usage_mart_daily.build_usage_mart",
+    "job_name": "usage_mart_daily.build_usage_mart",
+    "edge_type": "job",
+    "transformation": "dag task",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "usage_mart_daily.build_usage_mart",
+    "target_fqn": "scripts.usage_mart_daily.01_build_usage_mart.sh",
+    "job_name": "usage_mart_daily.build_usage_mart",
+    "edge_type": "job",
+    "transformation": "runs script",
+    "discovery_run_id": 46
+  },
+  {
+    "source_fqn": "scripts.usage_mart_daily.01_build_usage_mart.sh",
+    "target_fqn": "legacy.mart_usage_360",
+    "job_name": "usage_mart_daily.build_usage_mart",
+    "edge_type": "data",
+    "transformation": "mart_usage_360.sql",
+    "discovery_run_id": 46
+  }
+]

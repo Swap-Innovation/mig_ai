@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+*.db
+node_modules/
+.next/
+.pdf_pages/
+.DS_Store
+backend/migrate.db
+sample-data/workspaces/
+*.egg-info/
+.env

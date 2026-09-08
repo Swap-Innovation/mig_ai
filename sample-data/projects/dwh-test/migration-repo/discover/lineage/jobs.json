@@ -1,0 +1,515 @@
+[
+  {
+    "id": 47,
+    "name": "dag.billing_finance_daily",
+    "schedule": "0 4 * * *",
+    "script_path": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy/dags/billing_finance_daily/dag.json",
+    "depends_on": [],
+    "params": {
+      "kind": "dag",
+      "dag_id": "billing_finance_daily",
+      "dag_name": "Billing & Finance Daily (Spark)",
+      "owner": "etl.finance@demo.local",
+      "tags": [
+        "billing",
+        "finance",
+        "spark"
+      ],
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "task_count": 3
+    }
+  },
+  {
+    "id": 48,
+    "name": "billing_finance_daily.spark_invoice_fact",
+    "schedule": "0 4 * * *",
+    "script_path": "scripts/01_spark_invoice_fact.sh",
+    "depends_on": [],
+    "params": {
+      "kind": "task",
+      "dag_id": "billing_finance_daily",
+      "task_id": "spark_invoice_fact",
+      "task_name": "Spark \u00b7 Invoice facts",
+      "sql": [
+        "sql/spark_invoice_fact.sql"
+      ],
+      "script": "scripts/01_spark_invoice_fact.sh",
+      "spark": "spark/spark_invoice_fact.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "stg_invoice_hdr",
+        "stg_invoice_line",
+        "dim_account",
+        "ref_charge_type",
+        "ref_currency"
+      ],
+      "targets": [
+        "fact_invoice",
+        "fact_invoice_line"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 49,
+    "name": "billing_finance_daily.spark_payment_fact",
+    "schedule": "0 4 * * *",
+    "script_path": "scripts/02_spark_payment_fact.sh",
+    "depends_on": [
+      "billing_finance_daily.spark_invoice_fact"
+    ],
+    "params": {
+      "kind": "task",
+      "dag_id": "billing_finance_daily",
+      "task_id": "spark_payment_fact",
+      "task_name": "Spark \u00b7 Payment facts",
+      "sql": [
+        "sql/spark_payment_fact.sql"
+      ],
+      "script": "scripts/02_spark_payment_fact.sh",
+      "spark": "spark/spark_payment_fact.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "stg_payment",
+        "fact_invoice",
+        "dim_account",
+        "ref_pay_method",
+        "ref_currency"
+      ],
+      "targets": [
+        "fact_payment"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 50,
+    "name": "billing_finance_daily.spark_finance_mart",
+    "schedule": "0 4 * * *",
+    "script_path": "scripts/03_spark_finance_mart.sh",
+    "depends_on": [
+      "billing_finance_daily.spark_payment_fact"
+    ],
+    "params": {
+      "kind": "task",
+      "dag_id": "billing_finance_daily",
+      "task_id": "spark_finance_mart",
+      "task_name": "Spark \u00b7 Finance 360 mart",
+      "sql": [
+        "sql/spark_finance_mart.sql"
+      ],
+      "script": "scripts/03_spark_finance_mart.sh",
+      "spark": "spark/spark_finance_mart.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "fact_invoice",
+        "fact_invoice_line",
+        "fact_payment",
+        "dim_account",
+        "agg_usage_hourly"
+      ],
+      "targets": [
+        "mart_finance_360",
+        "mart_ar_aging"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 51,
+    "name": "dag.crm_account_daily",
+    "schedule": "30 2 * * *",
+    "script_path": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy/dags/crm_account_daily/dag.json",
+    "depends_on": [],
+    "params": {
+      "kind": "dag",
+      "dag_id": "crm_account_daily",
+      "dag_name": "CRM Account Daily (Spark)",
+      "owner": "etl.account@demo.local",
+      "tags": [
+        "crm",
+        "account",
+        "spark"
+      ],
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "task_count": 3
+    }
+  },
+  {
+    "id": 52,
+    "name": "crm_account_daily.spark_account_dim",
+    "schedule": "30 2 * * *",
+    "script_path": "scripts/01_spark_account_dim.sh",
+    "depends_on": [],
+    "params": {
+      "kind": "task",
+      "dag_id": "crm_account_daily",
+      "task_id": "spark_account_dim",
+      "task_name": "Spark \u00b7 Account dimension",
+      "sql": [
+        "sql/spark_account_dim.sql"
+      ],
+      "script": "scripts/01_spark_account_dim.sh",
+      "spark": "spark/spark_account_dim.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "stg_acct_raw",
+        "stg_acct_status",
+        "ref_acct_type",
+        "ref_brand",
+        "dim_party"
+      ],
+      "targets": [
+        "dim_account",
+        "dim_account_status"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 53,
+    "name": "crm_account_daily.spark_acct_product",
+    "schedule": "30 2 * * *",
+    "script_path": "scripts/02_spark_acct_product.sh",
+    "depends_on": [
+      "crm_account_daily.spark_account_dim"
+    ],
+    "params": {
+      "kind": "task",
+      "dag_id": "crm_account_daily",
+      "task_id": "spark_acct_product",
+      "task_name": "Spark \u00b7 Account product holdings",
+      "sql": [
+        "sql/spark_acct_product.sql"
+      ],
+      "script": "scripts/02_spark_acct_product.sh",
+      "spark": "spark/spark_acct_product.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "dim_account",
+        "stg_prod_hold",
+        "ref_product",
+        "ref_prod_family"
+      ],
+      "targets": [
+        "bridge_acct_product"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 54,
+    "name": "crm_account_daily.spark_cust_acct_bridge",
+    "schedule": "30 2 * * *",
+    "script_path": "scripts/03_spark_cust_acct_bridge.sh",
+    "depends_on": [
+      "crm_account_daily.spark_acct_product"
+    ],
+    "params": {
+      "kind": "task",
+      "dag_id": "crm_account_daily",
+      "task_id": "spark_cust_acct_bridge",
+      "task_name": "Spark \u00b7 Customer\u2013account bridge",
+      "sql": [
+        "sql/spark_cust_acct_bridge.sql"
+      ],
+      "script": "scripts/03_spark_cust_acct_bridge.sh",
+      "spark": "spark/spark_cust_acct_bridge.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "dim_party",
+        "dim_account",
+        "stg_cust_acct",
+        "ref_role_type",
+        "bridge_party_id"
+      ],
+      "targets": [
+        "bridge_cust_acct",
+        "mart_acct_360"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 55,
+    "name": "dag.crm_party_daily",
+    "schedule": "0 2 * * *",
+    "script_path": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy/dags/crm_party_daily/dag.json",
+    "depends_on": [],
+    "params": {
+      "kind": "dag",
+      "dag_id": "crm_party_daily",
+      "dag_name": "CRM Party Daily (Spark)",
+      "owner": "etl.party@demo.local",
+      "tags": [
+        "crm",
+        "party",
+        "spark"
+      ],
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "task_count": 3
+    }
+  },
+  {
+    "id": 56,
+    "name": "crm_party_daily.spark_party_dim",
+    "schedule": "0 2 * * *",
+    "script_path": "scripts/01_spark_party_dim.sh",
+    "depends_on": [],
+    "params": {
+      "kind": "task",
+      "dag_id": "crm_party_daily",
+      "task_id": "spark_party_dim",
+      "task_name": "Spark \u00b7 Build party dimensions",
+      "sql": [
+        "sql/spark_party_dim.sql"
+      ],
+      "script": "scripts/01_spark_party_dim.sh",
+      "spark": "spark/spark_party_dim.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "stg_party_raw",
+        "stg_party_addr",
+        "stg_party_contact",
+        "ref_country",
+        "ref_party_type"
+      ],
+      "targets": [
+        "dim_party",
+        "dim_party_addr"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 57,
+    "name": "crm_party_daily.spark_party_id_bridge",
+    "schedule": "0 2 * * *",
+    "script_path": "scripts/02_spark_party_id_bridge.sh",
+    "depends_on": [
+      "crm_party_daily.spark_party_dim"
+    ],
+    "params": {
+      "kind": "task",
+      "dag_id": "crm_party_daily",
+      "task_id": "spark_party_id_bridge",
+      "task_name": "Spark \u00b7 Party identity bridge",
+      "sql": [
+        "sql/spark_party_id_bridge.sql"
+      ],
+      "script": "scripts/02_spark_party_id_bridge.sh",
+      "spark": "spark/spark_party_id_bridge.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "dim_party",
+        "stg_party_id_map",
+        "ref_id_type",
+        "stg_party_hist",
+        "audit_batch"
+      ],
+      "targets": [
+        "bridge_party_id"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 58,
+    "name": "crm_party_daily.spark_party_rel_mart",
+    "schedule": "0 2 * * *",
+    "script_path": "scripts/03_spark_party_rel_mart.sh",
+    "depends_on": [
+      "crm_party_daily.spark_party_id_bridge"
+    ],
+    "params": {
+      "kind": "task",
+      "dag_id": "crm_party_daily",
+      "task_id": "spark_party_rel_mart",
+      "task_name": "Spark \u00b7 Party relationship mart",
+      "sql": [
+        "sql/spark_party_rel_mart.sql"
+      ],
+      "script": "scripts/03_spark_party_rel_mart.sh",
+      "spark": "spark/spark_party_rel_mart.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "dim_party",
+        "dim_party_addr",
+        "bridge_party_id",
+        "stg_party_rel",
+        "ref_rel_type"
+      ],
+      "targets": [
+        "fact_party_rel",
+        "mart_party_360"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 59,
+    "name": "dag.risk_compliance_weekly",
+    "schedule": "0 6 * * 1",
+    "script_path": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy/dags/risk_compliance_weekly/dag.json",
+    "depends_on": [],
+    "params": {
+      "kind": "dag",
+      "dag_id": "risk_compliance_weekly",
+      "dag_name": "Risk & Compliance Weekly (Spark)",
+      "owner": "etl.risk@demo.local",
+      "tags": [
+        "risk",
+        "compliance",
+        "spark"
+      ],
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "task_count": 2
+    }
+  },
+  {
+    "id": 60,
+    "name": "risk_compliance_weekly.spark_risk_score",
+    "schedule": "0 6 * * 1",
+    "script_path": "scripts/01_spark_risk_score.sh",
+    "depends_on": [],
+    "params": {
+      "kind": "task",
+      "dag_id": "risk_compliance_weekly",
+      "task_id": "spark_risk_score",
+      "task_name": "Spark \u00b7 Risk score factors",
+      "sql": [
+        "sql/spark_risk_score.sql"
+      ],
+      "script": "scripts/01_spark_risk_score.sh",
+      "spark": "spark/spark_risk_score.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "mart_acct_360",
+        "mart_finance_360",
+        "agg_usage_hourly",
+        "stg_risk_signal",
+        "ref_risk_band"
+      ],
+      "targets": [
+        "fact_risk_score",
+        "bridge_risk_factor"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 61,
+    "name": "risk_compliance_weekly.spark_compliance_snap",
+    "schedule": "0 6 * * 1",
+    "script_path": "scripts/02_spark_compliance_snap.sh",
+    "depends_on": [
+      "risk_compliance_weekly.spark_risk_score"
+    ],
+    "params": {
+      "kind": "task",
+      "dag_id": "risk_compliance_weekly",
+      "task_id": "spark_compliance_snap",
+      "task_name": "Spark \u00b7 Compliance snapshot",
+      "sql": [
+        "sql/spark_compliance_snap.sql"
+      ],
+      "script": "scripts/02_spark_compliance_snap.sh",
+      "spark": "spark/spark_compliance_snap.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "fact_risk_score",
+        "bridge_risk_factor",
+        "dim_party",
+        "dim_account",
+        "ref_reg_rule"
+      ],
+      "targets": [
+        "snap_compliance_weekly"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 62,
+    "name": "dag.usage_spark_hourly",
+    "schedule": "15 * * * *",
+    "script_path": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy/dags/usage_spark_hourly/dag.json",
+    "depends_on": [],
+    "params": {
+      "kind": "dag",
+      "dag_id": "usage_spark_hourly",
+      "dag_name": "Usage Events Hourly (Spark)",
+      "owner": "etl.usage@demo.local",
+      "tags": [
+        "usage",
+        "spark",
+        "hourly"
+      ],
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "task_count": 2
+    }
+  },
+  {
+    "id": 63,
+    "name": "usage_spark_hourly.spark_usage_load",
+    "schedule": "15 * * * *",
+    "script_path": "scripts/01_spark_usage_load.sh",
+    "depends_on": [],
+    "params": {
+      "kind": "task",
+      "dag_id": "usage_spark_hourly",
+      "task_id": "spark_usage_load",
+      "task_name": "Spark \u00b7 Load usage events",
+      "sql": [
+        "sql/spark_usage_load.sql"
+      ],
+      "script": "scripts/01_spark_usage_load.sh",
+      "spark": "spark/spark_usage_load.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "stg_usage_cdr",
+        "stg_usage_session",
+        "ref_uom",
+        "ref_network_cell",
+        "dim_account"
+      ],
+      "targets": [
+        "fact_usage_evt",
+        "fact_usage_session"
+      ],
+      "engine": "spark"
+    }
+  },
+  {
+    "id": 64,
+    "name": "usage_spark_hourly.spark_usage_agg",
+    "schedule": "15 * * * *",
+    "script_path": "scripts/02_spark_usage_agg.sh",
+    "depends_on": [
+      "usage_spark_hourly.spark_usage_load"
+    ],
+    "params": {
+      "kind": "task",
+      "dag_id": "usage_spark_hourly",
+      "task_id": "spark_usage_agg",
+      "task_name": "Spark \u00b7 Usage hourly aggregates",
+      "sql": [
+        "sql/spark_usage_agg.sql"
+      ],
+      "script": "scripts/02_spark_usage_agg.sh",
+      "spark": "spark/spark_usage_agg.py",
+      "repo_remote": "https://git.corp.example/dw/dwh-m-spark-etl.git",
+      "sources": [
+        "fact_usage_evt",
+        "fact_usage_session",
+        "dim_account",
+        "ref_uom",
+        "bridge_acct_product"
+      ],
+      "targets": [
+        "agg_usage_hourly"
+      ],
+      "engine": "spark"
+    }
+  }
+]

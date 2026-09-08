@@ -1,0 +1,18 @@
+{
+  "id": "usage_hourly",
+  "name": "Billing Usage Hourly Load",
+  "description": "Hourly ingest of raw usage events into on-prem warehouse",
+  "schedule": "0 * * * *",
+  "owner": "etl.usage@demo.local",
+  "tags": ["billing", "usage"],
+  "tasks": [
+    {
+      "id": "load_bill_usage",
+      "name": "Load bill_usage_evt",
+      "script": "scripts/01_load_bill_usage.sh",
+      "sql": ["sql/load_bill_usage.sql"],
+      "depends_on": [],
+      "sla_minutes": 45
+    }
+  ]
+}

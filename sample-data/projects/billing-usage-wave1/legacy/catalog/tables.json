@@ -1,0 +1,48 @@
+{
+  "tables": [
+    {
+      "schema": "legacy",
+      "name": "bill_usage_evt",
+      "description": "Raw billing usage events",
+      "row_count": 8500000,
+      "columns": [
+        {"name": "evt_id", "type": "VARCHAR", "pk": true, "null_rate": 0},
+        {"name": "acct_id", "type": "VARCHAR", "null_rate": 0},
+        {"name": "usage_qty", "type": "DECIMAL", "null_rate": 0.001},
+        {"name": "usage_uom", "type": "VARCHAR", "null_rate": 0, "samples": ["MB", "MIN"]},
+        {"name": "evt_ts", "type": "TIMESTAMP", "null_rate": 0}
+      ],
+      "profile": {"update_frequency": "hourly"},
+      "consumers": ["usage_analytics", "rating_engine"]
+    },
+    {
+      "schema": "legacy",
+      "name": "bill_inv_sum",
+      "description": "Invoice summary by account cycle",
+      "row_count": 420000,
+      "columns": [
+        {"name": "inv_id", "type": "VARCHAR", "pk": true, "null_rate": 0},
+        {"name": "acct_id", "type": "VARCHAR", "null_rate": 0},
+        {"name": "cycle_cd", "type": "VARCHAR", "null_rate": 0},
+        {"name": "amount_due", "type": "DECIMAL", "null_rate": 0},
+        {"name": "due_dt", "type": "DATE", "null_rate": 0}
+      ],
+      "profile": {"update_frequency": "daily"},
+      "consumers": ["finance_ops", "collections"]
+    },
+    {
+      "schema": "legacy",
+      "name": "mart_usage_360",
+      "description": "Team mart for usage analytics",
+      "row_count": 210000,
+      "columns": [
+        {"name": "acct_id", "type": "VARCHAR", "pk": true},
+        {"name": "cycle_cd", "type": "VARCHAR", "pk": true},
+        {"name": "total_mb", "type": "DECIMAL"},
+        {"name": "total_min", "type": "DECIMAL"}
+      ],
+      "profile": {"update_frequency": "daily"},
+      "consumers": ["usage_analytics", "cx_dashboard"]
+    }
+  ]
+}

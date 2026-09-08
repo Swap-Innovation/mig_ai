@@ -1,0 +1,9 @@
+task: standards_mapping
+version: v1
+instructions: >
+  Map legacy columns to approved SID attributes only. Cite standards and inventory IDs.
+  If no mapping exists, emit a gap — never invent a new enterprise standard.
+output_schema:
+  mappings: array
+  gaps: array
+  confidence: number

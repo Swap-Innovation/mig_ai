@@ -1,0 +1,208 @@
+version: "1.2"
+name: sid-tmforum-wave1
+reference: "TM Forum Information Framework (SID) — Party, Customer, Product, Service, Resource, Common subsets"
+domains:
+  - name: Party
+    entities:
+      - name: Party
+        attributes:
+          - { name: id, type: String, required: true }
+          - { name: partyId, type: String, required: true }
+          - { name: partyName, type: String }
+          - { name: name, type: String }
+          - { name: description, type: String }
+          - { name: status, type: String }
+          - { name: statusReason, type: String }
+          - { name: emailAddress, type: String, sensitivity: personal }
+          - { name: telephoneNumber, type: String, sensitivity: personal }
+          - { name: creationDate, type: Date }
+          - { name: lastUpdate, type: Date }
+          - { name: validForStart, type: Date }
+          - { name: validForEnd, type: Date }
+          - { name: accountCount, type: Number }
+          - { name: score, type: Number }
+          - { name: optIn, type: Boolean, sensitivity: personal }
+      - name: Individual
+        attributes:
+          - { name: givenName, type: String, sensitivity: personal }
+          - { name: familyName, type: String, sensitivity: personal }
+          - { name: formattedName, type: String, sensitivity: personal }
+          - { name: birthDate, type: Date, sensitivity: personal }
+      - name: Organization
+        attributes:
+          - { name: tradingName, type: String }
+          - { name: organizationType, type: String }
+          - { name: isLegalEntity, type: Boolean }
+      - name: PartyRole
+        attributes:
+          - { name: roleType, type: String }
+          - { name: roleStatus, type: String }
+          - { name: partyId, type: String }
+          - { name: validForStart, type: Date }
+          - { name: validForEnd, type: Date }
+      - name: ContactMedium
+        attributes:
+          - { name: mediumType, type: String }
+          - { name: emailAddress, type: String, sensitivity: personal }
+          - { name: telephoneNumber, type: String, sensitivity: personal }
+          - { name: preferred, type: Boolean }
+          - { name: city, type: String }
+          - { name: country, type: String }
+          - { name: postCode, type: String }
+          - { name: street1, type: String }
+      - name: GeographicAddress
+        attributes:
+          - { name: street1, type: String }
+          - { name: street2, type: String }
+          - { name: city, type: String }
+          - { name: stateOrProvince, type: String }
+          - { name: postCode, type: String }
+          - { name: country, type: String }
+      - name: CustomerAccount
+        attributes:
+          - { name: id, type: String, required: true }
+          - { name: accountId, type: String, required: true }
+          - { name: accountType, type: String }
+          - { name: accountStatus, type: String, allowed: [ACTIVE, SUSPENDED, CLOSED] }
+          - { name: billingCycle, type: String }
+          - { name: partyId, type: String }
+          - { name: creditLimit, type: Number }
+          - { name: balance, type: Number }
+          - { name: openDate, type: Date }
+          - { name: name, type: String }
+          - { name: description, type: String }
+          - { name: creationDate, type: Date }
+          - { name: lastUpdate, type: Date }
+  - name: Customer
+    entities:
+      - name: Customer
+        attributes:
+          - { name: id, type: String, required: true }
+          - { name: customerId, type: String, required: true }
+          - { name: status, type: String }
+          - { name: name, type: String }
+          - { name: rank, type: Number }
+          - { name: partyId, type: String }
+      - name: CustomerUsage
+        attributes:
+          - { name: id, type: String }
+          - { name: usageAmount, type: Number }
+          - { name: usageQuantity, type: Number }
+          - { name: usageDate, type: Date }
+          - { name: usageType, type: String }
+          - { name: usageUnit, type: String }
+          - { name: accountId, type: String }
+          - { name: ratedAmount, type: Number }
+          - { name: description, type: String }
+          - { name: status, type: String }
+          - { name: batchId, type: String }
+      - name: CustomerBill
+        attributes:
+          - { name: id, type: String }
+          - { name: invoiceId, type: String, required: true }
+          - { name: invoiceAmount, type: Number }
+          - { name: chargeAmount, type: Number }
+          - { name: taxAmount, type: Number }
+          - { name: amountDue, type: Number }
+          - { name: billDate, type: Date }
+          - { name: dueDate, type: Date }
+          - { name: accountId, type: String }
+          - { name: billingCycle, type: String }
+          - { name: status, type: String }
+          - { name: batchId, type: String }
+      - name: AppliedCustomerBillingRate
+        attributes:
+          - { name: id, type: String }
+          - { name: taxExcludedAmount, type: Number }
+          - { name: taxIncludedAmount, type: Number }
+          - { name: appliedBillingRateType, type: String }
+          - { name: date, type: Date }
+  - name: Product
+    entities:
+      - name: Product
+        attributes:
+          - { name: id, type: String, required: true }
+          - { name: productId, type: String, required: true }
+          - { name: name, type: String }
+          - { name: description, type: String }
+          - { name: status, type: String }
+          - { name: startDate, type: Date }
+          - { name: terminationDate, type: Date }
+      - name: ProductOffering
+        attributes:
+          - { name: id, type: String }
+          - { name: offeringId, type: String }
+          - { name: name, type: String }
+          - { name: description, type: String }
+          - { name: lifecycleStatus, type: String }
+  - name: Service
+    entities:
+      - name: Service
+        attributes:
+          - { name: id, type: String, required: true }
+          - { name: serviceId, type: String, required: true }
+          - { name: name, type: String }
+          - { name: description, type: String }
+          - { name: state, type: String }
+          - { name: serviceType, type: String }
+          - { name: startDate, type: Date }
+      - name: CustomerFacingService
+        attributes:
+          - { name: id, type: String }
+          - { name: serviceId, type: String }
+          - { name: name, type: String }
+          - { name: state, type: String }
+  - name: Resource
+    entities:
+      - name: LogicalResource
+        attributes:
+          - { name: id, type: String }
+          - { name: resourceId, type: String }
+          - { name: name, type: String }
+          - { name: description, type: String }
+          - { name: value, type: String }
+          - { name: resourceStatus, type: String }
+          - { name: category, type: String }
+      - name: PhysicalResource
+        attributes:
+          - { name: id, type: String }
+          - { name: resourceId, type: String }
+          - { name: serialNumber, type: String }
+          - { name: manufacturer, type: String }
+          - { name: model, type: String }
+          - { name: resourceStatus, type: String }
+  - name: Common
+    entities:
+      - name: RootEntity
+        attributes:
+          - { name: id, type: String, required: true }
+          - { name: href, type: String }
+          - { name: name, type: String }
+          - { name: description, type: String }
+          - { name: status, type: String }
+          - { name: creationDate, type: Date }
+          - { name: lastUpdate, type: Date }
+          - { name: validForStart, type: Date }
+          - { name: validForEnd, type: Date }
+      - name: BusinessInteraction
+        attributes:
+          - { name: id, type: String }
+          - { name: interactionDate, type: Date }
+          - { name: description, type: String }
+          - { name: status, type: String }
+          - { name: channel, type: String }
+          - { name: batchId, type: String }
+      - name: Characteristic
+        attributes:
+          - { name: name, type: String }
+          - { name: value, type: String }
+          - { name: valueType, type: String }
+naming:
+  style: lower_snake_case
+  pk_suffix: _id
+policy_rules:
+  - "Do not invent enterprise standards; raise gaps for architecture review"
+  - "PII columns must carry policy tags before product publish"
+  - "Source-aligned products contain no consumer-specific logic"
+  - "Every mapping proposal must cite standards id + inventory column"
+  - "Prefer TM Forum SID Party / Customer / Product / Service / Resource / Common attributes"

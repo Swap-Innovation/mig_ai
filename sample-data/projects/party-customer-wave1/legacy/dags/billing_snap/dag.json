@@ -1,0 +1,20 @@
+{
+  "id": "billing_snap",
+  "name": "Billing Account Snapshot",
+  "description": "Nightly snapshot of CRM accounts into billing snap for finance consumers",
+  "schedule": "0 5 * * *",
+  "timezone": "UTC",
+  "owner": "etl.billing@demo.local",
+  "tags": ["billing", "on-prem"],
+  "tasks": [
+    {
+      "id": "billing_snap",
+      "name": "Write billing_acct_snap",
+      "script": "scripts/01_billing_snap.sh",
+      "sql": ["sql/billing_snap.sql"],
+      "depends_on": [],
+      "sla_minutes": 60,
+      "upstream_dags": ["crm_daily"]
+    }
+  ]
+}

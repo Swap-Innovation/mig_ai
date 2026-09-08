@@ -1,0 +1,881 @@
+{
+  "pipeline": "discover",
+  "objects": 0,
+  "jobs": 4,
+  "sql_files": 4,
+  "scripts": 4,
+  "schedulers": 0,
+  "dags": 2,
+  "lineage_edges": 0,
+  "technologies": [
+    "sql",
+    "shell",
+    "airflow",
+    "scheduler",
+    "cognos",
+    "catalog"
+  ],
+  "repo_remote": "https://git.corp.example/dw/billing-usage-etl.git",
+  "warehouse_engine": "oracle",
+  "run_id": 40,
+  "runtime": "cursor_sdk",
+  "confidence": 0.9,
+  "outcomes": {
+    "scan": true,
+    "inventory": false,
+    "lineage": false
+  },
+  "terminal_log": [
+    {
+      "ts": "2026-09-08T06:15:11.036025Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "Activity \u00b7 discovery scan (Cursor agents)"
+    },
+    {
+      "ts": "2026-09-08T06:15:11.039883Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "\u2500\u2500 DiscoveryCoordinator \u00b7 plan \u2500\u2500"
+    },
+    {
+      "ts": "2026-09-08T06:15:11.331064Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "$ cursor agent create \u00b7 DiscoveryCoordinator \u00b7 model=composer-2.5"
+    },
+    {
+      "ts": "2026-09-08T06:15:11.332874Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy"
+    },
+    {
+      "ts": "2026-09-08T06:15:17.119977Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "$ agent_id agent-ec6507b7-37e2-4b28-97cb-e1c40aab0e12"
+    },
+    {
+      "ts": "2026-09-08T06:15:20.968769Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "$ run run-faa20ae1-70fe-40d9-8a03-60e7c13f88b6 \u00b7 streaming\u2026"
+    },
+    {
+      "ts": "2026-09-08T06:15:37.775150Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "I am acting as DiscoveryCoordinator for the legacy-to-cloud migration. I will inspect the estate root at the current working directory and prepare a leaf-to-root plan covering SQL, scripts, DAGs, orchestration, catalog, lineage, and inventory. I will list top-level folders and assign agents without modifying files.Reading repo.json and key files to map the estate structure for agent assignments.Reading project.json and the agents folder to identify which agents should run for each top-level directory.Searching the repository for agent definitions to map agents to discovery tasks.Checking backend definitions to identify the exact agent names.Reading cursor_agents.py and discovery.py to identify the discovery agents and their execution order for the leaf-to-root migration plan.The estate root contains two top-level folders: `catalog/` and `dags/`. I am mapping these against the leaf-to-root migration plan."
+    },
+    {
+      "ts": "2026-09-08T06:15:37.779943Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "Three more top-level folders appeared: `scheduler/`, `scripts/`, and `sql/`, plus a `usage/` directory and `repo.json`. The repository targets an Oracle on-prem warehouse with Airflow-compatible DAGs. The leaf-to-root plan is now mapped: SQL scans `sql/` and `dags/*/sql/`; scripts scan `scripts/` and `dags/*/scripts/`; orchestration covers `dags/` and `scheduler/`; catalog harvests `catalog/` and `usage/`; lineage stitches the inventory pipeline."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.012345Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "The full agent roster is now set. DiscoveryCoordinator, StructureAnalyst, SqlLeafScanner, ScriptScanner, OrchestrationScanner, and CatalogUsageHarvester form the discovery layer. InventoryProfiler and LineageStitcher complete the inventory pipeline."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.017714Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "**Estate:** `billing-usage-wave1/legacy` \u2014 Oracle on-prem git ETL (`billing-usage-etl.git`); DAGs `usage_hourly`, `usage_mart_daily`."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.021732Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "**Leaf\u2192root plan (bottom-up):**"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.025330Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "1. **SQL** \u2014 Parse `sql/` + `dags/*/sql/` (`load_bill_usage.sql`, `mart_usage_360.sql`); infer sources/targets."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.027106Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "2. **Scripts** \u2014 Map `scripts/` + `dags/*/scripts/`; link shell wrappers to SQL invocations."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.028930Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "3. **DAGs/orchestration** \u2014 Read `dags/*/dag.json` + `scheduler/scheduler.json`; bind tasks \u2192 scripts \u2192 SQL."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.030259Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "4. **Catalog** \u2014 Harvest `catalog/tables.json`; enrich with `usage/query_log.csv` + `usage/report_log.csv`."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.031667Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "5. **Lineage** \u2014 Stitch repo \u2192 DAG \u2192 task \u2192 script \u2192 table (inputs vs outputs)."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.034066Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "6. **Inventory** \u2014 Materialize tables, scripts, DAGs, jobs, columns, PII hints into migration inventory."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.035510Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "**Top-level folders \u2192 agents:**"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.036868Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "| Folder | Agent(s) |"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.038093Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "|--------|----------|"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.039318Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "| `sql/` | **SqlLeafScanner** |"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.040621Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "| `scripts/` | **ScriptScanner** |"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.041922Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "| `dags/` | **OrchestrationScanner** (+ SqlLeafScanner, ScriptScanner on nested leaves) |"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.043628Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "| `scheduler/` | **OrchestrationScanner** |"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.045397Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "| `catalog/` | **CatalogUsageHarvester** |"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.046613Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "| `usage/` | **CatalogUsageHarvester** |"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.047689Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "| `repo.json` | **StructureAnalyst** (repo meta) |"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.049115Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "**Pipelines:** **Discover** \u2014 Coordinator \u2192 StructureAnalyst \u2192 SqlLeafScanner \u2192 ScriptScanner \u2192 OrchestrationScanner \u2192 CatalogUsageHarvester. **Inventory** \u2014 InventoryProfiler \u2192 LineageStitcher."
+    },
+    {
+      "ts": "2026-09-08T06:15:38.050331Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "$ agent DiscoveryCoordinator finished \u00b7 status=finished"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.393863Z",
+      "agent": "StructureAnalyst",
+      "line": "\u2500\u2500 StructureAnalyst \u00b7 structure \u2500\u2500"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.396694Z",
+      "agent": "StructureAnalyst",
+      "line": "$ cursor agent create \u00b7 StructureAnalyst \u00b7 model=composer-2.5"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.398885Z",
+      "agent": "StructureAnalyst",
+      "line": "$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.406413Z",
+      "agent": "StructureAnalyst",
+      "line": "$ agent_id agent-b41b77ce-114b-4543-a41c-16525a351d50"
+    },
+    {
+      "ts": "2026-09-08T06:15:38.449854Z",
+      "agent": "StructureAnalyst",
+      "line": "$ run run-dbb1e95a-cb45-4158-a41e-77df119b6215 \u00b7 streaming\u2026"
+    },
+    {
+      "ts": "2026-09-08T06:15:43.266654Z",
+      "agent": "StructureAnalyst",
+      "line": "Mapping the repository layout under the current working directory."
+    },
+    {
+      "ts": "2026-09-08T06:15:46.169354Z",
+      "agent": "StructureAnalyst",
+      "line": "Exploring the repository structure to identify top-level folders, key directories like dags/ and sql/, git remote status, and likely technologies such as SQL, Airflow, and dbt.The legacy folder structure is now clear."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.341925Z",
+      "agent": "StructureAnalyst",
+      "line": "Reading key files to identify technologies.Checking for dbt or Spark references.All necessary context is gathered for the concise report."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.366410Z",
+      "agent": "StructureAnalyst",
+      "line": "The repository is located at `sample-data/projects/billing-usage-wave1/legacy`. It contains 15 files across `dags/`, `sql/`, `scripts/`, `catalog/`, `usage/`, and `scheduler/`."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.369249Z",
+      "agent": "StructureAnalyst",
+      "line": "- `dags/` holds two DAGs (`usage_hourly`, `usage_mart_daily`) with `dag.json`."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.371236Z",
+      "agent": "StructureAnalyst",
+      "line": "- `sql/` contains four SQL files."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.373530Z",
+      "agent": "StructureAnalyst",
+      "line": "- `scripts/` contains four scripts."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.375831Z",
+      "agent": "StructureAnalyst",
+      "line": "- `catalog/` contains `tables.json`."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.378200Z",
+      "agent": "StructureAnalyst",
+      "line": "- The parent repository has an origin remote at `https://github.com/Swap-Innovation/Prem_to_Cloud_migration.git`."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.380035Z",
+      "agent": "StructureAnalyst",
+      "line": "- Oracle SQL is used."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.381671Z",
+      "agent": "StructureAnalyst",
+      "line": "- DAGs follow Airflow-compatible JSON format."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.383795Z",
+      "agent": "StructureAnalyst",
+      "line": "- Bash shell scripts are present."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.777556Z",
+      "agent": "StructureAnalyst",
+      "line": "- No dbt or Spark components were found."
+    },
+    {
+      "ts": "2026-09-08T06:15:51.780943Z",
+      "agent": "StructureAnalyst",
+      "line": "**StructureAnalyst \u2014 `legacy/` layout**"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.788475Z",
+      "agent": "StructureAnalyst",
+      "line": "Path: `sample-data/projects/billing-usage-wave1/legacy` (15 files)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.791525Z",
+      "agent": "StructureAnalyst",
+      "line": "**Top folders**"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.794665Z",
+      "agent": "StructureAnalyst",
+      "line": "- `dags/` \u2014 2 DAG packages (`usage_hourly`, `usage_mart_daily`)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.797053Z",
+      "agent": "StructureAnalyst",
+      "line": "- `sql/` \u2014 shared SQL (2 files)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.799256Z",
+      "agent": "StructureAnalyst",
+      "line": "- `scripts/` \u2014 top-level runners (2 `.sh`)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.802263Z",
+      "agent": "StructureAnalyst",
+      "line": "- `catalog/` \u2014 `tables.json` (schema metadata)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.804104Z",
+      "agent": "StructureAnalyst",
+      "line": "- `usage/` \u2014 CSV logs (`query_log.csv`, `report_log.csv`)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.806283Z",
+      "agent": "StructureAnalyst",
+      "line": "- `scheduler/` \u2014 `scheduler.json` (cron/SLA job defs)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.808256Z",
+      "agent": "StructureAnalyst",
+      "line": "- Root: `repo.json` (repo metadata)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.809917Z",
+      "agent": "StructureAnalyst",
+      "line": "**Key dirs (present?)**"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.812484Z",
+      "agent": "StructureAnalyst",
+      "line": "| Dir | Present | Notes |"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.814102Z",
+      "agent": "StructureAnalyst",
+      "line": "|-----|---------|-------|"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.837853Z",
+      "agent": "StructureAnalyst",
+      "line": "| `dags/` | \u2713 | 2\u00d7 `dag.json` + per-DAG `sql/` & `scripts/` |"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.842147Z",
+      "agent": "StructureAnalyst",
+      "line": "| `sql/` | \u2713 | 4 SQL total (2 root + 2 in DAGs) |"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.843753Z",
+      "agent": "StructureAnalyst",
+      "line": "| `scripts/` | \u2713 | 4 shell total (2 root + 2 in DAGs) |"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.845359Z",
+      "agent": "StructureAnalyst",
+      "line": "| `catalog/` | \u2713 | Table/column profiles |"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.846630Z",
+      "agent": "StructureAnalyst",
+      "line": "**Git remote**"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.848182Z",
+      "agent": "StructureAnalyst",
+      "line": "- Parent repo: `origin` \u2192 `https://github.com/Swap-Innovation/Prem_to_Cloud_migration.git`"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.849625Z",
+      "agent": "StructureAnalyst",
+      "line": "- `repo.json` declares sample corp remote: `https://git.corp.example/dw/billing-usage-etl.git`"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.850899Z",
+      "agent": "StructureAnalyst",
+      "line": "**Likely technologies**"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.852335Z",
+      "agent": "StructureAnalyst",
+      "line": "- **SQL** \u2014 Oracle warehouse (`load_bill_usage.sql`, `mart_usage_360.sql`)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.854188Z",
+      "agent": "StructureAnalyst",
+      "line": "- **Airflow-style DAGs** \u2014 JSON DAG defs with cron, tasks, deps (not Python operators)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.855558Z",
+      "agent": "StructureAnalyst",
+      "line": "- **Shell** \u2014 Bash runners (`run_usage_*.sh`, `01_*.sh`)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.856827Z",
+      "agent": "StructureAnalyst",
+      "line": "- **dbt** \u2014 not present (no `dbt_project.yml`, models/)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.858133Z",
+      "agent": "StructureAnalyst",
+      "line": "- **Spark** \u2014 not present (no `.py`/`.scala` jobs, no Spark config)"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.859445Z",
+      "agent": "StructureAnalyst",
+      "line": "**DAG summary**"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.860759Z",
+      "agent": "StructureAnalyst",
+      "line": "- `usage_hourly` \u2014 hourly load \u2192 `bill_usage_evt`"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.862042Z",
+      "agent": "StructureAnalyst",
+      "line": "- `usage_mart_daily` \u2014 daily mart \u2192 `mart_usage_360`"
+    },
+    {
+      "ts": "2026-09-08T06:15:51.863324Z",
+      "agent": "StructureAnalyst",
+      "line": "$ agent StructureAnalyst finished \u00b7 status=finished"
+    },
+    {
+      "ts": "2026-09-08T06:15:52.102245Z",
+      "agent": "SqlLeafScanner",
+      "line": "\u2500\u2500 SqlLeafScanner \u00b7 sql \u2500\u2500"
+    },
+    {
+      "ts": "2026-09-08T06:15:52.104027Z",
+      "agent": "SqlLeafScanner",
+      "line": "$ cursor agent create \u00b7 SqlLeafScanner \u00b7 model=composer-2.5"
+    },
+    {
+      "ts": "2026-09-08T06:15:52.105974Z",
+      "agent": "SqlLeafScanner",
+      "line": "$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy"
+    },
+    {
+      "ts": "2026-09-08T06:15:52.111005Z",
+      "agent": "SqlLeafScanner",
+      "line": "$ agent_id agent-271a8778-4047-4814-8785-a2bd1e5ad751"
+    },
+    {
+      "ts": "2026-09-08T06:15:52.132952Z",
+      "agent": "SqlLeafScanner",
+      "line": "$ run run-3af4b3f9-6ef2-4e99-8cd1-7602933ffa35 \u00b7 streaming\u2026"
+    },
+    {
+      "ts": "2026-09-08T06:15:55.422920Z",
+      "agent": "SqlLeafScanner",
+      "line": "Scanning the current directory for SQL files."
+    },
+    {
+      "ts": "2026-09-08T06:15:59.960470Z",
+      "agent": "SqlLeafScanner",
+      "line": "Reading the four SQL files to extract table names from CREATE, INSERT, and FROM statements.Four SQL files were found. Reading them now to infer input and output table names from CREATE, INSERT, and FROM statements.Scanned all four SQL files. Two pairs are duplicates across the sql/ and dags/ folders."
+    },
+    {
+      "ts": "2026-09-08T06:15:59.963128Z",
+      "agent": "SqlLeafScanner",
+      "line": "The scanner found two distinct SQL pipelines."
+    },
+    {
+      "ts": "2026-09-08T06:15:59.965542Z",
+      "agent": "SqlLeafScanner",
+      "line": "- `sql/load_bill_usage.sql` loads `bill_usage_evt` from `stagql/mart_usage_360.sql`. That file creates `mart_usage_360` from `bill_usage_evt` and `bill_inv_sum`."
+    },
+    {
+      "ts": "2026-09-08T06:16:00.269953Z",
+      "agent": "SqlLeafScanner",
+      "line": "- `dags/usage_mart_daily/sql/mart_usage_360.sql` is the duplicate of the second pipeline."
+    },
+    {
+      "ts": "2026-09-08T06:16:00.283232Z",
+      "agent": "SqlLeafScanner",
+      "line": "**SqlLeafScanner** \u2014 4 `.sql` files under `legacy/`"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.288010Z",
+      "agent": "SqlLeafScanner",
+      "line": "| Path | Output | Inputs (FROM/JOIN) |"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.296098Z",
+      "agent": "SqlLeafScanner",
+      "line": "|------|--------|---------------------|"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.298562Z",
+      "agent": "SqlLeafScanner",
+      "line": "| `sql/load_bill_usage.sql` | `bill_usage_evt` | `staging_usage` |"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.300364Z",
+      "agent": "SqlLeafScanner",
+      "line": "| `sql/mart_usage_360.sql` | `mart_usage_360` | `bill_usage_evt`, `bill_inv_sum` |"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.302189Z",
+      "agent": "SqlLeafScanner",
+      "line": "| `dags/usage_hourly/sql/load_bill_usage.sql` | `bill_usage_evt` | `staging_usage` |"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.305020Z",
+      "agent": "SqlLeafScanner",
+      "line": "| `dags/usage_mart_daily/sql/mart_usage_360.sql` | `mart_usage_360` | `bill_usage_evt`, `bill_inv_sum` |"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.307058Z",
+      "agent": "SqlLeafScanner",
+      "line": "**Pipeline (inferred):**"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.309027Z",
+      "agent": "SqlLeafScanner",
+      "line": "```"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.310721Z",
+      "agent": "SqlLeafScanner",
+      "line": "staging_usage \u2192 bill_usage_evt \u2500\u2510"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.312436Z",
+      "agent": "SqlLeafScanner",
+      "line": "                                 \u251c\u2192 mart_usage_360"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.314382Z",
+      "agent": "SqlLeafScanner",
+      "line": "                    bill_inv_sum \u2518"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.316077Z",
+      "agent": "SqlLeafScanner",
+      "line": "```"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.318227Z",
+      "agent": "SqlLeafScanner",
+      "line": "**Notes:**"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.320917Z",
+      "agent": "SqlLeafScanner",
+      "line": "- Two logical scripts, each duplicated under `sql/` and `dags/.../sql/`."
+    },
+    {
+      "ts": "2026-09-08T06:16:00.322972Z",
+      "agent": "SqlLeafScanner",
+      "line": "- `load_bill_usage`: INSERT, last-day filter on `evt_ts`."
+    },
+    {
+      "ts": "2026-09-08T06:16:00.324950Z",
+      "agent": "SqlLeafScanner",
+      "line": "- `mart_usage_360`: CREATE OR REPLACE, aggregates MB/MIN by `acct_id` + `cycle_cd`."
+    },
+    {
+      "ts": "2026-09-08T06:16:00.326990Z",
+      "agent": "SqlLeafScanner",
+      "line": "$ agent SqlLeafScanner finished \u00b7 status=finished"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.829185Z",
+      "agent": "ScriptScanner",
+      "line": "\u2500\u2500 ScriptScanner \u00b7 scripts \u2500\u2500"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.830705Z",
+      "agent": "ScriptScanner",
+      "line": "$ cursor agent create \u00b7 ScriptScanner \u00b7 model=composer-2.5"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.831982Z",
+      "agent": "ScriptScanner",
+      "line": "$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.835807Z",
+      "agent": "ScriptScanner",
+      "line": "$ agent_id agent-ae7b3a4a-126d-4572-99db-d01eced1ab33"
+    },
+    {
+      "ts": "2026-09-08T06:16:00.881791Z",
+      "agent": "ScriptScanner",
+      "line": "$ run run-75f97032-9d2b-4e0a-9b30-e72484e4d757 \u00b7 streaming\u2026"
+    },
+    {
+      "ts": "2026-09-08T06:16:05.019205Z",
+      "agent": "ScriptScanner",
+      "line": "Scanning the current working directory for shell and Python ETL scripts."
+    },
+    {
+      "ts": "2026-09-08T06:16:10.079319Z",
+      "agent": "ScriptScanner",
+      "line": "The target directory is `/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy`. The user noted four SQL files precede four scripts. This suggests a pattern to follow. The scan will extract script paths and any SQL or table references. Results will stay under 25 lines.Reading all four scripts and SQL files to identify invoked SQL and referenced tables.Only shell scripts were found. No Python scripts exist in the current directory."
+    },
+    {
+      "ts": "2026-09-08T06:16:10.518236Z",
+      "agent": "ScriptScanner",
+      "line": "Four shell scripts were found across `scripts/` and `dags/` directories. Two echo SQL references were identified. Two scripts invoke `psql` directly against `load_bill_usage.sql` and `mart_usage_360.sql`. The SQL files reference `bill_usage_evt`, `staging_usage`, and `mart_usage_360`."
+    },
+    {
+      "ts": "2026-09-08T06:16:10.533814Z",
+      "agent": "ScriptScanner",
+      "line": "## ScriptScanner \u2014 `legacy/`"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.537682Z",
+      "agent": "ScriptScanner",
+      "line": "**4 shell scripts, 0 Python scripts**"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.540890Z",
+      "agent": "ScriptScanner",
+      "line": "| Script | SQL invoked | Tables (via paired SQL) |"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.543183Z",
+      "agent": "ScriptScanner",
+      "line": "|--------|-------------|-------------------------|"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.545338Z",
+      "agent": "ScriptScanner",
+      "line": "| `dags/usage_hourly/scripts/01_load_bill_usage.sh` | `../sql/load_bill_usage.sql` (psql `-f`) | `bill_usage_evt`, `staging_usage` |"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.547482Z",
+      "agent": "ScriptScanner",
+      "line": "| `dags/usage_mart_daily/scripts/01_build_usage_mart.sh` | `../sql/mart_usage_360.sql` (psql `-f`) | `mart_usage_360`, `bill_usage_evt`, `bill_inv_sum` |"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.549524Z",
+      "agent": "ScriptScanner",
+      "line": "| `scripts/run_usage_load.sh` | mentions `load_bill_usage.sql` (echo only) | \u2014 |"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.551292Z",
+      "agent": "ScriptScanner",
+      "line": "| `scripts/run_usage_mart.sh` | mentions `mart_usage_360.sql` (echo only) | \u2014 |"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.553522Z",
+      "agent": "ScriptScanner",
+      "line": "**4 SQL files (paired with DAG scripts):**"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.555554Z",
+      "agent": "ScriptScanner",
+      "line": "- `dags/usage_hourly/sql/load_bill_usage.sql` \u2014 INSERT into `bill_usage_evt` from `staging_usage`"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.557422Z",
+      "agent": "ScriptScanner",
+      "line": "- `dags/usage_mart_daily/sql/mart_usage_360.sql` \u2014 CREATE `mart_usage_360` from `bill_usage_evt` + `bill_inv_sum`"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.559167Z",
+      "agent": "ScriptScanner",
+      "line": "- `sql/load_bill_usage.sql`, `sql/mart_usage_360.sql` \u2014 duplicates of the DAG SQL"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.561049Z",
+      "agent": "ScriptScanner",
+      "line": "$ agent ScriptScanner finished \u00b7 status=finished"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.821345Z",
+      "agent": "OrchestrationScanner",
+      "line": "\u2500\u2500 OrchestrationScanner \u00b7 orchestration \u2500\u2500"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.823340Z",
+      "agent": "OrchestrationScanner",
+      "line": "$ cursor agent create \u00b7 OrchestrationScanner \u00b7 model=composer-2.5"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.825241Z",
+      "agent": "OrchestrationScanner",
+      "line": "$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.830293Z",
+      "agent": "OrchestrationScanner",
+      "line": "$ agent_id agent-000544e4-4de8-4265-989e-ff3eb8394bfc"
+    },
+    {
+      "ts": "2026-09-08T06:16:10.862175Z",
+      "agent": "OrchestrationScanner",
+      "line": "$ run run-95c08ddb-b31a-48c3-8e68-bdce5ec2e235 \u00b7 streaming\u2026"
+    },
+    {
+      "ts": "2026-09-08T06:16:14.183289Z",
+      "agent": "OrchestrationScanner",
+      "line": "Scanning the current directory for DAG and scheduler definitions."
+    },
+    {
+      "ts": "2026-09-08T06:16:17.851705Z",
+      "agent": "OrchestrationScanner",
+      "line": "Exploring the workspace structure to locate DAG directories and scheduler files.Reading DAG JSON files and scheduler.json to extract DAG IDs and task-to-script links.All required information is gathered."
+    },
+    {
+      "ts": "2026-09-08T06:16:18.214944Z",
+      "agent": "OrchestrationScanner",
+      "line": "Compiling the final report now. It will list the two DAG directories, the scheduler file, DAG IDs, schedules, and task-to-script links. Parallel jobs in the scheduler reference different script paths."
+    },
+    {
+      "ts": "2026-09-08T06:16:18.217708Z",
+      "agent": "OrchestrationScanner",
+      "line": "**OrchestrationScanner** \u2014 `legacy/` (2 DAG dirs, 1 scheduler)"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.220344Z",
+      "agent": "OrchestrationScanner",
+      "line": "### DAG dirs"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.222717Z",
+      "agent": "OrchestrationScanner",
+      "line": "| Source | DAG id | Schedule | Task \u2192 Script |"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.225124Z",
+      "agent": "OrchestrationScanner",
+      "line": "|--------|--------|----------|---------------|"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.227643Z",
+      "agent": "OrchestrationScanner",
+      "line": "| `dags/usage_hourly/dag.json` | `usage_hourly` | `0 * * * *` (hourly) | `load_bill_usage` \u2192 `scripts/01_load_bill_usage.sh` |"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.230161Z",
+      "agent": "OrchestrationScanner",
+      "line": "| `dags/usage_mart_daily/dag.json` | `usage_mart_daily` | `30 2 * * *` (02:30 daily) | `build_usage_mart` \u2192 `scripts/01_build_usage_mart.sh` |"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.236747Z",
+      "agent": "OrchestrationScanner",
+      "line": "**SQL refs:** `load_bill_usage` \u2192 `sql/load_bill_usage.sql`; `build_usage_mart` \u2192 `sql/mart_usage_360.sql`"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.239146Z",
+      "agent": "OrchestrationScanner",
+      "line": "**Cross-DAG:** `build_usage_mart` has `upstream_dags: [\"usage_hourly\"]`"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.241672Z",
+      "agent": "OrchestrationScanner",
+      "line": "### Scheduler"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.243902Z",
+      "agent": "OrchestrationScanner",
+      "line": "`scheduler/scheduler.json` \u2014 2 jobs (no DAG ids; cron-based):"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.246221Z",
+      "agent": "OrchestrationScanner",
+      "line": "| Job | Schedule | Script | Depends on |"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.247921Z",
+      "agent": "OrchestrationScanner",
+      "line": "|-----|----------|--------|------------|"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.249440Z",
+      "agent": "OrchestrationScanner",
+      "line": "| `load_bill_usage` | `0 * * * *` | `legacy/scripts/run_usage_load.sh` | \u2014 |"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.251563Z",
+      "agent": "OrchestrationScanner",
+      "line": "| `build_usage_mart` | `30 2 * * *` | `legacy/scripts/run_usage_mart.sh` | `load_bill_usage` |"
+    },
+    {
+      "ts": "2026-09-08T06:16:18.254238Z",
+      "agent": "OrchestrationScanner",
+      "line": "**Note:** Same logical pipeline in both layers; scheduler uses different script paths than DAG JSON."
+    },
+    {
+      "ts": "2026-09-08T06:16:18.256138Z",
+      "agent": "OrchestrationScanner",
+      "line": "$ agent OrchestrationScanner finished \u00b7 status=finished"
+    },
+    {
+      "ts": "2026-09-08T06:16:21.041970Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "\u2500\u2500 CatalogUsageHarvester \u00b7 catalog \u2500\u2500"
+    },
+    {
+      "ts": "2026-09-08T06:16:21.044155Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "$ cursor agent create \u00b7 CatalogUsageHarvester \u00b7 model=composer-2.5"
+    },
+    {
+      "ts": "2026-09-08T06:16:21.046378Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy"
+    },
+    {
+      "ts": "2026-09-08T06:16:21.051822Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "$ agent_id agent-ecbea245-e2a6-4d01-8991-b356e68cc126"
+    },
+    {
+      "ts": "2026-09-08T06:16:21.095240Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "$ run run-21407207-5136-45cd-b890-445754ebe990 \u00b7 streaming\u2026"
+    },
+    {
+      "ts": "2026-09-08T06:16:25.130424Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "Searching the current working directory for catalog, BI metadata, or usage hints."
+    },
+    {
+      "ts": "2026-09-08T06:16:26.861990Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "The target directory is `/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy`.Reading catalog/tables.json and repository metadata files."
+    },
+    {
+      "ts": "2026-09-08T06:16:28.790346Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "Also checking usage logs and scheduler.json.CatalogUsageHarvester found no catalog or BI metadata under the current directory."
+    },
+    {
+      "ts": "2026-09-08T06:16:28.793130Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "**CatalogUsageHarvester summary** (cwd: `legacy/`)"
+    },
+    {
+      "ts": "2026-09-08T06:16:28.797579Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "**Catalog (`catalog/tables.json`)** \u2014 3 tables in schema `legacy`:"
+    },
+    {
+      "ts": "2026-09-08T06:16:28.799653Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "- `bill_usage_evt` \u2014 raw usage events (~8.5M rows, hourly); cols: evt_id, acct_id, usage_qty, usage_uom (MB/MIN), evt_ts; consumers: usage_analytics, rating_engine"
+    },
+    {
+      "ts": "2026-09-08T06:16:28.801492Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "- `bill_inv_sum` \u2014 invoice summary (~420K rows, daily); consumers: finance_ops, collections"
+    },
+    {
+      "ts": "2026-09-08T06:16:28.803254Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "- `mart_usage_360` \u2014 usage mart (~210K rows, daily); cols: acct_id, cycle_cd, total_mb, total_min; consumers: usage_analytics, cx_dashboard"
+    },
+    {
+      "ts": "2026-09-08T06:16:28.805275Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "**Usage hints (`usage/`)**"
+    },
+    {
+      "ts": "2026-09-08T06:16:28.807232Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "- `query_log.csv`: analyst.a \u2192 bill_usage_evt; analyst.b \u2192 mart_usage_360; finance.ops \u2192 bill_inv_sum"
+    },
+    {
+      "ts": "2026-09-08T06:16:28.808977Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "- `report_log.csv`: Usage Detail Extract (finance_pack, 540 hits); Usage 360 Dashboard (usage_workspace, 980 hits); Invoice Summary (finance_pack, 310 hits)"
+    },
+    {
+      "ts": "2026-09-08T06:16:28.811228Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "**Repo/discovery (`repo.json`)** \u2014 Oracle on-prem; scan paths: dags, catalog, usage; migration note: DAGs \u2192 scripts \u2192 SQL \u2192 tables."
+    },
+    {
+      "ts": "2026-09-08T06:16:28.813153Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "**Orchestration** \u2014 DAGs `usage_hourly` (load bill_usage_evt) and `usage_mart_daily` (build mart_usage_360, depends on hourly); scheduler: hourly load + daily 02:30 mart build."
+    },
+    {
+      "ts": "2026-09-08T06:16:28.814747Z",
+      "agent": "CatalogUsageHarvester",
+      "line": "$ agent CatalogUsageHarvester finished \u00b7 status=finished"
+    },
+    {
+      "ts": "2026-09-08T06:16:29.047239Z",
+      "agent": "DiscoveryCoordinator",
+      "line": "Discovery scan complete."
+    }
+  ],
+  "terminal_open": true
+}

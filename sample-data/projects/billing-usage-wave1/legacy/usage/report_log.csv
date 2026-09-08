@@ -1,0 +1,4 @@
+object_fqn,report_name,dashboard,access_count,last_accessed
+legacy.bill_usage_evt,Usage Detail Extract,finance_pack,540,2026-08-28
+legacy.mart_usage_360,Usage 360 Dashboard,usage_workspace,980,2026-08-30
+legacy.bill_inv_sum,Invoice Summary,finance_pack,310,2026-08-29

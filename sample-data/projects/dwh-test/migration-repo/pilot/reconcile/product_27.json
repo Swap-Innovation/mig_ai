@@ -1,0 +1,139 @@
+{
+  "legacy_row_count": 5,
+  "product_row_count": 5,
+  "row_count_delta_pct": 0.0,
+  "key_set_match": true,
+  "keys_only_in_legacy": [],
+  "keys_only_in_migrated": [],
+  "tolerance_pct": 0.1,
+  "passed": true,
+  "product_kind": "assurance",
+  "product_id": 27,
+  "control_totals": {
+    "rows": 5
+  },
+  "legacy_pipeline": {
+    "label": "Legacy \u00b7 Trouble Ticket Extract",
+    "engine": "on-prem / SoR batch extract",
+    "status": "success",
+    "dataset": "landing.legacy_sdp_trouble_ticket_raw",
+    "sources": [
+      "sdp.trouble_ticket_raw"
+    ],
+    "stages": [
+      {
+        "name": "extract",
+        "status": "success",
+        "detail": "SoR nightly extract"
+      },
+      {
+        "name": "stage",
+        "status": "success",
+        "detail": "Load landing.legacy_sdp_trouble_ticket_raw"
+      },
+      {
+        "name": "publish",
+        "status": "success",
+        "detail": "5 bridge keys"
+      }
+    ],
+    "row_count": 5,
+    "key_count": 5
+  },
+  "migrated_pipeline": {
+    "label": "Migrated \u00b7 Trouble Ticket Extract",
+    "engine": "CNDI \u2192 landing \u2192 transform \u2192 product",
+    "status": "success",
+    "dataset": "sdp.trouble_ticket_raw",
+    "sources": [
+      "sdp.trouble_ticket_raw"
+    ],
+    "stages": [
+      {
+        "name": "ingest",
+        "status": "success",
+        "detail": "Ingestion validated and landed batch"
+      },
+      {
+        "name": "landing",
+        "status": "success",
+        "detail": "Landing zone updated"
+      },
+      {
+        "name": "transform",
+        "status": "success",
+        "detail": "Transform into SDP completed"
+      },
+      {
+        "name": "materialize",
+        "status": "success",
+        "detail": "SDP published \u00b7 Trouble Ticket Extract"
+      },
+      {
+        "name": "governance",
+        "status": "success",
+        "detail": "Policies applied (governance overlay \u2014 not a flow stage)"
+      }
+    ],
+    "row_count": 5,
+    "key_count": 5
+  },
+  "checks": [
+    {
+      "id": "row_count",
+      "label": "Row count within tolerance",
+      "passed": true,
+      "legacy": 5,
+      "migrated": 5,
+      "detail": "\u0394 0.0% (tol 0.1%)"
+    },
+    {
+      "id": "key_set",
+      "label": "Business key set match",
+      "passed": true,
+      "legacy": 5,
+      "migrated": 5,
+      "detail": "only_legacy=0 \u00b7 only_migrated=0"
+    }
+  ],
+  "product_name": "Trouble Ticket Extract",
+  "product_tier": "sdp",
+  "dataset_name": "sdp.trouble_ticket_raw",
+  "migrated_run_trail": [
+    {
+      "id": 88,
+      "stage": "governance",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.562828Z",
+      "message": "Policies applied (governance overlay \u2014 not a flow stage)"
+    },
+    {
+      "id": 87,
+      "stage": "materialize",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.562827Z",
+      "message": "SDP published \u00b7 Trouble Ticket Extract"
+    },
+    {
+      "id": 86,
+      "stage": "transform",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.562827Z",
+      "message": "Transform into SDP completed"
+    },
+    {
+      "id": 85,
+      "stage": "landing",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.562826Z",
+      "message": "Landing zone updated"
+    },
+    {
+      "id": 84,
+      "stage": "ingest",
+      "status": "success",
+      "created_at": "2026-09-08T09:59:14.562824Z",
+      "message": "Ingestion validated and landed batch"
+    }
+  ]
+}

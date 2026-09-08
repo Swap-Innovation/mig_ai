@@ -1,0 +1,18 @@
+{
+  "jobs": [
+    {
+      "name": "load_bill_usage",
+      "schedule": "0 * * * *",
+      "sla_minutes": 45,
+      "script": "legacy/scripts/run_usage_load.sh",
+      "depends_on": []
+    },
+    {
+      "name": "build_usage_mart",
+      "schedule": "30 2 * * *",
+      "sla_minutes": 90,
+      "script": "legacy/scripts/run_usage_mart.sh",
+      "depends_on": ["load_bill_usage"]
+    }
+  ]
+}

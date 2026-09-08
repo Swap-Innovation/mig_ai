@@ -1,0 +1,4 @@
+query_id,user,object_fqn,started_at,duration_ms
+q1,analyst.a,legacy.bill_usage_evt,2026-08-01T10:00:00Z,1200
+q2,analyst.b,legacy.mart_usage_360,2026-08-02T11:00:00Z,800
+q3,finance.ops,legacy.bill_inv_sum,2026-08-03T09:30:00Z,450

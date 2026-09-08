@@ -1,0 +1,4 @@
+# Innovator ingest setup
+source: CRM
+interface: crm_customer_extract
+format: csv

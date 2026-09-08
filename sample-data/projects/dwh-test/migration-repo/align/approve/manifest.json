@@ -1,0 +1,20 @@
+{
+  "stage": "align/approve",
+  "section": "align",
+  "view": "approve",
+  "project_id": 5,
+  "sample_slug": "dwh-test",
+  "status": "approved",
+  "run_id": null,
+  "written_at": "2026-09-08T09:52:29.466902Z",
+  "prior_stage": "align/entities",
+  "prior_run_id": null,
+  "summary": {
+    "mappings": 120
+  },
+  "artifacts": [
+    "party_wave1.yaml"
+  ],
+  "migration_repo": "../sample-data/projects/dwh-test/migration-repo",
+  "path": "migration-repo/align/approve"
+}
