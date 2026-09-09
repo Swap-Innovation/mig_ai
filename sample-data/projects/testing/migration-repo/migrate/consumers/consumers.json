@@ -1,0 +1,107 @@
+{
+  "account": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210710Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "assurance_desk": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210725Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "billing": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210729Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "billing_reports": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210732Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "care_desktop": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210734Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "compliance": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210736Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "crm": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210739Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "crm_360": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210741Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "finance": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210743Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "hourly": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210745Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "network_ops": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210747Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "party": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210749Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "risk": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210752Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "spark": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210755Z",
+    "updated_by": "engineer@demo.local"
+  },
+  "usage": {
+    "status": "switched",
+    "contract": "",
+    "notes": "",
+    "updated_at": "2026-09-09T06:29:23.210757Z",
+    "updated_by": "engineer@demo.local"
+  }
+}

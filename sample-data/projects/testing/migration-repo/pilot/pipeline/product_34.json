@@ -1,0 +1,70 @@
+{
+  "landing_uri": "gs://landing/project_6/usage_billing/dt=20260909/extract.json",
+  "landing_counts": {
+    "legacy": 7,
+    "migrated": 7
+  },
+  "dag": {
+    "dag_id": "usage_billing_pipeline_p34",
+    "run_id": "usage_billing_pipeline_p34_20260909062749",
+    "status": "success",
+    "conf": {
+      "project_id": 6,
+      "product": "Billing Invoice Header",
+      "product_id": 34,
+      "kind": "usage_billing",
+      "dataset": "sdp.billing_invoice_hdr"
+    },
+    "started_at": "2026-09-09T06:27:49.012653"
+  },
+  "product": {
+    "rows_loaded": 7,
+    "legacy_rows": 7,
+    "dataset": "sdp.billing_invoice_hdr",
+    "legacy_dataset": "landing.legacy_sdp_billing_invoice_hdr",
+    "product_kind": "usage_billing",
+    "product_id": 34
+  },
+  "archive_uri": "gs://archive/project_6/retired/readme.txt",
+  "policy_tags": {
+    "BusinessInteraction": [
+      "sid:BusinessInteraction",
+      "domain:Common"
+    ],
+    "CustomerAccount": [
+      "sid:CustomerAccount",
+      "domain:Party"
+    ],
+    "CustomerBill": [
+      "sid:CustomerBill",
+      "domain:Customer"
+    ],
+    "CustomerUsage": [
+      "sid:CustomerUsage",
+      "domain:Customer"
+    ],
+    "Party": [
+      "PII",
+      "sid:Party",
+      "domain:Party"
+    ],
+    "RootEntity": [
+      "sid:RootEntity",
+      "domain:Common"
+    ],
+    "sdp.billing_invoice_hdr.biz_key": [
+      "domain:usage_billing",
+      "retention:7y",
+      "product:Billing Invoice Header"
+    ]
+  },
+  "product_kind": "usage_billing",
+  "product_id": 34,
+  "dataset_name": "sdp.billing_invoice_hdr",
+  "dual_run": {
+    "legacy_dataset": "landing.legacy_sdp_billing_invoice_hdr",
+    "migrated_dataset": "sdp.billing_invoice_hdr",
+    "legacy_rows": 7,
+    "migrated_rows": 7
+  }
+}

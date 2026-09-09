@@ -1,0 +1,104 @@
+{
+  "id": "crm_account_daily",
+  "name": "CRM Account Daily (Spark)",
+  "description": "Account, product holdings, and customer-account bridge",
+  "schedule": "30 2 * * *",
+  "owner": "etl.account@demo.local",
+  "tags": [
+    "crm",
+    "account",
+    "spark"
+  ],
+  "timezone": "UTC",
+  "engine": "spark",
+  "tasks": [
+    {
+      "id": "spark_account_dim",
+      "name": "Spark \u00b7 Account dimension",
+      "script": "scripts/01_spark_account_dim.sh",
+      "sql": [
+        "sql/spark_account_dim.sql"
+      ],
+      "spark": "spark/spark_account_dim.py",
+      "depends_on": [],
+      "sla_minutes": 180,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "stg_acct_raw",
+          "stg_acct_status",
+          "ref_acct_type",
+          "ref_brand",
+          "dim_party"
+        ],
+        "targets": [
+          "dim_account",
+          "dim_account_status"
+        ]
+      },
+      "writes": [
+        "dim_account",
+        "dim_account_status"
+      ]
+    },
+    {
+      "id": "spark_acct_product",
+      "name": "Spark \u00b7 Account product holdings",
+      "script": "scripts/02_spark_acct_product.sh",
+      "sql": [
+        "sql/spark_acct_product.sql"
+      ],
+      "spark": "spark/spark_acct_product.py",
+      "depends_on": [
+        "spark_account_dim"
+      ],
+      "sla_minutes": 180,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "dim_account",
+          "stg_prod_hold",
+          "ref_product",
+          "ref_prod_family"
+        ],
+        "targets": [
+          "bridge_acct_product"
+        ]
+      },
+      "writes": [
+        "bridge_acct_product"
+      ]
+    },
+    {
+      "id": "spark_cust_acct_bridge",
+      "name": "Spark \u00b7 Customer\u2013account bridge",
+      "script": "scripts/03_spark_cust_acct_bridge.sh",
+      "sql": [
+        "sql/spark_cust_acct_bridge.sql"
+      ],
+      "spark": "spark/spark_cust_acct_bridge.py",
+      "depends_on": [
+        "spark_acct_product"
+      ],
+      "sla_minutes": 180,
+      "params": {
+        "engine": "spark",
+        "sources": [
+          "dim_party",
+          "dim_account",
+          "stg_cust_acct",
+          "ref_role_type",
+          "bridge_party_id"
+        ],
+        "targets": [
+          "bridge_cust_acct",
+          "mart_acct_360"
+        ]
+      },
+      "writes": [
+        "bridge_cust_acct",
+        "mart_acct_360"
+      ]
+    }
+  ]
+}

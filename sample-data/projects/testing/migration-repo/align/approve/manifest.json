@@ -1,0 +1,20 @@
+{
+  "stage": "align/approve",
+  "section": "align",
+  "view": "approve",
+  "project_id": 6,
+  "sample_slug": "testing",
+  "status": "approved",
+  "run_id": null,
+  "written_at": "2026-09-09T06:24:07.080341Z",
+  "prior_stage": "align/entities",
+  "prior_run_id": null,
+  "summary": {
+    "mappings": 120
+  },
+  "artifacts": [
+    "party_wave1.yaml"
+  ],
+  "migration_repo": "../sample-data/projects/testing/migration-repo",
+  "path": "migration-repo/align/approve"
+}

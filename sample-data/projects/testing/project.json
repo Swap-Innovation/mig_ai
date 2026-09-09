@@ -1,0 +1,70 @@
+{
+  "id": "testing",
+  "name": "Testing",
+  "description": "On-prem Spark estate: 5 Airflow DAGs, each with 2\u20133 Spark scripts (4\u20135 source tables \u2192 1\u20132 targets).",
+  "status": "draft",
+  "managed": true,
+  "wave": 1,
+  "paths": {
+    "legacy": "legacy",
+    "migration_repo": "migration-repo"
+  },
+  "stages": {
+    "discover": {
+      "source": "migration-repo/discover/source",
+      "activity": "migration-repo/discover/activity",
+      "inventory": "migration-repo/discover/inventory",
+      "lineage": "migration-repo/discover/lineage",
+      "review": "migration-repo/discover/review"
+    },
+    "decide": {
+      "board": "migration-repo/decide/board",
+      "retirement": "migration-repo/decide/retirement",
+      "approve": "migration-repo/decide/approve"
+    },
+    "align": {
+      "workbench": "migration-repo/align/workbench",
+      "gaps": "migration-repo/align/gaps",
+      "entities": "migration-repo/align/entities",
+      "approve": "migration-repo/align/approve"
+    },
+    "build": {
+      "tables": "migration-repo/build/tables",
+      "code": "migration-repo/build/code",
+      "dags": "migration-repo/build/dags",
+      "approve": "migration-repo/build/approve"
+    },
+    "pilot": {
+      "agents": "migration-repo/pilot/agents",
+      "reviews": "migration-repo/pilot/reviews",
+      "product": "migration-repo/pilot/product",
+      "test_env": "migration-repo/pilot/test_env",
+      "pipeline": "migration-repo/pilot/pipeline",
+      "reconcile": "migration-repo/pilot/reconcile"
+    },
+    "migrate": {
+      "checklist": "migration-repo/migrate/checklist",
+      "consumers": "migration-repo/migrate/consumers",
+      "freeze": "migration-repo/migrate/freeze",
+      "signoff": "migration-repo/migrate/signoff"
+    },
+    "retire": {
+      "archive": "migration-repo/retire/archive",
+      "hypercare": "migration-repo/retire/hypercare",
+      "close": "migration-repo/retire/close"
+    }
+  },
+  "cloud_target": {
+    "provider": "gcp-shaped",
+    "landing": "gcs",
+    "warehouse": "bigquery",
+    "orchestration": "composer",
+    "governance": "dataplex"
+  },
+  "defaults": {
+    "usage_observation_days": 90,
+    "reconcile_tolerance_pct": 0.1,
+    "archive_retention_years": 7
+  },
+  "created_at": "2026-09-09T06:15:49.152680Z"
+}

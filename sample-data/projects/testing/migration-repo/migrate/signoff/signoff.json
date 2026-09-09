@@ -1,0 +1,55 @@
+{
+  "signed_at": "2026-09-09T06:29:39.264567Z",
+  "signed_by": "engineer@demo.local",
+  "notes": "",
+  "readiness": {
+    "products": 9,
+    "in_scope_products": 7,
+    "reconcile_ok": 7,
+    "pending_reconcile": [],
+    "consumers_total": 15,
+    "consumers_switched": 15,
+    "consumers_blocked": 0,
+    "freeze_candidates": 39,
+    "frozen": 39,
+    "checklists_complete": 0,
+    "checklists_total": 9,
+    "gates": [
+      {
+        "id": "pilot_reconcile",
+        "label": "Pilot reconcile passed for each promoted product",
+        "done": true,
+        "detail": null,
+        "pending": []
+      },
+      {
+        "id": "test_env",
+        "label": "Test environment dual-run completed",
+        "done": true
+      },
+      {
+        "id": "prod_promote",
+        "label": "Products promoted to production",
+        "done": true
+      },
+      {
+        "id": "consumers",
+        "label": "All consumers switched (none blocked)",
+        "done": true
+      },
+      {
+        "id": "freeze",
+        "label": "Legacy freeze applied",
+        "done": true
+      },
+      {
+        "id": "signoff",
+        "label": "Change Board production sign-off",
+        "done": false,
+        "detail": "Waiting on Change Board / Product Owner / Architect after gates above"
+      }
+    ],
+    "ready_for_signoff": true,
+    "prod_env_ready": true
+  }
+}

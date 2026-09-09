@@ -1,0 +1,21 @@
+{
+  "stage": "migrate/signoff",
+  "section": "migrate",
+  "view": "signoff",
+  "project_id": 6,
+  "sample_slug": "testing",
+  "status": "signed_off",
+  "run_id": null,
+  "written_at": "2026-09-09T06:29:39.273613Z",
+  "prior_stage": "migrate/freeze",
+  "prior_run_id": null,
+  "summary": {
+    "signed_by": "engineer@demo.local",
+    "signed_at": "2026-09-09T06:29:39.264567Z"
+  },
+  "artifacts": [
+    "signoff.json"
+  ],
+  "migration_repo": "../sample-data/projects/testing/migration-repo",
+  "path": "migration-repo/migrate/signoff"
+}
