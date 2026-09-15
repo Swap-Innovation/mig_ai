@@ -1,11 +1,11 @@
-# Lumina Control Plane — Legacy → Cloud Migration MVP
+# Mirage Suite — Legacy → Cloud Migration MVP
 
-Enterprise control plane for legacy data estate discovery, disposition, TM Forum SID mapping, metadata, LLM-assisted delivery, and a Party & Customer Account pilot on a GCP-shaped stack.
+Enterprise suite for legacy data estate discovery, disposition, TM Forum SID mapping, metadata, LLM-assisted delivery, and a Party & Customer Account pilot on a GCP-shaped stack. Post-login: **Dashboard → Gallery → named tools** (Atlas, Verdict, Compass, Forge, Prove, Transit, Sunset).
 
 ## Repository layout
 
 ```text
-frontend/                 Next.js 14 UI (Lumina brand)
+frontend/                 Next.js 14 UI (Mirage brand)
 backend/                  FastAPI API + workers + adapters/
 sample-data/
   projects/
@@ -77,7 +77,7 @@ Optional LLM enrichment: `export LLM_MODE=openai OPENAI_API_KEY=…` (falls back
 
 | Phase | Focus |
 |---|---|
-| 0 Mobilisation | Evidence checklist, §10 decisions, freeze register, team RACI, UDP Hub bind/probe, Ready gate |
+| 0 Mobilisation | Evidence checklist, §10 decisions, freeze register, team RACI, Platform Hub bind/probe, Ready gate |
 | 1 Discovery | Estate sources, profiling, lineage, usage (query + report logs) |
 | 2 Disposition | Migrate / rebuild / consolidate / retire + consumer notify/freeze |
 | 3 SID mapping | Domain → entity → attribute, editable workbench, citations |
@@ -124,4 +124,4 @@ Workspaces for uploads/clones: `sample-data/workspaces/<project_id>/` (gitignore
 
 ## Brand
 
-**Lumina** — professional global product brand (magenta accent `#E20074`, ink `#0B1220`, IBM Plex Sans). Sample data and APIs are brand-agnostic; UI chrome uses Lumina design tokens.
+**Mirage** — professional global product brand (magenta accent `#E20074`, ink `#0B1220`, IBM Plex Sans). Sample data and APIs are brand-agnostic; UI chrome uses Mirage design tokens.

@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -15,8 +16,18 @@ import {
   pickLatestRun,
   pipelineOf,
 } from "@/components/phases/discovery/discoveryAgents";
+import type { TerminalLine } from "@/components/phases/discovery/DiscoveryTerminal";
+import {
+  buildUserChatTurn,
+  collectLiveAgentChatLines,
+  isAgentChatStreaming,
+  loadProjectAgentChat,
+  mergeAgentChatLines,
+  saveProjectAgentChat,
+} from "@/lib/agentChat";
+import { isAppSandboxProject } from "@/lib/appStore";
 
-const ACTIVE_PROJECT_KEY = "lumina_active_project_id";
+const ACTIVE_PROJECT_KEY = "mirage_active_project_id";
 
 export type ProjectCreateInput = {
   name: string;
@@ -39,6 +50,8 @@ type WorkspaceContextValue = {
   selectProject: (id: number) => Promise<void>;
   createProject: (input: ProjectCreateInput) => Promise<any>;
   deleteProject: (id: number) => Promise<void>;
+  /** Ensure hidden App Store sandbox and return it */
+  ensureAppSandbox: () => Promise<any>;
   signOut: () => void;
 
   // Phase 0
@@ -106,6 +119,21 @@ type WorkspaceContextValue = {
   auditEvents: any[];
   hypercare: any | null;
   loadPhase67: () => Promise<void>;
+
+  // Mirage Suite portfolio (independent of active workspace project)
+  portfolio: any | null;
+  portfolioError: string | null;
+  loadPortfolio: (opts?: {
+    projectId?: number | null;
+    days?: number | null;
+  }) => Promise<void>;
+
+  /** Project-scoped agent chat transcript (persists across stages). */
+  agentChatLines: TerminalLine[];
+  agentChatActive: boolean;
+  postAgentChatMessage: (text: string, opts?: { phaseHint?: string }) => void;
+  /** Append assistant lines (e.g. Pilot section actions) into the live chat. */
+  appendAgentChatLines: (lines: TerminalLine[]) => void;
 };
 
 const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
@@ -160,6 +188,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [udpHub, setUdpHub] = useState<any | null>(null);
   const [llmStatus, setLlmStatus] = useState<any | null>(null);
   const [hypercare, setHypercare] = useState<any | null>(null);
+  const [portfolio, setPortfolio] = useState<any | null>(null);
+  const [portfolioError, setPortfolioError] = useState<string | null>(null);
+  const [agentChatLines, setAgentChatLines] = useState<TerminalLine[]>([]);
+  const agentChatPidRef = useRef<number | null>(null);
 
   const pid = project?.id as number | undefined;
 
@@ -204,7 +236,12 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       typeof window !== "undefined"
         ? Number(localStorage.getItem(ACTIVE_PROJECT_KEY) || 0)
         : 0;
-    const selected = list.find((p) => p.id === stored) || list[0] || null;
+    const nonSandbox = list.filter((p) => !isAppSandboxProject(p));
+    const selected =
+      list.find((p) => p.id === stored) ||
+      nonSandbox[0] ||
+      list[0] ||
+      null;
     setProject(selected);
     if (selected?.id) {
       localStorage.setItem(ACTIVE_PROJECT_KEY, String(selected.id));
@@ -216,6 +253,17 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     return selected;
   }, []);
 
+  const ensureAppSandbox = useCallback(async () => {
+    const sandbox = await api<any>("/platform/app-sandbox", { method: "POST" });
+    setProjects((prev) => {
+      if (prev.some((p) => p.id === sandbox.id)) {
+        return prev.map((p) => (p.id === sandbox.id ? sandbox : p));
+      }
+      return [...prev, sandbox];
+    });
+    return sandbox;
+  }, []);
+
   const selectProject = useCallback(
     async (id: number) => {
       const list = projects.length ? projects : await api<any[]>("/projects");
@@ -225,6 +273,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         return;
       }
       clearPhaseState();
+      // Drop prior estate chat immediately — effect reloads this project's store.
+      agentChatPidRef.current = null;
+      setAgentChatLines([]);
       setProject(next);
       localStorage.setItem(ACTIVE_PROJECT_KEY, String(id));
       setMsg(`Switched to ${next.name}`);
@@ -236,12 +287,17 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     async (input: ProjectCreateInput) => {
       setBusy(true);
       setMsg("");
+      const ctrl = new AbortController();
+      const timer = window.setTimeout(() => ctrl.abort(), 20000);
       try {
         const created = await api<any>("/projects", {
           method: "POST",
           body: JSON.stringify(input),
+          signal: ctrl.signal,
         });
         clearPhaseState();
+        agentChatPidRef.current = null;
+        setAgentChatLines([]);
         localStorage.setItem(ACTIVE_PROJECT_KEY, String(created.id));
         const list = await api<any[]>("/projects");
         setProjects(list);
@@ -252,9 +308,17 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         setMsg(`Created project “${created.name}”.`);
         return created;
       } catch (e: any) {
+        if (ctrl.signal.aborted) {
+          const err = new Error(
+            "Create timed out — is the API running on 127.0.0.1:8000?"
+          );
+          setMsg(err.message);
+          throw err;
+        }
         setMsg(e.message || String(e));
         throw e;
       } finally {
+        window.clearTimeout(timer);
         setBusy(false);
       }
     },
@@ -552,6 +616,32 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }
   }, [pid]);
 
+  const loadPortfolio = useCallback(async (opts?: { projectId?: number | null; days?: number | null }) => {
+    const ctrl = new AbortController();
+    const timer = window.setTimeout(() => ctrl.abort(), 20000);
+    try {
+      const qs = new URLSearchParams();
+      if (opts?.projectId) qs.set("project_id", String(opts.projectId));
+      if (opts?.days) qs.set("days", String(opts.days));
+      const q = qs.toString();
+      const data = await api<any>(`/portfolio/dashboard${q ? `?${q}` : ""}`, {
+        signal: ctrl.signal,
+      });
+      setPortfolio(data);
+      setPortfolioError(null);
+    } catch (e: any) {
+      setPortfolioError(
+        ctrl.signal.aborted
+          ? "Portfolio request timed out — retry, or restart the API if it is stuck."
+          : String(e?.message || e || "Failed to load portfolio")
+      );
+      // Keep last good payload if we have one; otherwise leave null so UI can fall back.
+      setPortfolio((prev: any) => prev);
+    } finally {
+      window.clearTimeout(timer);
+    }
+  }, []);
+
   const pollAgents = useCallback(async () => {
     if (!pid) return;
     try {
@@ -599,6 +689,128 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     router.replace("/");
   }, [router]);
 
+  const agentChatActive = useMemo(
+    () =>
+      isAgentChatStreaming({
+        projectId: pid ?? null,
+        discoveryRunDiscover,
+        discoveryRunInventory,
+        assessmentRun,
+        agentRuns,
+        pipelineRuns,
+      }),
+    [
+      pid,
+      discoveryRunDiscover,
+      discoveryRunInventory,
+      assessmentRun,
+      agentRuns,
+      pipelineRuns,
+    ]
+  );
+
+  useEffect(() => {
+    if (!pid) {
+      agentChatPidRef.current = null;
+      setAgentChatLines([]);
+      return;
+    }
+    const switched = agentChatPidRef.current !== pid;
+    agentChatPidRef.current = pid;
+
+    setAgentChatLines((prev) => {
+      const stored = loadProjectAgentChat(pid);
+      // Hard isolate: never carry the previous estate's in-memory transcript.
+      const base = switched ? stored : prev.length ? prev : stored;
+      const live = collectLiveAgentChatLines({
+        projectId: pid,
+        discoveryRunDiscover,
+        discoveryRunInventory,
+        assessmentRun,
+        agentRuns,
+        project,
+        reviews,
+        products,
+        pipelineRuns,
+        reconcileLatest,
+      });
+      const merged = mergeAgentChatLines(base, live);
+      saveProjectAgentChat(pid, merged);
+      return merged;
+    });
+  }, [
+    pid,
+    discoveryRunDiscover,
+    discoveryRunInventory,
+    assessmentRun,
+    agentRuns,
+    project,
+    reviews,
+    products,
+    pipelineRuns,
+    reconcileLatest,
+  ]);
+
+  const appendAgentChatLines = useCallback(
+    (lines: TerminalLine[]) => {
+      if (!pid || !lines.length) return;
+      setAgentChatLines((prev) => {
+        const scoped = prev.filter(
+          (row) => !row.projectId || Number(row.projectId) === Number(pid)
+        );
+        const tagged = lines.map((row) => ({
+          ...row,
+          projectId: row.projectId ?? Number(pid),
+        }));
+        const next = mergeAgentChatLines(scoped, tagged);
+        saveProjectAgentChat(pid, next);
+        return next;
+      });
+    },
+    [pid]
+  );
+
+  const postAgentChatMessage = useCallback(
+    (text: string, opts?: { phaseHint?: string }) => {
+      if (!pid) return;
+      const turn = buildUserChatTurn(text, {
+        projectId: pid,
+        active: isAgentChatStreaming({
+          projectId: pid,
+          discoveryRunDiscover,
+          discoveryRunInventory,
+          assessmentRun,
+          agentRuns,
+          pipelineRuns,
+        }),
+        projectName: project?.name,
+        phaseHint:
+          opts?.phaseHint ||
+          (project?.phase === "5_pilot_product" ? "pilot" : undefined),
+      });
+      if (!turn.length) return;
+      setAgentChatLines((prev) => {
+        // Drop any stray lines from another estate before appending.
+        const scoped = prev.filter(
+          (row) => !row.projectId || Number(row.projectId) === Number(pid)
+        );
+        const next = mergeAgentChatLines(scoped, turn);
+        saveProjectAgentChat(pid, next);
+        return next;
+      });
+    },
+    [
+      pid,
+      project?.name,
+      project?.phase,
+      discoveryRunDiscover,
+      discoveryRunInventory,
+      assessmentRun,
+      agentRuns,
+      pipelineRuns,
+    ]
+  );
+
   useEffect(() => {
     const s = getSession();
     if (!s) {
@@ -636,6 +848,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       selectProject,
       createProject,
       deleteProject,
+      ensureAppSandbox,
       signOut,
       mobilisation,
       udpHub,
@@ -687,6 +900,13 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       auditEvents,
       hypercare,
       loadPhase67,
+      portfolio,
+      portfolioError,
+      loadPortfolio,
+      agentChatLines,
+      agentChatActive,
+      postAgentChatMessage,
+      appendAgentChatLines,
     };
   }, [
     session,
@@ -700,6 +920,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     selectProject,
     createProject,
     deleteProject,
+    ensureAppSandbox,
     signOut,
     mobilisation,
     udpHub,
@@ -744,6 +965,13 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     auditEvents,
     hypercare,
     loadPhase67,
+    portfolio,
+    portfolioError,
+    loadPortfolio,
+    agentChatLines,
+    agentChatActive,
+    postAgentChatMessage,
+    appendAgentChatLines,
   ]);
 
   if (!session || !value) {

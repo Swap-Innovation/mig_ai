@@ -1,3 +1,64 @@
+import type { ReactNode } from "react";
+
+export function AtlasPage({
+  children,
+  fill = false,
+  className = "",
+}: {
+  children: ReactNode;
+  fill?: boolean;
+  className?: string;
+}) {
+  return (
+    <div
+      className={[
+        "atlas-view",
+        fill ? "atlas-view-fill" : "atlas-view-scroll",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function AtlasPanel({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={`atlas-panel ${className}`.trim()}>{children}</section>
+  );
+}
+
+export function AtlasHeading({
+  eyebrow,
+  title,
+  detail,
+  action,
+}: {
+  eyebrow?: string;
+  title: string;
+  detail?: string;
+  action?: ReactNode;
+}) {
+  return (
+    <header className="atlas-heading">
+      <div className="min-w-0 flex-1">
+        {eyebrow ? <p className="suite-theme-kicker">{eyebrow}</p> : null}
+        <h2 className="atlas-heading-title">{title}</h2>
+        {detail ? <p className="atlas-heading-detail">{detail}</p> : null}
+      </div>
+      {action ? <div className="atlas-heading-action">{action}</div> : null}
+    </header>
+  );
+}
+
 export function Kpi({
   label,
   value,
@@ -10,62 +71,99 @@ export function Kpi({
   accent?: boolean;
 }) {
   return (
-    <div className={`card ${accent ? "border-tm-magenta/40 bg-tm-magenta-light/40" : ""}`}>
-      <div className="text-[11px] font-semibold uppercase tracking-wide text-tm-gray-500">{label}</div>
-      <div className="mt-1 text-2xl font-bold text-tm-ink">{value}</div>
-      {hint && <div className="mt-1 text-xs text-tm-gray-500">{hint}</div>}
+    <div className={`atlas-kpi ${accent ? "is-accent" : ""}`}>
+      <div className="atlas-kpi-label">{label}</div>
+      <div className="atlas-kpi-value">{value}</div>
+      {hint ? <div className="atlas-kpi-hint">{hint}</div> : null}
     </div>
   );
 }
 
 export function ChecklistItem({ done, title }: { done: boolean; title: string }) {
   return (
-    <div className="flex items-start gap-3 text-sm">
-      <span
-        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white ${
-          done ? "bg-tm-magenta" : "bg-tm-gray-300"
-        }`}
-      >
+    <div className="atlas-check">
+      <span className={`atlas-check-mark ${done ? "is-done" : ""}`}>
         {done ? "✓" : ""}
       </span>
-      <span className={done ? "text-tm-ink" : "text-tm-gray-500"}>{title}</span>
+      <span className={done ? "text-[#1d1d1f]" : "text-[#86868b]"}>{title}</span>
     </div>
   );
 }
 
 export function Meta({ label, value }: { label: string; value: any }) {
   return (
-    <div className="rounded-lg bg-tm-gray-50 px-2 py-1.5">
-      <div className="text-[10px] uppercase tracking-wide text-tm-gray-500">{label}</div>
-      <div className="truncate font-medium">{String(value)}</div>
+    <div className="atlas-meta">
+      <div className="atlas-meta-label">{label}</div>
+      <div className="atlas-meta-value">{String(value)}</div>
     </div>
   );
 }
 
 export function StepBadge({ status }: { status: string }) {
-  const cls =
+  const tone =
     status === "failed"
-      ? "badge-danger"
+      ? "is-bad"
       : status === "warning"
-        ? "bg-amber-100 text-amber-800"
+        ? "is-warn"
         : status === "running"
-          ? "badge-neutral"
-          : "badge-success";
-  return (
-    <span className={`badge-neutral rounded-full px-2 py-0.5 text-[11px] font-semibold ${cls}`}>
-      {status}
-    </span>
-  );
+          ? "is-neutral"
+          : "is-good";
+  return <span className={`atlas-pill ${tone}`}>{status}</span>;
 }
 
 export function Dot() {
-  return <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-tm-magenta" />;
+  return <span className="atlas-dot" aria-hidden />;
 }
 
 export function EmptyGraph({ hint }: { hint: string }) {
   return (
-    <div className="flex h-full items-center justify-center p-6 text-center text-sm text-tm-gray-500">
-      {hint}
+    <div className="atlas-empty">
+      <p className="atlas-empty-detail">{hint}</p>
+    </div>
+  );
+}
+
+export function AtlasEmpty({
+  title,
+  detail,
+  action,
+}: {
+  title: string;
+  detail?: string;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="atlas-empty">
+      <p className="atlas-empty-title">{title}</p>
+      {detail ? <p className="atlas-empty-detail">{detail}</p> : null}
+      {action ? <div className="atlas-empty-action">{action}</div> : null}
+    </div>
+  );
+}
+
+export function AtlasSeg({
+  options,
+  value,
+  onChange,
+}: {
+  options: { id: string; label: string }[];
+  value: string;
+  onChange: (id: string) => void;
+}) {
+  return (
+    <div className="atlas-seg" role="tablist">
+      {options.map((o) => (
+        <button
+          key={o.id}
+          type="button"
+          role="tab"
+          aria-selected={value === o.id}
+          className={`atlas-seg-btn ${value === o.id ? "is-active" : ""}`}
+          onClick={() => onChange(o.id)}
+        >
+          {o.label}
+        </button>
+      ))}
     </div>
   );
 }

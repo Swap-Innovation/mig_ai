@@ -5,7 +5,7 @@ import { api } from "@/lib/api";
 export type HitlDecision = "accepted" | "flagged";
 
 export function hitlStorageKey(projectId: number | string, runId: number | string | null | undefined) {
-  return `lumina_discovery_hitl_${projectId}_${runId || "none"}`;
+  return `mirage_discovery_hitl_${projectId}_${runId || "none"}`;
 }
 
 export function loadHitlDecisions(

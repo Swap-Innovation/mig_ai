@@ -1,5 +1,5 @@
 /**
- * Capture Lumina workspace screenshots for Docs.
+ * Capture Mirage workspace screenshots for Docs.
  * Requires local UI :3000 and API :8000.
  */
 import { chromium } from "/tmp/pw-shot/node_modules/playwright-core/index.mjs";
@@ -40,12 +40,12 @@ async function shot(page, name) {
 const shots = [
   { name: "01-login", path: "/" },
   { name: "02-workspace-home", path: "/workspace" },
-  { name: "03-discovery-inventory", path: "/workspace/phase/1_discovery/inventory" },
-  { name: "04-disposition-board", path: "/workspace/phase/2_disposition/board" },
-  { name: "05-align-workbench", path: "/workspace/phase/3_mapping/workbench" },
-  { name: "06-build-dags", path: "/workspace/phase/4_build/dags" },
-  { name: "07-pilot-reviews", path: "/workspace/phase/5_pilot_product/reviews" },
-  { name: "08-migrate-signoff", path: "/workspace/phase/6_migrate/signoff" },
+  { name: "03-discovery-inventory", path: "/workspace/tools/atlas/profiling" },
+  { name: "04-disposition-board", path: "/workspace/tools/verdict/board" },
+  { name: "05-align-workbench", path: "/workspace/tools/compass/workbench" },
+  { name: "06-build-dags", path: "/workspace/tools/forge/dags" },
+  { name: "07-pilot-reviews", path: "/workspace/tools/prove/reviews" },
+  { name: "08-migrate-signoff", path: "/workspace/tools/transit/signoff" },
 ];
 
 const browser = await chromium.launch({
@@ -72,7 +72,7 @@ await page.evaluate(
         email: "architect@demo.local",
       })
     );
-    localStorage.setItem("lumina_active_project_id", "5");
+    localStorage.setItem("mirage_active_project_id", "5");
   },
   { token }
 );

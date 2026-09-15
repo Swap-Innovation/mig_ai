@@ -88,7 +88,7 @@ DEFAULT_CHECKLIST: list[dict[str, Any]] = [
     {
         "id": "control_plane",
         "group": "tooling",
-        "label": "Lumina control plane + migration-repo layout ready",
+        "label": "Mirage control plane + migration-repo layout ready",
         "hint": "standards/, inventory/, products/ folders present",
         "done": False,
         "status": "open",
@@ -721,9 +721,9 @@ def ready_checks(
         {
             "id": "hub",
             "label": (
-                "UDP Hub spoke bound and probe OK"
+                "Platform Hub spoke bound and probe OK"
                 if hub_req
-                else "UDP Hub spoke bound and probe OK (optional)"
+                else "Platform Hub spoke bound and probe OK (optional)"
             ),
             "passed": hub_actual,
             "detail": {

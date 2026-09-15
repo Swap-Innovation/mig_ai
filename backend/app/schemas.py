@@ -40,6 +40,8 @@ class ProjectOut(BaseModel):
     status: str
     phase: str
     inventory_signed_off: bool
+    plan_approved: bool = False
+    wave_plan: Any = {}
     disposition_approved: bool
     mapping_approved: bool
     metadata_complete: bool
@@ -327,7 +329,10 @@ class BuildArtifactPatch(BaseModel):
 
 
 class BuildGenerateIn(BaseModel):
-    targets: Optional[dict[str, str]] = None  # kind → target platform id
+    targets: Optional[dict[str, str]] = None  # asset_type → target platform id
+    # Forge convert app: tables|scripts|pipelines|reports|data — scopes generate
+    tool: Optional[str] = None
+    asset_types: Optional[list[str]] = None
 
 
 class BuildTargetsIn(BaseModel):

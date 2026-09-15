@@ -8,9 +8,9 @@ export type PhaseAbout = {
 };
 
 export const PRODUCT_ABOUT = {
-  title: "About Lumina",
+  title: "About Mirage Suite",
   body:
-    "Lumina is a control plane for legacy → cloud data estate migration. It walks stakeholders through discovery, disposition, SID mapping & metadata (Align), platform conversion (Build), LLM-assisted pilot delivery, and a Party & Customer Account product on a GCP-shaped stack — not a lift-and-shift of every table.",
+    "Mirage Suite is a gated delivery stage map — Atlas, Horizon, Verdict, Compass, Forge, Prove, Transit, and Sunset — sharing one login and project context. The Dashboard rolls up estate KPIs; the Stage map opens one stage product at a time. Nested tool suites (e.g. Forge Convert + Accelerators) live inside a stage, not as a flat app catalog.",
 };
 
 export const PHASE_ABOUT: Record<PhaseId, PhaseAbout> = {
@@ -22,7 +22,7 @@ export const PHASE_ABOUT: Record<PhaseId, PhaseAbout> = {
       "Decisions — accept demo defaults or record Wave-1 §10 answers",
       "Team / RACI — name architect + data owner (demo seed OK)",
       "Change freeze — fill register and Publish (or defer with CB note)",
-      "UDP Hub — bind landing/conformance/products spoke and Run probe (optional unless REQUIRE_HUB_PROBE)",
+      "Platform Hub — bind landing/conformance/products spoke and Run probe (optional unless REQUIRE_HUB_PROBE)",
       "Environments / Tooling — complete remaining checklist",
       "Ready — pass hard auto-checks, then sign-off to open Discovery",
     ],
@@ -34,10 +34,21 @@ export const PHASE_ABOUT: Record<PhaseId, PhaseAbout> = {
     why: "Disposition and mapping are only as good as the evidence. Discovery turns estate sources into inventory, lineage, jobs, and usage that gates can approve.",
     how: [
       "Confirm the connected source, then Start discovery (multi-agent leaf→root scan)",
-      "Watch agents under Activity (structure, SQL, scripts, DAGs, lineage, inventory)",
-      "Review Inventory, Lineage, and Profiling; run Assessment; Sign off",
+      "Watch agents under Activity (structure, SQL, scripts, DAGs, lineage, profiling)",
+      "Review Profiling and Lineage; run Assessment; Sign off",
     ],
     exit: "Signed-off inventory, lineage, and usage evidence.",
+  },
+  "2_plan": {
+    summary:
+      "Slice the discovered estate into delivery waves — auto-suggest from lineage dependencies and complexity, or select objects and create waves one by one until covered.",
+    why: "Discovered estates can be huge. Waves keep lineage clusters, pipeline complexity, consumers, usage, volume, and retention risk coherent while you finish one wave before activating the next.",
+    how: [
+      "Auto-suggest or build waves manually on Overview",
+      "Open Approve to review object-level scope per wave, then approve",
+      "After Retire closes a wave, activate the next planned wave to reset delivery gates",
+    ],
+    exit: "Approved wave plan with an active wave for Decide→Retire.",
   },
   "2_disposition": {
     summary:
@@ -75,23 +86,24 @@ export const PHASE_ABOUT: Record<PhaseId, PhaseAbout> = {
   },
   "4_build": {
     summary:
-      "Convert migrate/rebuild survivors to BigQuery DDL, Dataproc/Spark jobs, and Composer Airflow DAGs.",
-    why: "Semantic Align is not enough — engineers need platform-ready artifacts from Discover → Decide → Align.",
+      "Open Forge apps to convert in-scope apps, run accelerators anytime, approve the build, then continue to Pilot.",
+    why: "Align is not enough — each asset class needs conversion before Pilot can run dual-run and reconcile.",
     how: [
-      "Generate the conversion pack from survivors",
-      "Review Tables (Oracle→BQ), Code (→Dataproc), and DAGs (→Airflow)",
-      "Approve the pack to unlock Pilot",
+      "Review Forge apps — convert in scope vs out of scope; accelerators always in scope",
+      "Open each in-scope convert app, pick target technology, Generate",
+      "Run Cataloguer / Composer / Transform / Contracts anytime from Accelerate",
+      "Approve build when convert is complete, then move to Pilot",
     ],
-    exit: "Conversion pack generated and architect-approved.",
+    exit: "In-scope conversion complete and build pack approved.",
   },
   "5_pilot_product": {
     summary:
-      "Deliver the Party & Customer Account data product with HITL reviews, contract, pipeline, and reconcile — using the Build pack.",
-    why: "The pilot proves the control plane end-to-end: agents propose, humans approve, GCP-shaped stubs land and reconcile.",
+      "HITL reviews, product contract, dual-run pipeline, and reconcile — using Build accelerator outputs.",
+    why: "The pilot proves the control plane end-to-end: accelerators propose, humans approve, dual-run lands and reconciles.",
     how: [
-      "Launch Acquisition / Product / Transform / Contract agents against Build outputs",
-      "Approve pending items in Reviews with the matching persona",
-      "Inspect Product rows + contract; run Pipeline and Reconcile",
+      "Review pending HITL items from Build accelerators",
+      "Inspect Product rows + contract; promote to Test",
+      "Run dual pipeline and Reconcile",
     ],
     exit: "Reconciled against legacy within agreed tolerance.",
   },

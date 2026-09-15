@@ -286,18 +286,21 @@ export function ProjectSwitcher() {
     <div className="relative">
       <button
         type="button"
-        className="flex max-w-[240px] flex-col items-start rounded-md px-2 py-1 text-left hover:bg-tm-gray-100"
+        className="ws-estate-switcher"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        aria-haspopup="listbox"
       >
-        <span className="truncate text-sm font-semibold text-brand-ink">
-          {project?.name || "Select project"}
+        <span className="ws-estate-switcher-name truncate">
+          {project?.name || "Select estate"}
         </span>
-        <span className="truncate text-[11px] text-brand-muted">
+        <span className="ws-estate-switcher-meta truncate">
           {project?.sample_slug
-            ? `Estate · ${project.sample_slug}`
-            : project?.phase?.replace(/_/g, " ") || "No project"}
-          <span className="ml-1 text-brand-line">▾</span>
+            ? project.sample_slug
+            : project?.phase?.replace(/_/g, " ") || "No estate"}
+          <span className="ws-estate-switcher-caret" aria-hidden>
+            ▾
+          </span>
         </span>
       </button>
 
@@ -312,9 +315,9 @@ export function ProjectSwitcher() {
               setConfirmDelete(false);
             }}
           />
-          <div className="absolute left-0 top-full z-50 mt-1 w-80 rounded-md border border-brand-line bg-white p-2 shadow-lg">
-            <div className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand-muted">
-              Projects
+          <div className="ws-estate-menu absolute left-0 top-full z-50 mt-1.5 w-80 p-2">
+            <div className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#86868b]">
+              Estates
             </div>
             <ul className="max-h-56 overflow-auto">
               {(projects || []).map((p) => (
@@ -347,7 +350,7 @@ export function ProjectSwitcher() {
               ) : null}
             </ul>
 
-            <div className="mt-2 flex flex-wrap gap-2 border-t border-brand-line pt-2">
+            <div className="mt-2 flex flex-wrap gap-2 border-t border-black/5 pt-2">
               {canMutate ? (
                 <button
                   type="button"
@@ -360,11 +363,11 @@ export function ProjectSwitcher() {
                     setShowCreate(true);
                   }}
                 >
-                  New project
+                  New estate
                 </button>
               ) : (
-                <span className="px-1 text-[11px] text-brand-muted">
-                  Sign in as engineer/architect to create projects
+                <span className="px-1 text-[11px] text-[#86868b]">
+                  Sign in as engineer/architect to create estates
                 </span>
               )}
               {canDelete && project ? (

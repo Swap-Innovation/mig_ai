@@ -92,7 +92,7 @@ def run_cursor_agent(
         with Agent.create(
             api_key=api_key,
             model=model,
-            name=f"lumina-discovery-{agent_name}",
+            name=f"mirage-discovery-{agent_name}",
             local=LocalAgentOptions(cwd=cwd_s),
         ) as agent:
             agent_id = getattr(agent, "agent_id", None) or getattr(agent, "agentId", None)

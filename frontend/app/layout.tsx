@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Lumina Control Plane · Legacy → Cloud",
+  title: "Mirage Control Plane · Legacy → Cloud",
   description:
     "Enterprise control plane for legacy data estate discovery, disposition, SID mapping, and source-aligned data products",
 };

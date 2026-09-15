@@ -795,7 +795,7 @@ export function Phase0Mobilisation({
           })}
         </div>
         <p className="text-sm text-tm-gray-600">
-          Open Access, Environments, UDP Hub, Tooling, Decisions, Team / RACI, or Change freeze
+          Open Access, Environments, Platform Hub, Tooling, Decisions, Team / RACI, or Change freeze
           from the left rail. Finish the Ready gate when checks pass.
         </p>
       </div>

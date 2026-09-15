@@ -164,7 +164,7 @@ def parse_scheduler_file(path: Path) -> dict[str, Any]:
 
 def load_repo_meta(root: Path) -> dict[str, Any]:
     """Read git-shaped warehouse repo metadata (repo.json) if present."""
-    for name in ("repo.json", ".lumina-repo.json"):
+    for name in ("repo.json", ".mirage-repo.json", ".lumina-repo.json"):
         path = root / name
         if path.exists():
             try:

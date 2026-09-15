@@ -1,4 +1,0 @@
-report_id,name,tables,owner
-r001,Party 360,mart_party_360;dim_party,cx@demo.local
-r002,Account 360,mart_acct_360;dim_account,crm@demo.local
-r003,Finance AR,mart_finance_360;mart_ar_aging,finance@demo.local

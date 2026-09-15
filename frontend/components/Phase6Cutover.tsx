@@ -666,8 +666,8 @@ export function Phase6Cutover({
           <h3 className="text-base font-semibold">Change Board · production cutover sign-off</h3>
           <p className="text-sm text-tm-gray-600">
             Confirms production promotion, consumer switch, and legacy freeze. Completing
-            sign-off advances the journey to <strong>Retire</strong> (decommission &amp;
-            hypercare).
+            sign-off returns you to the <strong>Suite Gallery</strong> with Migrate
+            marked complete so you can open <strong>Retire</strong> next.
           </p>
           <ul className="space-y-2 text-sm">
             {(readiness.gates || []).map((g: any) => (
@@ -738,7 +738,7 @@ export function Phase6Cutover({
                     ? "Sign in as Architect, Change Board, Product Owner, or Engineer"
                     : !readiness.ready_for_signoff
                       ? "Complete promote, consumers, and freeze first"
-                      : "Record production cutover sign-off and continue to Retire"
+                      : "Record production cutover sign-off and return to Gallery"
                 }
                 onClick={() => void onSignoff(signoffNotes)}
               >

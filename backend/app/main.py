@@ -143,14 +143,19 @@ except ImportError:
 
 settings = get_settings()
 app = FastAPI(
-    title="Lumina Control Plane",
+    title="Mirage Control Plane",
     version="0.1.0",
     description="Enterprise control plane for legacy data estate discovery, disposition, SID mapping, agents, and GCP-shaped pilot product.",
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -293,6 +298,81 @@ def demo_users() -> list[dict[str, str]]:
 @app.get("/me", response_model=UserOut)
 def me(user: User = Depends(get_current_user)) -> User:
     return user
+
+
+@app.get("/portfolio/dashboard")
+def portfolio_dashboard(
+    project_id: int | None = None,
+    days: int | None = None,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> dict[str, Any]:
+    """Mirage Suite portfolio KPIs. Optional project_id / days scope analytics."""
+    from app.services.portfolio import build_portfolio_dashboard
+
+    return build_portfolio_dashboard(db, project_id=project_id, days=days)
+
+
+APP_SANDBOX_SLUG = "mirage-app-sandbox"
+APP_SANDBOX_NAME = "App Store sandbox"
+
+
+@app.post("/platform/app-sandbox", response_model=ProjectOut)
+def ensure_app_sandbox(
+    db: Session = Depends(get_db),
+    user: User = Depends(
+        require_roles("engineer", "architect", "change_board", "product_owner")
+    ),
+) -> Project:
+    """Ensure the hidden App Store sandbox project exists (standalone apps)."""
+    from sqlalchemy import or_
+
+    existing = (
+        db.query(Project)
+        .filter(
+            or_(
+                Project.sample_slug == APP_SANDBOX_SLUG,
+                Project.name == APP_SANDBOX_NAME,
+            )
+        )
+        .first()
+    )
+    if existing:
+        # Soft-unlock gates so convert / accelerators work standalone
+        dirty = False
+        if not existing.metadata_complete:
+            existing.metadata_complete = True
+            dirty = True
+        if not existing.disposition_approved:
+            existing.disposition_approved = True
+            dirty = True
+        if not existing.mapping_approved:
+            existing.mapping_approved = True
+            dirty = True
+        if dirty:
+            db.commit()
+            db.refresh(existing)
+        return existing
+
+    p = create_project_svc(
+        db,
+        name=APP_SANDBOX_NAME,
+        description="Hidden sandbox for App Store standalone apps — not an estate journey.",
+        slug=APP_SANDBOX_SLUG,
+        scaffold=True,
+        actor_email=user.email,
+    )
+    # Unlock convert/accel gates for standalone use
+    p.inventory_signed_off = True
+    p.plan_approved = True
+    p.disposition_approved = True
+    p.mapping_approved = True
+    p.metadata_complete = True
+    p.phase = "4_build"
+    p.status = "active"
+    db.commit()
+    db.refresh(p)
+    return p
 
 
 @app.get("/projects", response_model=list[ProjectOut])
@@ -1504,7 +1584,8 @@ def inventory_signoff(
         db.commit()
 
     p.inventory_signed_off = True
-    p.phase = "2_disposition"
+    p.phase = "2_plan"
+    p.plan_approved = False
     # Fresh Decide board — dispositions appear only after Analyze
     cleared = clear_dispositions(db, project_id)
     p.disposition_approved = False
@@ -1772,6 +1853,184 @@ def _persist_disposition_register(
     )
 
 
+# ---------- Plan (migration waves) ----------
+
+
+@app.get("/projects/{project_id}/plan")
+def plan_get(
+    project_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)
+) -> dict[str, Any]:
+    p = db.query(Project).get(project_id)
+    if not p:
+        raise HTTPException(404, "Project not found")
+    from app.services.wave_plan import get_wave_plan, active_wave
+
+    plan = get_wave_plan(p)
+    return {
+        "plan_approved": bool(p.plan_approved),
+        "plan": plan,
+        "active_wave": active_wave(plan),
+        "inventory_signed_off": bool(p.inventory_signed_off),
+    }
+
+
+@app.post("/projects/{project_id}/plan/recommend")
+def plan_recommend(
+    project_id: int,
+    body: dict[str, Any] | None = None,
+    db: Session = Depends(get_db),
+    user: User = Depends(require_roles("engineer", "architect", "product_owner", "change_board")),
+) -> dict[str, Any]:
+    p = db.query(Project).get(project_id)
+    if not p:
+        raise HTTPException(404, "Project not found")
+    if not p.inventory_signed_off:
+        raise HTTPException(400, "Sign off Discover first")
+    from app.services.wave_plan import recommend_waves, set_wave_plan
+
+    body = body or {}
+    target = body.get("target_wave_count")
+    max_per = int(body.get("max_objects_per_wave") or 80)
+    raw_ids = body.get("object_ids")
+    object_ids = (
+        [int(x) for x in raw_ids]
+        if isinstance(raw_ids, list) and raw_ids
+        else None
+    )
+    plan = recommend_waves(
+        db,
+        p,
+        target_wave_count=int(target) if target else None,
+        max_objects_per_wave=max_per,
+        object_ids=object_ids,
+    )
+    set_wave_plan(p, plan)
+    p.plan_approved = False
+    audit(db, project_id, user.email, "plan.recommend", detail={"waves": len(plan.get("waves") or [])})
+    db.commit()
+    return {"plan_approved": False, "plan": plan, "active_wave": (plan.get("waves") or [None])[0]}
+
+
+@app.put("/projects/{project_id}/plan")
+def plan_save(
+    project_id: int,
+    body: dict[str, Any],
+    db: Session = Depends(get_db),
+    user: User = Depends(require_roles("engineer", "architect", "product_owner", "change_board")),
+) -> dict[str, Any]:
+    p = db.query(Project).get(project_id)
+    if not p:
+        raise HTTPException(404, "Project not found")
+    from app.services.wave_plan import get_wave_plan, set_wave_plan, active_wave
+
+    current = get_wave_plan(p)
+    incoming = body.get("plan") if isinstance(body.get("plan"), dict) else body
+    merged = {**current, **incoming}
+    if "waves" in incoming:
+        merged["waves"] = incoming["waves"]
+    plan = set_wave_plan(p, merged)
+    # Editing invalidates approval
+    p.plan_approved = False
+    plan["approved_at"] = None
+    plan["approved_by"] = ""
+    set_wave_plan(p, plan)
+    audit(db, project_id, user.email, "plan.save", detail={"waves": len(plan.get("waves") or [])})
+    db.commit()
+    return {"plan_approved": False, "plan": plan, "active_wave": active_wave(plan)}
+
+
+@app.post("/projects/{project_id}/plan/approve")
+def plan_approve(
+    project_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(require_roles("architect", "product_owner", "change_board", "engineer")),
+) -> dict[str, Any]:
+    p = db.query(Project).get(project_id)
+    if not p:
+        raise HTTPException(404, "Project not found")
+    if not p.inventory_signed_off:
+        raise HTTPException(400, "Sign off Discover first")
+    from app.services.wave_plan import approve_plan, active_wave
+
+    try:
+        plan = approve_plan(p, user.email)
+    except ValueError as e:
+        raise HTTPException(400, str(e)) from e
+    audit(db, project_id, user.email, "plan.approve", detail={"active_wave_id": plan.get("active_wave_id")})
+    db.commit()
+    db.refresh(p)
+    return {"plan_approved": True, "plan": plan, "active_wave": active_wave(plan), "project": ProjectOut.model_validate(p)}
+
+
+@app.post("/projects/{project_id}/plan/waves/{wave_id}/activate")
+def plan_activate_wave(
+    project_id: int,
+    wave_id: str,
+    db: Session = Depends(get_db),
+    user: User = Depends(require_roles("architect", "product_owner", "change_board", "engineer")),
+) -> dict[str, Any]:
+    p = db.query(Project).get(project_id)
+    if not p:
+        raise HTTPException(404, "Project not found")
+    if not p.plan_approved:
+        raise HTTPException(400, "Approve the plan before switching waves")
+    from app.services.wave_plan import activate_wave, active_wave
+
+    try:
+        plan = activate_wave(p, wave_id)
+    except ValueError as e:
+        raise HTTPException(400, str(e)) from e
+    # Clear dispositions so Analyze rebuilds for the new wave scope
+    from app.disposition import clear_dispositions
+
+    cleared = clear_dispositions(db, project_id)
+    audit(
+        db,
+        project_id,
+        user.email,
+        "plan.activate_wave",
+        detail={"wave_id": wave_id, "cleared_dispositions": cleared},
+    )
+    db.commit()
+    db.refresh(p)
+    return {
+        "plan_approved": True,
+        "plan": plan,
+        "active_wave": active_wave(plan),
+        "project": ProjectOut.model_validate(p),
+    }
+
+
+@app.post("/projects/{project_id}/plan/waves/complete-active")
+def plan_complete_active_wave(
+    project_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(require_roles("architect", "product_owner", "change_board", "engineer")),
+) -> dict[str, Any]:
+    """Mark active wave complete after Retire; activate next wave if any."""
+    p = db.query(Project).get(project_id)
+    if not p:
+        raise HTTPException(404, "Project not found")
+    from app.services.wave_plan import complete_active_wave, active_wave
+    from app.disposition import clear_dispositions
+
+    try:
+        plan = complete_active_wave(p)
+    except ValueError as e:
+        raise HTTPException(400, str(e)) from e
+    cleared = 0
+    if active_wave(plan) and active_wave(plan).get("status") == "active":
+        cleared = clear_dispositions(db, project_id)
+    audit(db, project_id, user.email, "plan.complete_wave", detail={"cleared": cleared})
+    db.commit()
+    db.refresh(p)
+    return {
+        "plan": plan,
+        "active_wave": active_wave(plan),
+        "project": ProjectOut.model_validate(p),
+    }
+
+
 @app.post("/projects/{project_id}/disposition/analyze")
 def disposition_analyze(
     project_id: int,
@@ -1786,6 +2045,11 @@ def disposition_analyze(
         raise HTTPException(
             400,
             "Sign off Discovery Review first — Decide consumes the signed inventory pack",
+        )
+    if not p.plan_approved:
+        raise HTTPException(
+            400,
+            "Approve the Plan waves first — Decide runs per active wave scope",
         )
 
     # Prefer Discover disk artifacts when DB catalog is empty
@@ -3090,6 +3354,8 @@ def build_generate(
         raise HTTPException(400, "Disposition register must be approved")
 
     targets = (body.targets if body else None) or None
+    tool = (body.tool if body else None) or None
+    asset_types = (body.asset_types if body else None) or None
     # Persist lane targets if provided (asset_type → target)
     if targets:
         saved = dict(p.build_targets or {})
@@ -3101,7 +3367,9 @@ def build_generate(
             saved[asset_type] = {**(prev or {}), "target": tid, "kind": kind}
         p.build_targets = saved
 
-    summary = generate_build_pack(db, project_id, targets=targets)
+    summary = generate_build_pack(
+        db, project_id, targets=targets, tool=tool, asset_types=asset_types
+    )
     from app.services.project_workspace import resolve_migration_repo, write_stage_manifest
 
     repo = resolve_migration_repo(p) / "build" / "tables"
@@ -3113,6 +3381,8 @@ def build_generate(
             sub = "code"
         elif kind in {"dag", "dags", "composer", "airflow"}:
             sub = "dags"
+        elif kind == "data":
+            sub = "data"
         path = resolve_migration_repo(p) / "build" / sub / a.target_path
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(a.content or "", encoding="utf-8")
@@ -3934,6 +4204,43 @@ def reconcile(
     return metrics
 
 
+@app.post("/projects/{project_id}/pilot/continue", response_model=ProjectOut)
+def pilot_continue_to_migrate(
+    project_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(
+        require_roles("architect", "engineer", "product_owner", "change_board")
+    ),
+) -> Project:
+    """Exit Pilot after reconcile pass — unlock Migrate (Transit)."""
+    p = db.query(Project).get(project_id)
+    if not p:
+        raise HTTPException(404, "Project not found")
+    if not p.build_approved:
+        raise HTTPException(400, "Build pack must be approved before leaving Pilot")
+    latest = (
+        db.query(ReconciliationResult)
+        .filter_by(project_id=project_id)
+        .order_by(ReconciliationResult.id.desc())
+        .first()
+    )
+    if not latest or not latest.passed:
+        raise HTTPException(
+            400, "Reconcile must pass within tolerance before continuing to Migrate"
+        )
+    p.phase = "6_migrate"
+    audit(
+        db,
+        project_id,
+        user.email,
+        "pilot.continue",
+        detail={"reconcile_id": latest.id, "product_id": latest.product_id},
+    )
+    db.commit()
+    db.refresh(p)
+    return p
+
+
 @app.get("/projects/{project_id}/products/{product_id}/reconcile")
 def reconcile_history(
     project_id: int,
@@ -4305,23 +4612,107 @@ def hypercare_get(
 @app.post("/projects/{project_id}/change/close")
 def change_close(
     project_id: int,
+    body: dict[str, Any] | None = None,
     db: Session = Depends(get_db),
-    user: User = Depends(require_roles("change_board", "architect")),
+    user: User = Depends(
+        require_roles("change_board", "architect", "product_owner", "engineer")
+    ),
 ) -> ProjectOut:
+    """Close the migration change (or advance to the next planned wave).
+
+    Body:
+      finalize: bool = True — mark estate complete on the Dashboard.
+      When finalize is False and more waves are planned, completes the active
+      wave and opens the next (Decide→Retire cycle) instead of closing.
+    """
     p = db.query(Project).get(project_id)
     if not p:
         raise HTTPException(404, "Project not found")
+
+    payload = body or {}
+    finalize = bool(payload.get("finalize", True))
+
+    prod_env = p.prod_env if isinstance(p.prod_env, dict) else {}
+    signoff = prod_env.get("signoff") if isinstance(prod_env.get("signoff"), dict) else {}
+    signoff_done = bool(signoff.get("signed_at")) or (p.status or "") == "pilot_complete"
+    promoted_ids = {
+        int(x)
+        for x in (prod_env.get("product_ids") or [])
+        if x is not None and str(x).strip() != ""
+    }
+
     cutovers = db.query(CutoverChecklist).filter_by(project_id=project_id).all()
-    if not cutovers or any(c.status != "complete" for c in cutovers):
-        raise HTTPException(400, "Complete all product cutovers before closing the change")
+    if signoff_done:
+        # Production sign-off already proved the journey gate — force-complete
+        # any leftover draft product checklists so close is not blocked.
+        for c in cutovers:
+            if c.status != "complete":
+                items = list(c.items or [])
+                for it in items:
+                    it["done"] = True
+                c.items = items
+                c.status = "complete"
+    else:
+        relevant = (
+            [c for c in cutovers if c.product_id in promoted_ids]
+            if promoted_ids
+            else list(cutovers)
+        )
+        if not relevant or any(c.status != "complete" for c in relevant):
+            raise HTTPException(
+                400,
+                "Complete production cutover (sign-off) for promoted products before closing",
+            )
+
+    # Optional multi-wave handoff (only when not finalizing the estate)
+    if not finalize and getattr(p, "plan_approved", False):
+        from app.services.wave_plan import complete_active_wave, active_wave, get_wave_plan
+        from app.disposition import clear_dispositions
+
+        plan_before = get_wave_plan(p)
+        has_next = any(
+            w.get("status") in ("planned", "draft")
+            for w in (plan_before.get("waves") or [])
+        )
+        if has_next:
+            try:
+                plan = complete_active_wave(p)
+            except ValueError as e:
+                raise HTTPException(400, str(e)) from e
+            aw = active_wave(plan)
+            if aw and aw.get("status") == "active":
+                clear_dispositions(db, project_id)
+                if p.status == "closed":
+                    p.status = "active"
+                audit(
+                    db,
+                    project_id,
+                    user.email,
+                    "plan.complete_wave",
+                    detail={"next_wave": aw.get("id"), "via": "change.close"},
+                )
+                db.commit()
+                db.refresh(p)
+                return ProjectOut.model_validate(p)
+        else:
+            try:
+                complete_active_wave(p)
+            except ValueError:
+                pass
+
     p.change_closed = True
     p.phase = "7_decommission"
     p.status = "closed"
-    audit(db, project_id, user.email, "change.close")
+    audit(
+        db,
+        project_id,
+        user.email,
+        "change.close",
+        detail={"finalize": finalize, "signoff_done": signoff_done},
+    )
     db.commit()
     db.refresh(p)
-    return p
-
+    return ProjectOut.model_validate(p)
 
 @app.get("/projects/{project_id}/catalogue/tags")
 def catalogue_tags(

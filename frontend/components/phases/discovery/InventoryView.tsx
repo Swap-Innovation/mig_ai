@@ -3,12 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { InspectorPanel } from "@/components/shell/InspectorPanel";
 import { DataToolbar } from "@/components/shell/DataToolbar";
-import { Meta } from "@/components/phases/discovery/shared";
-import { DiscoveryTerminal } from "@/components/phases/discovery/DiscoveryTerminal";
-import {
-  INVENTORY_AGENTS,
-  terminalLinesFromRun,
-} from "@/components/phases/discovery/discoveryAgents";
+import { AtlasEmpty, AtlasPage, Meta } from "@/components/phases/discovery/shared";
 
 type Props = {
   inventory: any[];
@@ -17,7 +12,7 @@ type Props = {
   busy?: boolean;
   msg?: string;
   estateBound?: boolean;
-  /** Completed Activity (discover) scan required before Find inventory */
+  /** Completed Activity (discover) scan required before Run profiling */
   discoverDone?: boolean;
   onPollDiscovery?: (runId?: number) => void;
   onRunDiscovery?: () => void;
@@ -56,13 +51,13 @@ function columnRowsFor(obj: any) {
 function CompactStat({ label, value }: { label: string; value: number }) {
   return (
     <span className="whitespace-nowrap">
-      <span className="text-tm-gray-400">{label}</span>{" "}
-      <span className="font-semibold text-tm-ink">{value}</span>
+      <span className="text-[#aeaeb2]">{label}</span>{" "}
+      <span className="font-semibold text-[#1d1d1f]">{value}</span>
     </span>
   );
 }
 
-/** Inventory workbench: catalog + live Cursor agents (inventory + lineage). */
+/** Profiling workbench: catalog + live Cursor agents (inventory pipeline + lineage). */
 export function InventoryView({
   inventory,
   discoveryRun = null,
@@ -80,10 +75,6 @@ export function InventoryView({
 
   const runStatus = String(discoveryRun?.status || "").toLowerCase();
   const discoveryActive = ["queued", "running"].includes(runStatus);
-  const terminalLines = useMemo(
-    () => terminalLinesFromRun(discoveryRun, INVENTORY_AGENTS),
-    [discoveryRun]
-  );
 
   useEffect(() => {
     if (!discoveryActive || !onPollDiscovery) return;
@@ -94,24 +85,14 @@ export function InventoryView({
     return () => window.clearInterval(id);
   }, [discoveryActive, onPollDiscovery, discoveryRun?.id]);
 
-  const runCompleted = runStatus === "completed";
   const runFailed = runStatus === "failed";
-  const hasFinishedRun = runCompleted || runFailed;
-  /** Find inventory only after Activity discover completed and estate is bound */
+  /** Run profiling only after Activity discover completed and estate is bound */
   const canRun =
     !!onRunDiscovery &&
     !busy &&
     !discoveryActive &&
     estateBound &&
     discoverDone;
-
-  const runLabel = discoveryActive
-    ? "Finding…"
-    : hasFinishedRun
-      ? "Re-find inventory"
-      : inventory.length
-        ? "Refresh inventory"
-        : "Find inventory";
 
   const stats = useMemo(() => {
     const tables = inventory.filter((o) => o.object_type === "table");
@@ -155,75 +136,44 @@ export function InventoryView({
     setTab("overview");
   }
 
-  const statusHint = discoveryActive
-    ? `InventoryProfiler & LineageStitcher running${discoveryRun?.id ? ` · #${discoveryRun.id}` : ""}`
-    : discoveryRun?.id
-      ? `Last inventory run #${discoveryRun.id}${runFailed ? " · failed" : runCompleted ? " · done" : ""}`
-      : "Run InventoryProfiler & LineageStitcher to build catalog and lineage";
-
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-white">
-      <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-tm-gray-200 px-4 py-2">
-        <p className="min-w-0 flex-1 truncate text-xs text-tm-gray-500">{statusHint}</p>
-        {onRunDiscovery && (
-          <button
-            type="button"
-            className="btn shrink-0 text-xs"
-            disabled={!canRun}
-            title={
-              !estateBound
-                ? "Connect a source first"
-                : !discoverDone
-                  ? "Complete Activity (discover scan) first"
-                  : discoveryActive
-                    ? "Inventory agents in progress"
-                    : busy
-                      ? "Please wait…"
-                      : "Run InventoryProfiler & LineageStitcher"
-            }
-            onClick={onRunDiscovery}
-          >
-            {runLabel}
-          </button>
-        )}
-      </div>
-
+    <AtlasPage fill>
       <div className="flex min-h-0 flex-1 flex-row overflow-hidden">
         <div className="flex min-h-0 flex-1 flex-col">
           {!inventory.length ? (
-            <div className="flex flex-1 flex-col items-center justify-center p-8 text-center text-sm text-tm-gray-500">
-              <p className="font-semibold text-tm-ink">No inventory yet</p>
-              <p className="mt-2 max-w-md">
-                {!discoverDone
-                  ? "Finish the Activity discover scan first — Inventory builds only from that stage’s estate (via API) and stores catalog + lineage in the backend."
-                  : "Find inventory calls the backend InventoryProfiler & LineageStitcher using the last Activity scan’s estate. Results are loaded from the API for Lineage and Review."}
-              </p>
-              {!discoverDone && (
-                <p className="mt-2 text-xs text-warn">
-                  Activity scan required before Find inventory.
-                </p>
-              )}
-              {msg ? (
-                <p className="mt-3 max-w-lg rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-                  {msg}
-                </p>
-              ) : null}
-              {runFailed && discoveryRun?.error ? (
-                <p className="mt-2 max-w-lg text-xs text-bad">
-                  Last run failed: {discoveryRun.error}
-                </p>
-              ) : null}
-              {onRunDiscovery && (
-                <button
-                  type="button"
-                  className="btn mt-5 text-xs"
-                  disabled={!canRun}
-                  onClick={onRunDiscovery}
-                >
-                  Find inventory
-                </button>
-              )}
-            </div>
+            <AtlasEmpty
+              title="No profiling yet"
+              detail={
+                !discoverDone
+                  ? "Finish the Activity discover scan first — Profiling builds catalog & lineage from that estate."
+                  : "Run profiling runs InventoryProfiler & LineageStitcher. Results feed Lineage and Review."
+              }
+              action={
+                <div className="flex flex-col items-center gap-2">
+                  {!discoverDone ? (
+                    <p className="text-xs text-[#9a6700]">
+                      Activity scan required before Run profiling.
+                    </p>
+                  ) : null}
+                  {msg ? <p className="atlas-alert is-warn max-w-lg">{msg}</p> : null}
+                  {runFailed && discoveryRun?.error ? (
+                    <p className="atlas-alert is-bad max-w-lg">
+                      Last run failed: {discoveryRun.error}
+                    </p>
+                  ) : null}
+                  {onRunDiscovery ? (
+                    <button
+                      type="button"
+                      className="btn text-xs"
+                      disabled={!canRun}
+                      onClick={onRunDiscovery}
+                    >
+                      Run profiling
+                    </button>
+                  ) : null}
+                </div>
+              }
+            />
           ) : (
             <>
               <DataToolbar
@@ -242,7 +192,7 @@ export function InventoryView({
                       <option value="script">Scripts</option>
                       <option value="repo">Repos</option>
                     </select>
-                    <div className="hidden items-center gap-3 text-[11px] text-tm-gray-500 sm:flex">
+                    <div className="hidden items-center gap-3 text-[11px] text-[#86868b] sm:flex">
                       <CompactStat label="Objects" value={stats.objects} />
                       <CompactStat label="Tables" value={stats.tables} />
                       <CompactStat label="Profiled" value={stats.profiled} />
@@ -254,7 +204,7 @@ export function InventoryView({
               />
               <div className="min-h-0 flex-1 overflow-auto">
                 <table className="w-full">
-                  <thead className="sticky top-0 bg-tm-gray-50">
+                  <thead className="sticky top-0 bg-black/[0.03]">
                     <tr>
                       <th className="table-th px-4">Object</th>
                       <th className="table-th">Type</th>
@@ -275,12 +225,12 @@ export function InventoryView({
                       return (
                         <tr
                           key={o.id}
-                          className={`cursor-pointer hover:bg-tm-magenta-light/40 ${
-                            selected?.id === o.id ? "bg-tm-magenta-light/60" : ""
+                          className={`cursor-pointer hover:bg-[rgba(226,0,116,0.06)] ${
+                            selected?.id === o.id ? "bg-[rgba(226,0,116,0.1)]" : ""
                           }`}
                           onClick={() => selectRow(o.id)}
                         >
-                          <td className="table-td px-4 font-medium text-tm-ink">
+                          <td className="table-td px-4 font-medium text-[#1d1d1f]">
                             {o.fully_qualified_name}
                           </td>
                           <td className="table-td">
@@ -304,7 +254,7 @@ export function InventoryView({
                             )}
                           </td>
                           <td className="table-td">{o.access_count ?? "—"}</td>
-                          <td className="table-td px-4 text-xs text-tm-gray-500">
+                          <td className="table-td px-4 text-xs text-[#86868b]">
                             {(o.consumers || []).slice(0, 2).join(", ") || "—"}
                           </td>
                         </tr>
@@ -325,7 +275,7 @@ export function InventoryView({
           {selected ? (
             <div className="space-y-3 text-sm">
               {isTable && (
-                <div className="flex gap-1 border-b border-tm-gray-100 pb-2">
+                <div className="flex gap-1 border-b border-black/5 pb-2">
                   {(
                     [
                       ["overview", "Overview"],
@@ -338,8 +288,8 @@ export function InventoryView({
                       onClick={() => setTab(id)}
                       className={`rounded px-2.5 py-1 text-xs font-medium ${
                         tab === id
-                          ? "bg-tm-ink text-white"
-                          : "text-tm-gray-600 hover:bg-tm-gray-50"
+                          ? "bg-[#1d1d1f] text-white"
+                          : "text-[#6e6e73] hover:bg-black/[0.03]"
                       }`}
                     >
                       {label}
@@ -350,7 +300,7 @@ export function InventoryView({
 
               {(!isTable || tab === "overview") && (
                 <>
-                  <p className="text-tm-gray-600">
+                  <p className="text-[#6e6e73]">
                     {selected.description || "No description"}
                   </p>
                   <dl className="grid grid-cols-2 gap-2 text-xs">
@@ -366,22 +316,22 @@ export function InventoryView({
                   </dl>
                   {selected.columns?.length > 0 && tab === "overview" && (
                     <div>
-                      <h4 className="text-xs font-semibold uppercase tracking-wide text-tm-gray-500">
+                      <h4 className="text-xs font-semibold uppercase tracking-wide text-[#86868b]">
                         Columns ({selected.columns.length})
                       </h4>
                       <ul className="mt-2 max-h-[40vh] space-y-1 overflow-auto">
                         {selected.columns.map((c: any) => (
                           <li
                             key={c.id ?? c.name}
-                            className="flex items-center justify-between rounded bg-tm-gray-50 px-2 py-1.5 text-xs"
+                            className="flex items-center justify-between rounded bg-black/[0.03] px-2 py-1.5 text-xs"
                           >
                             <span className="font-medium">
                               {c.name}
                               {c.is_pk && (
-                                <span className="ml-1 text-tm-magenta">PK</span>
+                                <span className="ml-1 text-[#e20074]">PK</span>
                               )}
                             </span>
-                            <span className="text-tm-gray-500">{c.data_type}</span>
+                            <span className="text-[#86868b]">{c.data_type}</span>
                           </li>
                         ))}
                       </ul>
@@ -389,7 +339,7 @@ export function InventoryView({
                         <button
                           type="button"
                           onClick={() => setTab("profile")}
-                          className="mt-2 text-xs font-medium text-tm-ink underline-offset-2 hover:underline"
+                          className="mt-2 text-xs font-medium text-[#1d1d1f] underline-offset-2 hover:underline"
                         >
                           Open full profile →
                         </button>
@@ -401,15 +351,15 @@ export function InventoryView({
 
               {isTable && tab === "profile" && (
                 <div className="space-y-3">
-                  <p className="text-xs text-tm-gray-500">
+                  <p className="text-xs text-[#86868b]">
                     Null rates, cardinality, and PII hints from discovery profiling.
                   </p>
                   {!hasProfile && !profileRows.length ? (
-                    <p className="text-xs text-tm-gray-500">No profile metadata.</p>
+                    <p className="text-xs text-[#86868b]">No profile metadata.</p>
                   ) : (
                     <table className="w-full text-xs">
                       <thead>
-                        <tr className="text-left text-tm-gray-500">
+                        <tr className="text-left text-[#86868b]">
                           <th className="py-1">Column</th>
                           <th>Type</th>
                           <th>Null%</th>
@@ -419,33 +369,35 @@ export function InventoryView({
                         </tr>
                       </thead>
                       <tbody>
-                        {profileRows.map((c: {
-                          name: string;
-                          data_type: string;
-                          null_rate?: number | null;
-                          distinct_count?: number | null;
-                          cardinality: string;
-                          pii_hint?: string | null;
-                          is_pk?: boolean;
-                        }) => (
-                          <tr key={c.name} className="border-t border-tm-gray-100">
-                            <td className="py-1.5 font-medium">
-                              {c.is_pk ? (
-                                <span className="mr-1 text-tm-magenta">PK</span>
-                              ) : null}
-                              {c.name}
-                            </td>
-                            <td className="text-tm-gray-500">{c.data_type}</td>
-                            <td>
-                              {c.null_rate != null
-                                ? `${Math.round(c.null_rate * 100)}%`
-                                : "—"}
-                            </td>
-                            <td>{c.distinct_count?.toLocaleString?.() ?? "—"}</td>
-                            <td>{c.cardinality}</td>
-                            <td>{c.pii_hint || "—"}</td>
-                          </tr>
-                        ))}
+                        {profileRows.map(
+                          (c: {
+                            name: string;
+                            data_type: string;
+                            null_rate?: number | null;
+                            distinct_count?: number | null;
+                            cardinality: string;
+                            pii_hint?: string | null;
+                            is_pk?: boolean;
+                          }) => (
+                            <tr key={c.name} className="border-t border-black/5">
+                              <td className="py-1.5 font-medium">
+                                {c.is_pk ? (
+                                  <span className="mr-1 text-[#e20074]">PK</span>
+                                ) : null}
+                                {c.name}
+                              </td>
+                              <td className="text-[#86868b]">{c.data_type}</td>
+                              <td>
+                                {c.null_rate != null
+                                  ? `${Math.round(c.null_rate * 100)}%`
+                                  : "—"}
+                              </td>
+                              <td>{c.distinct_count?.toLocaleString?.() ?? "—"}</td>
+                              <td>{c.cardinality}</td>
+                              <td>{c.pii_hint || "—"}</td>
+                            </tr>
+                          )
+                        )}
                       </tbody>
                     </table>
                   )}
@@ -453,16 +405,10 @@ export function InventoryView({
               )}
             </div>
           ) : (
-            <p className="text-sm text-tm-gray-500">Select a row to inspect.</p>
+            <p className="text-sm text-[#86868b]">Select a row to inspect.</p>
           )}
         </InspectorPanel>
       </div>
-
-      <DiscoveryTerminal
-        lines={terminalLines}
-        active={discoveryActive}
-        emptyHint="InventoryProfiler & LineageStitcher stdout streams here when you Find inventory…"
-      />
-    </div>
+    </AtlasPage>
   );
 }

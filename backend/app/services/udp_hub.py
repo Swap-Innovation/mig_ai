@@ -1,4 +1,4 @@
-"""UDP Hub / hub–spoke landing-zone stub for mobilisation demos."""
+"""Platform Hub / hub–spoke landing-zone stub for mobilisation demos."""
 from __future__ import annotations
 
 import random
@@ -127,7 +127,7 @@ def udp_hub_status(
         sp["bound"] = sp["id"] == bound
     probe = hub_probe if isinstance(hub_probe, dict) else {}
     hub = {
-        "name": "udp-hub-nonprod",
+        "name": "platform-hub-nonprod",
         "region": "europe-west2",
         "state": "ready",
         "services": [
@@ -140,7 +140,7 @@ def udp_hub_status(
     }
     perimeter = {
         "vpc_sc": "stub-perimeter",
-        "cmek": "projects/udp-hub/locations/europe-west2/keyRings/udp/cryptoKeys/data",
+        "cmek": "projects/platform-hub/locations/europe-west2/keyRings/platform/cryptoKeys/data",
         "no_standing_human_prod_access": True,
         "secrets_in_store_only": True,
     }

@@ -1,22 +1,17 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { AgentRunsPanel } from "@/components/AgentRunsPanel";
+import Link from "next/link";
 import { InspectorPanel } from "@/components/shell/InspectorPanel";
 import { DataToolbar } from "@/components/shell/DataToolbar";
-import {
-  DiscoveryTerminal,
-  type TerminalLine,
-} from "@/components/phases/discovery/DiscoveryTerminal";
 import { PilotProductCatalog } from "@/components/PilotProductCatalog";
 import { PilotPipelineView } from "@/components/PilotPipelineView";
 import { PilotReconcileView } from "@/components/PilotReconcileView";
 import { PilotTestEnvView } from "@/components/PilotTestEnvView";
-import { api } from "@/lib/api";
+import { toolHref } from "@/lib/phases";
 
 type SubTab =
   | "overview"
-  | "agents"
   | "reviews"
   | "product"
   | "test_env"
@@ -25,112 +20,12 @@ type SubTab =
 
 const SUBTABS: { id: SubTab; label: string }[] = [
   { id: "overview", label: "Overview" },
-  { id: "agents", label: "Accelerators" },
   { id: "reviews", label: "Review inbox" },
   { id: "product", label: "Product & contract" },
   { id: "test_env", label: "Migrate to Test" },
   { id: "pipeline", label: "Run dual pipeline" },
   { id: "reconcile", label: "Reconciliation" },
 ];
-
-const ACCELERATOR_TASKS = [
-  "source_interface_acquisition",
-  "data_product_identification",
-  "code_transformation",
-  "contract_documentation",
-] as const;
-
-const AGENT_TASKS: {
-  id: (typeof ACCELERATOR_TASKS)[number];
-  title: string;
-  role: string;
-  blurb: string;
-  tool: string;
-  payload?: any;
-}[] = [
-  {
-    id: "source_interface_acquisition",
-    title: "Acquisition AI",
-    role: "CNDI · metadata + ingestion pipeline",
-    blurb:
-      "Creates technical metadata and generates the ingestion pipeline with the CNDI tool (extract → validate → land → catalogue).",
-    tool: "CNDI",
-    payload: {
-      interface: {
-        name: "crm_customer_extract",
-        format: "csv",
-        primary_key: "cust_id",
-        columns: [
-          { name: "cust_id" },
-          { name: "cust_name" },
-          { name: "email" },
-          { name: "phone" },
-        ],
-      },
-      owner: "Pat Product Owner",
-    },
-  },
-  {
-    id: "data_product_identification",
-    title: "Data Product Builder",
-    role: "Model AI · products & semantic modeling",
-    blurb:
-      "Creates data products and performs semantic modeling with Model AI from Align metadata, mappings, and lineage.",
-    tool: "Model AI",
-    payload: {},
-  },
-  {
-    id: "code_transformation",
-    title: "Code Transformation",
-    role: "Coding Skills · pipelines & transforms",
-    blurb:
-      "Calls Coding Skills to generate transform pipelines, tests, and reconcile SQL into migration-repo.",
-    tool: "Coding Skills",
-    payload: {},
-  },
-  {
-    id: "contract_documentation",
-    title: "Contract & Docs",
-    role: "Contracts · catalogue · product docs",
-    blurb:
-      "Generates contracts and documentation for data products, code artifacts, and the business catalogue.",
-    tool: "Contract Docs",
-    payload: null,
-  },
-];
-
-function terminalLinesFromAcceleratorRun(run: any | null): TerminalLine[] {
-  if (!run) return [];
-  const steps = run.steps || run.output?.steps || [];
-  const lines: TerminalLine[] = [];
-  for (const s of steps) {
-    const isTerm =
-      s?.name === "terminal.log" || s?.detail?.kind === "terminal";
-    if (isTerm) {
-      lines.push({
-        ts: s.detail?.ts || s.created_at,
-        agent: s.detail?.agent || run.task || "Accelerator",
-        line: s.message || "",
-      });
-      continue;
-    }
-    if (s?.message) {
-      const mark =
-        s.status === "failed" ? "✗" : s.status === "running" ? "…" : "·";
-      lines.push({
-        agent: s.detail?.agent || run.task || "Accelerator",
-        line: `${mark} ${s.message}`,
-      });
-    }
-  }
-  if (!lines.length && run.status) {
-    lines.push({
-      agent: run.task || "Accelerator",
-      line: `Status ${run.status} · conf ${Math.round((run.confidence || 0) * 100)}%`,
-    });
-  }
-  return lines;
-}
 
 type Props = {
   project: any;
@@ -145,8 +40,8 @@ type Props = {
   busy: boolean;
   msg: string;
   sessionRole: string;
-  onRunAgent: (task: string, payload: any) => void | Promise<any>;
-  onPollAgents: () => void;
+  onRunAgent?: (task: string, payload: any) => void | Promise<any>;
+  onPollAgents?: () => void;
   onReview: (id: number, decision: "approve" | "reject") => void;
   onBulkReview?: (decision: "approve" | "reject") => void;
   onPipeline: (productId: number | number[]) => void;
@@ -163,7 +58,7 @@ export function Phase5PilotProduct({
   project,
   metadataComplete,
   buildApproved = false,
-  agentRuns,
+  agentRuns: _agentRuns,
   reviews,
   products,
   productRows,
@@ -172,8 +67,6 @@ export function Phase5PilotProduct({
   busy,
   msg,
   sessionRole,
-  onRunAgent,
-  onPollAgents,
   onReview,
   onBulkReview,
   onPipeline,
@@ -186,13 +79,16 @@ export function Phase5PilotProduct({
 }: Props) {
   const gatesOpen = metadataComplete && buildApproved;
   const initialView =
-    view === "dualrun" ? "pipeline" : (view as SubTab | undefined);
-  const initial = initialView || (embedded ? "agents" : "overview");
+    view === "dualrun" || view === "agents"
+      ? view === "dualrun"
+        ? "pipeline"
+        : "reviews"
+      : (view as SubTab | undefined);
+  const initial = initialView || (embedded ? "reviews" : "overview");
   const [sub, setSub] = useState<SubTab>(
-    SUBTABS.some((t) => t.id === initial) ? (initial as SubTab) : "agents"
+    SUBTABS.some((t) => t.id === initial) ? (initial as SubTab) : "reviews"
   );
   const [selectedReviewId, setSelectedReviewId] = useState<number | null>(null);
-  const [accelRun, setAccelRun] = useState<any | null>(null);
   const product =
     products.find((p) => p.id === selectedProductId) || products[0] || null;
   const pendingReviews = useMemo(
@@ -204,62 +100,13 @@ export function Phase5PilotProduct({
       ? reviews.find((r) => r.id === selectedReviewId) || null
       : null;
 
-  // Keep accelerator terminal synced to latest matching run from workspace polls
-  useEffect(() => {
-    const isAccel = (task: string) =>
-      (ACCELERATOR_TASKS as readonly string[]).includes(task);
-    // Optimistic seed (id < 0) — wait for POST to replace it
-    if (accelRun && Number(accelRun.id) < 0) return;
-    if (!accelRun?.id) {
-      const latest = agentRuns.find((r) => isAccel(r.task));
-      if (latest) setAccelRun(latest);
-      return;
-    }
-    const fresh = agentRuns.find((r) => r.id === accelRun.id);
-    if (fresh) setAccelRun(fresh);
-  }, [agentRuns, accelRun?.id]);
-
-  const accelActive = ["queued", "running"].includes(
-    String(accelRun?.status || "").toLowerCase()
-  );
-
-  useEffect(() => {
-    if (
-      !accelActive ||
-      !accelRun?.id ||
-      accelRun.id < 0 ||
-      !project?.id
-    )
-      return;
-    let cancelled = false;
-    const tick = async () => {
-      try {
-        const detail = await api<any>(
-          `/projects/${project.id}/agents/runs/${accelRun.id}`
-        );
-        if (cancelled) return;
-        setAccelRun(detail);
-        onPollAgents();
-      } catch {
-        /* ignore transient poll errors */
-      }
-    };
-    void tick();
-    const id = window.setInterval(tick, 900);
-    return () => {
-      cancelled = true;
-      window.clearInterval(id);
-    };
-  }, [accelActive, accelRun?.id, project?.id, onPollAgents]);
-
-  const terminalLines = useMemo(
-    () => terminalLinesFromAcceleratorRun(accelRun),
-    [accelRun]
-  );
-
   useEffect(() => {
     if (view === "dualrun") {
       setSub("pipeline");
+      return;
+    }
+    if (view === "agents") {
+      setSub("reviews");
       return;
     }
     if (view && SUBTABS.some((t) => t.id === view)) {
@@ -277,8 +124,7 @@ export function Phase5PilotProduct({
 
   const fullBleed =
     embedded &&
-    (sub === "agents" ||
-      sub === "reviews" ||
+    (sub === "reviews" ||
       sub === "product" ||
       sub === "test_env" ||
       sub === "pipeline" ||
@@ -293,8 +139,11 @@ export function Phase5PilotProduct({
       }
     >
       {!metadataComplete
-        ? "Complete Align before running pilot accelerators."
-        : "Approve the Build conversion pack (Tables / Code / DAGs) before running pilot accelerators."}
+        ? "Complete Align before Pilot delivery."
+        : "Approve the Build conversion pack and run Forge accelerators before Pilot reviews."}{" "}
+      <Link href={toolHref("forge", "accelerators")} className="font-medium underline">
+        Open Build accelerators
+      </Link>
     </div>
   ) : null;
 
@@ -371,7 +220,7 @@ export function Phase5PilotProduct({
       {msgBanner}
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Kpi label="Agent runs" value={agentRuns.length} hint="Structured LLM outputs" />
+        <Kpi label="Agent runs" value={_agentRuns.length} hint="Structured LLM outputs" />
         <Kpi label="Pending reviews" value={pendingReviews.length} hint="HITL inbox" />
         <Kpi
           label="Product"
@@ -424,8 +273,8 @@ export function Phase5PilotProduct({
             <Check done={!!metadataComplete} title="Align metadata gate passed" />
             <Check done={!!buildApproved} title="Build conversion pack approved" />
             <Check
-              done={agentRuns.some((r) => r.task === "data_product_identification")}
-              title="Data Product Builder agent completed"
+              done={_agentRuns.some((r) => r.task === "data_product_identification")}
+              title="Product Composer (Build accelerators) completed"
             />
             <Check
               done={reviews.some(
@@ -435,7 +284,7 @@ export function Phase5PilotProduct({
               title="Product Owner approved product boundary / contract"
             />
             <Check
-              done={agentRuns.some((r) => r.task === "code_transformation")}
+              done={_agentRuns.some((r) => r.task === "code_transformation")}
               title="Transformation PR artifacts generated"
             />
             <Check done={product?.status === "live"} title="GCP-shaped pipeline landed product rows" />
@@ -449,6 +298,12 @@ export function Phase5PilotProduct({
               <li>Architect / Product Owner approvals before promote</li>
               <li>No secrets or unrestricted production extracts in prompts</li>
               <li>Ingestion executes only reviewed Git configurations</li>
+              <li>
+                Run accelerators in{" "}
+                <Link href={toolHref("forge", "accelerators")} className="font-medium text-brand-ink underline">
+                  Build · Mirage Forge
+                </Link>
+              </li>
             </ul>
             {pilotReady && (
               <div className="rounded-lg bg-emerald-50 px-3 py-2 text-xs font-semibold text-good">
@@ -456,130 +311,6 @@ export function Phase5PilotProduct({
               </div>
             )}
           </div>
-        </div>
-      )}
-
-      {sub === "agents" && (
-        <div
-          className={
-            embedded
-              ? "flex min-h-0 flex-1 flex-col overflow-hidden bg-white"
-              : "flex min-h-[560px] flex-col overflow-hidden rounded-xl border border-tm-gray-200"
-          }
-        >
-          <div className="min-h-0 flex-1 space-y-4 overflow-auto p-5">
-            <div>
-              <h3 className="text-sm font-semibold text-tm-ink">Accelerators</h3>
-              <p className="mt-1 text-xs text-tm-gray-500">
-                Run CNDI acquisition, Model AI product building, Coding Skills
-                pipelines, and contract/docs generation. Live process streams in
-                the terminal below.
-              </p>
-            </div>
-            <div className="grid gap-3 md:grid-cols-2">
-              {AGENT_TASKS.map((t, idx) => {
-                const last = agentRuns.find((r) => r.task === t.id);
-                const runningThis =
-                  accelActive && accelRun?.task === t.id;
-                return (
-                  <div key={`${t.id}-${idx}`} className="card space-y-3">
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <div className="text-sm font-semibold text-tm-ink">
-                          {t.title}
-                        </div>
-                        <span className="rounded border border-brand-line bg-tm-gray-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-muted">
-                          {t.tool}
-                        </span>
-                      </div>
-                      <div className="text-xs text-tm-magenta">{t.role}</div>
-                      <p className="mt-2 text-xs text-tm-gray-600">{t.blurb}</p>
-                    </div>
-                    {last && (
-                      <div className="flex flex-wrap gap-2 text-[11px]">
-                        <span className="badge-neutral">{last.status}</span>
-                        <span className="badge-magenta">
-                          conf {Math.round((last.confidence || 0) * 100)}%
-                        </span>
-                        {last.output?.llm_mode && (
-                          <span className="badge-neutral">
-                            llm:{last.output.llm_mode}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                    <button
-                      className="btn w-full"
-                      disabled={busy || !gatesOpen || accelActive}
-                      title={
-                        !gatesOpen
-                          ? "Complete Align and approve Build first"
-                          : accelActive
-                            ? "Wait for the current accelerator to finish"
-                            : `Run ${t.title}`
-                      }
-                      onClick={() => {
-                        const payload =
-                          t.payload === null
-                            ? {
-                                candidate_contract:
-                                  product?.contract || {
-                                    name: "party_customer_account",
-                                    version: "0.1.0",
-                                  },
-                              }
-                            : { ...(t.payload || {}) };
-                        // Optimistic seed so the terminal opens immediately
-                        setAccelRun({
-                          id: -1,
-                          task: t.id,
-                          status: "queued",
-                          steps: [
-                            {
-                              name: "terminal.log",
-                              status: "running",
-                              message: `▶ ${t.tool} · starting ${t.title}`,
-                              detail: {
-                                kind: "terminal",
-                                agent: t.tool.replace(/\s+/g, ""),
-                              },
-                            },
-                          ],
-                        });
-                        void Promise.resolve(onRunAgent(t.id, payload))
-                          .then((runRow: any) => {
-                            if (runRow?.id) setAccelRun(runRow);
-                          })
-                          .catch(() => {
-                            setAccelRun((prev: any) =>
-                              prev && Number(prev.id) < 0 ? null : prev
-                            );
-                          });
-                      }}
-                    >
-                      {runningThis ? "Running…" : `Run ${t.title}`}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-            <AgentRunsPanel
-              title="Recent accelerator runs"
-              runs={agentRuns}
-              taskFilter={[...ACCELERATOR_TASKS]}
-              onPoll={onPollAgents}
-              selectedId={accelRun?.id}
-              onSelect={(r) => setAccelRun(r)}
-              emptyHint="No accelerator runs yet. Launch one above — process appears in the terminal."
-            />
-          </div>
-          <DiscoveryTerminal
-            title="Accelerator terminal"
-            lines={terminalLines}
-            active={accelActive}
-            emptyHint="Accelerator stdout streams here (CNDI · Model AI · Coding Skills · Contract Docs)…"
-            defaultHeight={220}
-          />
         </div>
       )}
 
@@ -655,7 +386,7 @@ export function Phase5PilotProduct({
                   {!reviews.length && (
                     <tr>
                       <td className="table-td px-4 text-tm-gray-500" colSpan={4}>
-                        No reviews yet — run agents to create review items.
+                        No reviews yet — run Build accelerators to create review items.
                       </td>
                     </tr>
                   )}

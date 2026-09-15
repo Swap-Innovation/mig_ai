@@ -85,8 +85,8 @@ def source_interface_acquisition(ingest_setup: dict[str, Any]) -> dict[str, Any]
     iface_name = iface.get("name", "crm_customer_extract")
     return {
         "task": "source_interface_acquisition",
-        "accelerator": "Acquisition AI",
-        "tooling": "CNDI",
+        "accelerator": "Source Cataloguer",
+        "tooling": "IngestPipeline",
         "classification": "customer_master",
         "technical_catalogue": {
             "interface_name": iface_name,
@@ -96,9 +96,9 @@ def source_interface_acquisition(ingest_setup: dict[str, Any]) -> dict[str, Any]
         },
         "pii_indicators": pii,
         "ingestion_readiness_gaps": gaps,
-        "cndi_pipeline": {
-            "tool": "CNDI",
-            "manifest": f"ingestion/{iface_name}.cndi.yaml",
+        "ingest_pipeline": {
+            "tool": "IngestPipeline",
+            "manifest": f"ingestion/{iface_name}.ingest.yaml",
             "stages": ["extract", "validate", "land_raw", "catalogue_tags"],
         },
         "confidence": 0.9 if not gaps else 0.7,
@@ -107,38 +107,38 @@ def source_interface_acquisition(ingest_setup: dict[str, Any]) -> dict[str, Any]
             {
                 "name": "terminal.log",
                 "status": "success",
-                "message": "Acquisition AI · bind source interface & column catalogue",
-                "detail": {"kind": "terminal", "agent": "AcquisitionAI"},
+                "message": "Source Cataloguer · bind source interface & column catalogue",
+                "detail": {"kind": "terminal", "agent": "SourceCataloguer"},
             },
             {
                 "name": "classify_pii",
                 "status": "success",
                 "message": f"Classified {len(pii)} PII columns · readiness gaps={len(gaps)}",
-                "detail": {"agent": "AcquisitionAI"},
+                "detail": {"agent": "SourceCataloguer"},
             },
             {
                 "name": "terminal.log",
                 "status": "success",
-                "message": "CNDI · draft ingestion pipeline (extract → validate → land_raw)",
-                "detail": {"kind": "terminal", "agent": "CNDI"},
+                "message": "IngestPipeline · draft ingestion pipeline (extract → validate → land_raw)",
+                "detail": {"kind": "terminal", "agent": "IngestPipeline"},
             },
             {
-                "name": "cndi_manifest",
+                "name": "ingest_manifest",
                 "status": "success",
-                "message": f"Wrote CNDI manifest stub ingestion/{iface_name}.cndi.yaml",
-                "detail": {"agent": "CNDI"},
+                "message": f"Wrote IngestPipeline manifest stub ingestion/{iface_name}.ingest.yaml",
+                "detail": {"agent": "IngestPipeline"},
             },
             {
                 "name": "terminal.log",
                 "status": "success",
                 "message": "Catalogue · apply technical metadata + policy tags for landing zone",
-                "detail": {"kind": "terminal", "agent": "AcquisitionAI"},
+                "detail": {"kind": "terminal", "agent": "SourceCataloguer"},
             },
             {
                 "name": "package",
                 "status": "success",
-                "message": "Acquisition pack ready for HITL review",
-                "detail": {"agent": "AcquisitionAI"},
+                "message": "Source catalogue pack ready for HITL review",
+                "detail": {"agent": "SourceCataloguer"},
             },
         ],
     }
@@ -845,66 +845,66 @@ def run_agent_task(task: str, payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def _default_accelerator_steps(task: str, result: dict[str, Any]) -> list[dict[str, Any]]:
-    """Rich process steps for Pilot accelerators (CNDI / Model AI / Coding Skills / docs)."""
+    """Rich process steps for Pilot accelerators (IngestPipeline / Semantic modeling / Code generator / docs)."""
     catalogs: dict[str, list[dict[str, Any]]] = {
         "source_interface_acquisition": [
             {
                 "name": "terminal.log",
                 "status": "success",
-                "message": "Acquisition AI · catalogue source interface & PII",
-                "detail": {"kind": "terminal", "agent": "AcquisitionAI"},
+                "message": "Source Cataloguer · catalogue source interface & PII",
+                "detail": {"kind": "terminal", "agent": "SourceCataloguer"},
             },
             {
                 "name": "terminal.log",
                 "status": "success",
-                "message": "CNDI · generate ingestion pipeline (extract → validate → land)",
-                "detail": {"kind": "terminal", "agent": "CNDI"},
+                "message": "IngestPipeline · generate ingestion pipeline (extract → validate → land)",
+                "detail": {"kind": "terminal", "agent": "IngestPipeline"},
             },
             {
-                "name": "cndi_manifest",
+                "name": "ingest_manifest",
                 "status": "success",
-                "message": "CNDI manifest + technical metadata pack ready",
-                "detail": {"agent": "CNDI"},
+                "message": "IngestPipeline manifest + technical metadata pack ready",
+                "detail": {"agent": "IngestPipeline"},
             },
         ],
         "data_product_identification": [
             {
                 "name": "terminal.log",
                 "status": "success",
-                "message": "Data Product Builder · load Align metadata & mappings",
-                "detail": {"kind": "terminal", "agent": "DataProductBuilder"},
+                "message": "Product Composer · load Align metadata & mappings",
+                "detail": {"kind": "terminal", "agent": "ProductComposer"},
             },
             {
                 "name": "terminal.log",
                 "status": "success",
-                "message": "Model AI · propose product boundary & semantic model",
-                "detail": {"kind": "terminal", "agent": "ModelAI"},
+                "message": "Semantic modeling · propose product boundary & semantic model",
+                "detail": {"kind": "terminal", "agent": "SemanticModeler"},
             },
             {
-                "name": "model_ai",
+                "name": "semantic_model",
                 "status": "success",
                 "message": f"Candidate product · {result.get('product_name') or result.get('product_boundary') or 'data product'}",
-                "detail": {"agent": "ModelAI"},
+                "detail": {"agent": "SemanticModeler"},
             },
         ],
         "code_transformation": [
             {
                 "name": "terminal.log",
                 "status": "success",
-                "message": "Coding Skills · generate transform, tests & reconcile SQL",
-                "detail": {"kind": "terminal", "agent": "CodingSkills"},
+                "message": "Code generator · generate transform, tests & reconcile SQL",
+                "detail": {"kind": "terminal", "agent": "CodeGenerator"},
             },
             {
                 "name": "pipelines",
                 "status": "success",
                 "message": f"Wrote {len((result.get('files') or {}))} pipeline artifacts to migration-repo",
-                "detail": {"agent": "CodingSkills"},
+                "detail": {"agent": "CodeGenerator"},
             },
             {
                 "name": "terminal.log",
                 "status": "success",
                 "message": "Open PR pack for HITL review",
-                "detail": {"kind": "terminal", "agent": "CodingSkills"},
+                "detail": {"kind": "terminal", "agent": "CodeGenerator"},
             },
         ],
         "contract_documentation": [

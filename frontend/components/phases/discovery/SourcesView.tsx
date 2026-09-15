@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { Meta } from "@/components/phases/discovery/shared";
+import { AtlasHeading, AtlasPage, AtlasPanel, AtlasSeg, Meta } from "@/components/phases/discovery/shared";
 import { phaseHref } from "@/lib/phases";
 
 type ConnectTab = "sample" | "zip" | "git";
@@ -112,10 +112,10 @@ export function SourcesView({
   const bound = !!estate?.exists;
 
   const statusBadge = !bound
-    ? { cls: "badge-neutral", label: "Not connected" }
+    ? { tone: "is-neutral", label: "Not connected" }
     : ready
-      ? { cls: "badge-success", label: "Ready" }
-      : { cls: "badge bg-amber-50 text-warn", label: "Incomplete" };
+      ? { tone: "is-good", label: "Ready" }
+      : { tone: "is-warn", label: "Incomplete" };
 
   function confirmSwitch(nextLabel: string): boolean {
     if (!bound) return true;
@@ -172,25 +172,22 @@ export function SourcesView({
     "—";
 
   return (
-    <div className="space-y-4">
-      <div className="card space-y-4">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h3 className="text-base font-semibold">Source</h3>
-            <p className="mt-1 text-sm text-tm-gray-600">
-              {friendlyHint(
-                estate?.discovery_hint || readiness?.discovery_hint,
-                bound,
-                ready
-              )}
-            </p>
-          </div>
-          <span className={statusBadge.cls}>{statusBadge.label}</span>
-        </div>
+    <AtlasPage>
+      <AtlasPanel className="space-y-4">
+        <AtlasHeading
+          eyebrow="Discover · Atlas"
+          title="Source"
+          detail={friendlyHint(
+            estate?.discovery_hint || readiness?.discovery_hint,
+            bound,
+            ready
+          )}
+          action={<span className={`atlas-pill ${statusBadge.tone}`}>{statusBadge.label}</span>}
+        />
 
         {bound ? (
           <>
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 text-sm">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
               <Meta label="Connection" value={typeLabel} />
               <Meta label="Name" value={estate.estate_label || boundSlug || "—"} />
               <Meta label="Files" value={estate.file_count ?? "—"} />
@@ -206,20 +203,18 @@ export function SourcesView({
                 <Meta label="Commit" value={estate.git_commit} />
               ) : null}
             </div>
-            <div className="rounded-lg bg-tm-gray-50 p-3 font-mono text-xs text-tm-gray-600 break-all">
-              {estate.legacy_root || "—"}
-            </div>
+            <div className="atlas-path">{estate.legacy_root || "—"}</div>
           </>
         ) : (
-          <p className="text-sm text-tm-gray-500">
-            No source connected. Open <strong>Change source</strong> below to use a catalogue
+          <p className="text-sm text-[#6e6e73]">
+            No source connected. Open Change source below to use a catalogue
             project, upload, or repository.
           </p>
         )}
 
         {markers.length > 0 && (
           <div>
-            <div className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-tm-gray-500">
+            <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#86868b]">
               Contents
               {readiness?.score
                 ? ` · ${readiness.score.present}/${readiness.score.total}`
@@ -229,7 +224,7 @@ export function SourcesView({
               {markers.map((m) => (
                 <span
                   key={m.id}
-                  className={m.present ? "badge-success" : "badge bg-amber-50 text-warn"}
+                  className={`atlas-pill ${m.present ? "is-good" : "is-warn"}`}
                   title={m.matched_path || m.paths?.join(", ")}
                 >
                   {MARKER_LABELS[m.id] || m.label}
@@ -240,15 +235,7 @@ export function SourcesView({
           </div>
         )}
 
-        <div className="flex flex-wrap items-center gap-2 border-t border-tm-gray-100 pt-4">
-          <button
-            className="btn"
-            disabled={!canRun}
-            title={runDisabledReason || undefined}
-            onClick={onRunDiscovery}
-          >
-            {discoveryActive ? "Scanning…" : "Start discovery"}
-          </button>
+        <div className="atlas-divider flex flex-wrap items-center gap-2 !mt-3">
           <Link
             href={phaseHref("1_discovery", "console")}
             className="btn-secondary text-xs"
@@ -264,42 +251,43 @@ export function SourcesView({
               Sync
             </button>
           )}
-          {runDisabledReason && (
-            <span className="text-xs text-tm-gray-500">{runDisabledReason}</span>
-          )}
+          <span className="text-xs text-[#86868b]">
+            Use <span className="font-medium text-[#1d1d1f]">Start discovery</span> in
+            the header to run the scan.
+          </span>
         </div>
         {bound && (
-          <p className="text-xs text-tm-gray-500">
-            Starts discovery scan agents on Activity (structure → SQL → scripts → DAGs →
-            catalog). Run inventory agents separately on Inventory for catalog & lineage.
-            Requires <span className="font-medium text-tm-ink">CURSOR_API_KEY</span>.
+          <p className="text-xs text-[#86868b]">
+            Starts discovery scan agents on Activity. Run profiling agents on
+            Profiling for catalog & lineage. Requires{" "}
+            <span className="font-medium text-[#1d1d1f]">CURSOR_API_KEY</span>.
           </p>
         )}
         {llmStatus && llmStatus.cursor_configured === false && (
-          <p className="rounded border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-            Cursor key not configured. Add <code className="font-medium">CURSOR_API_KEY</code> to{" "}
-            <code className="font-medium">backend/.env</code> (Cursor Dashboard → Integrations), then
-            restart the API.
+          <p className="atlas-alert is-warn">
+            Cursor key not configured. Add{" "}
+            <code className="font-medium">CURSOR_API_KEY</code> to{" "}
+            <code className="font-medium">backend/.env</code>, then restart the API.
           </p>
         )}
-      </div>
+      </AtlasPanel>
 
       {bound && (estate?.tree_preview || []).length > 0 && (
-        <div className="card space-y-2">
+        <AtlasPanel className="space-y-2">
           <button
             type="button"
-            className="flex w-full items-center justify-between text-left text-sm font-semibold text-tm-ink"
+            className="flex w-full items-center justify-between text-left"
             onClick={() => setTreeOpen((o) => !o)}
           >
-            <span>Files</span>
-            <span className="text-xs font-normal text-tm-gray-500">
+            <span className="text-sm font-semibold text-[#1d1d1f]">Files</span>
+            <span className="text-xs text-[#86868b]">
               {treeOpen ? "Hide" : "Show"} · {(estate.tree_preview || []).length}
             </span>
           </button>
           {treeOpen && (
-            <div className="max-h-56 overflow-auto rounded-xl border border-tm-gray-200">
+            <div className="atlas-table-wrap max-h-56">
               <table className="w-full">
-                <thead className="sticky top-0 bg-tm-gray-50">
+                <thead>
                   <tr>
                     <th className="table-th px-3">Path</th>
                     <th className="table-th">Type</th>
@@ -320,10 +308,10 @@ export function SourcesView({
               </table>
             </div>
           )}
-        </div>
+        </AtlasPanel>
       )}
 
-      <div className="card space-y-3">
+      <AtlasPanel className="space-y-3">
         <button
           type="button"
           className="flex w-full items-center justify-between text-left"
@@ -331,46 +319,35 @@ export function SourcesView({
         >
           <div>
             <h3 className="text-base font-semibold">Change source</h3>
-            <p className="mt-0.5 text-xs text-tm-gray-500">
+            <p className="mt-0.5 text-xs text-[#86868b]">
               Catalogue, upload, or repository
             </p>
           </div>
-          <span className="text-xs text-tm-gray-500">{connectOpen ? "Hide" : "Show"}</span>
+          <span className="text-xs text-[#86868b]">
+            {connectOpen ? "Hide" : "Show"}
+          </span>
         </button>
 
         {connectOpen && (
-          <div className="space-y-4 border-t border-tm-gray-100 pt-3">
-            <div className="flex flex-wrap gap-1 rounded-lg bg-tm-gray-50 p-1">
-              {(
-                [
-                  ["sample", "Catalogue"],
-                  ["zip", "Upload"],
-                  ["git", "Repository"],
-                ] as [ConnectTab, string][]
-              ).map(([id, label]) => (
-                <button
-                  key={id}
-                  type="button"
-                  className={`rounded-md px-3 py-1.5 text-xs font-medium ${
-                    connectTab === id
-                      ? "bg-white text-tm-ink shadow-sm"
-                      : "text-tm-gray-500 hover:text-tm-ink"
-                  }`}
-                  onClick={() => setConnectTab(id)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
+          <div className="atlas-divider space-y-4 !mt-1">
+            <AtlasSeg
+              value={connectTab}
+              onChange={(id) => setConnectTab(id as ConnectTab)}
+              options={[
+                { id: "sample", label: "Catalogue" },
+                { id: "zip", label: "Upload" },
+                { id: "git", label: "Repository" },
+              ]}
+            />
 
             {connectTab === "sample" && (
               <div className="space-y-3">
-                <p className="text-sm text-tm-gray-600">
-                  Connect a curated warehouse project with SQL, scripts, schedules, catalog, and
-                  usage evidence.
+                <p className="text-sm text-[#6e6e73]">
+                  Connect a curated warehouse project with SQL, scripts,
+                  schedules, catalog, and usage evidence.
                 </p>
                 {!samples.length ? (
-                  <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-warn">
+                  <div className="atlas-alert is-warn">
                     No catalogue projects available.
                   </div>
                 ) : (
@@ -395,8 +372,9 @@ export function SourcesView({
                   </select>
                 )}
                 {selectedSample && (
-                  <p className="text-xs text-tm-gray-500">
-                    {samples.find((s) => s.id === selectedSample)?.description || ""}
+                  <p className="text-xs text-[#86868b]">
+                    {samples.find((s) => s.id === selectedSample)?.description ||
+                      ""}
                   </p>
                 )}
                 <button
@@ -415,8 +393,9 @@ export function SourcesView({
 
             {connectTab === "zip" && (
               <div className="space-y-3">
-                <p className="text-sm text-tm-gray-600">
-                  Upload an archive of SQL, scripts, schedules, catalog, and usage folders.
+                <p className="text-sm text-[#6e6e73]">
+                  Upload an archive of SQL, scripts, schedules, catalog, and
+                  usage folders.
                 </p>
                 <input
                   type="file"
@@ -433,15 +412,16 @@ export function SourcesView({
                   }}
                 />
                 {(busy || zipUploading) && (
-                  <p className="text-xs text-tm-gray-500">Uploading…</p>
+                  <p className="text-xs text-[#86868b]">Uploading…</p>
                 )}
               </div>
             )}
 
             {connectTab === "git" && (
               <div className="space-y-3">
-                <p className="text-sm text-tm-gray-600">
-                  Connect a Git repository that contains warehouse ETL and SQL definitions.
+                <p className="text-sm text-[#6e6e73]">
+                  Connect a Git repository that contains warehouse ETL and SQL
+                  definitions.
                 </p>
                 <input
                   className="input"
@@ -477,16 +457,16 @@ export function SourcesView({
                 >
                   Connect repository
                 </button>
-                {msg && (msg.toLowerCase().includes("git") || msg.toLowerCase().includes("clone")) && (
-                  <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-bad">
-                    {msg}
-                  </div>
-                )}
+                {msg &&
+                  (msg.toLowerCase().includes("git") ||
+                    msg.toLowerCase().includes("clone")) && (
+                    <div className="atlas-alert is-bad">{msg}</div>
+                  )}
               </div>
             )}
           </div>
         )}
-      </div>
-    </div>
+      </AtlasPanel>
+    </AtlasPage>
   );
 }

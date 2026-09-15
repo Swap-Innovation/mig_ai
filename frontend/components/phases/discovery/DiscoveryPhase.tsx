@@ -47,8 +47,8 @@ export function DiscoveryPhase({
           onRunDiscovery={() => props.onRunDiscovery("discover")}
         />
       );
-    case "inventory":
     case "profiling":
+    case "inventory": // legacy alias
     case "usage":
       return (
         <InventoryView

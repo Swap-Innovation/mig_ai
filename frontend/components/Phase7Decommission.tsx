@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { InspectorPanel } from "@/components/shell/InspectorPanel";
 import { DataToolbar } from "@/components/shell/DataToolbar";
 
@@ -92,8 +93,9 @@ export function Phase7Decommission({
   ).length;
 
   const journeyClosed =
-    project.change_closed ||
-    project.status === "closed" ||
+    !!project.change_closed || project.status === "closed";
+  const retireReady =
+    journeyClosed ||
     project.status === "pilot_complete" ||
     project.phase === "7_decommission";
 
@@ -119,11 +121,15 @@ export function Phase7Decommission({
             infrastructure released, change closed.
           </p>
         </div>
-        {journeyClosed && (
+        {journeyClosed ? (
           <div className="rounded-xl bg-tm-magenta px-4 py-3 text-sm font-semibold text-white">
-            Wave-1 journey complete
+            Journey complete · status closed
           </div>
-        )}
+        ) : retireReady ? (
+          <div className="rounded-xl bg-tm-gray-100 px-4 py-3 text-sm font-semibold text-tm-ink">
+            Ready to close — finalize on Close
+          </div>
+        ) : null}
       </header>
 
       {!cutoverComplete && (
@@ -184,7 +190,7 @@ export function Phase7Decommission({
               done={decommissioned === retirees.length && retirees.length > 0}
               title="All retire candidates decommissioned"
             />
-            <Check done={journeyClosed} title="Migration change closed / pilot complete" />
+            <Check done={journeyClosed} title="Migration change closed · Dashboard complete" />
           </div>
           <div className="card text-sm text-tm-gray-600">
             <h3 className="text-base font-semibold text-tm-ink">Silence period</h3>
@@ -495,21 +501,31 @@ export function Phase7Decommission({
           {project.change_closed || project.status === "closed" ? (
             <div className="space-y-3">
               <div className="rounded-xl bg-tm-magenta px-4 py-3 font-semibold text-white">
-                Migration change closed — Wave showcase complete.
+                Migration change closed — estate status is complete on the Dashboard.
               </div>
               <p className="text-xs text-tm-gray-500">
                 Smaller governed estate · SID-aligned product · defensible lineage · retirement
                 evidence on record.
               </p>
+              <Link href="/workspace" className="btn inline-flex">
+                Open Dashboard
+              </Link>
             </div>
-          ) : cutoverComplete ? (
+          ) : cutoverComplete || project.status === "pilot_complete" ? (
             <button
               className="btn"
-              disabled={busy || !["change_board", "architect"].includes(sessionRole)}
+              disabled={
+                busy ||
+                !["change_board", "architect", "product_owner", "engineer"].includes(
+                  sessionRole
+                )
+              }
               onClick={() => onCloseChange?.()}
             >
-              {["change_board", "architect"].includes(sessionRole)
-                ? "Close migration change"
+              {["change_board", "architect", "product_owner", "engineer"].includes(
+                sessionRole
+              )
+                ? "Complete journey → Dashboard"
                 : "Requires Change Board / Architect"}
             </button>
           ) : (

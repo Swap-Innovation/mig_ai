@@ -282,7 +282,7 @@ class BigQueryStub:
         legacy_dataset = store.get("legacy_dataset") or f"landing.legacy_p{product_id}"
         name = store.get("product_name") or f"Product {product_id}"
         stages = migrated_stages or store.get("migrated_stages") or [
-            {"name": "ingest", "status": "success", "detail": "CNDI validate + land"},
+            {"name": "ingest", "status": "success", "detail": "IngestPipeline validate + land"},
             {"name": "transform", "status": "success", "detail": "SID align"},
             {"name": "publish", "status": "success", "detail": f"{product} current rows"},
         ]
@@ -314,7 +314,7 @@ class BigQueryStub:
             },
             "migrated_pipeline": {
                 "label": f"Migrated · {name}",
-                "engine": "CNDI → landing → transform → product",
+                "engine": "IngestPipeline → landing → transform → product",
                 "status": "success" if product else "pending",
                 "dataset": dataset,
                 "sources": store.get("sources") or [],
@@ -393,12 +393,12 @@ class BigQueryStub:
             },
             "migrated_pipeline": {
                 "label": "Migrated Usage & Billing SDP/ADP",
-                "engine": "CNDI → landing → transform → product",
+                "engine": "IngestPipeline → landing → transform → product",
                 "status": "success" if product else "pending",
                 "dataset": "products.dp_usage_billing_summary",
                 "sources": ["sdp.billing_usage_events", "sdp.billing_invoice_hdr"],
                 "stages": [
-                    {"name": "ingest", "status": "success", "detail": "CNDI validate + land"},
+                    {"name": "ingest", "status": "success", "detail": "IngestPipeline validate + land"},
                     {"name": "sdp", "status": "success", "detail": "Source-aligned usage + invoice"},
                     {"name": "transform", "status": "success", "detail": "SID align + SCD2"},
                     {"name": "publish", "status": "success", "detail": f"{product} current rows"},
@@ -481,12 +481,12 @@ class BigQueryStub:
             },
             "migrated_pipeline": {
                 "label": "Migrated Party & Customer Account",
-                "engine": "CNDI → landing → SDP → transform → ADP",
+                "engine": "IngestPipeline → landing → SDP → transform → ADP",
                 "status": "success" if product else "pending",
                 "dataset": "products.dp_party_customer_account",
                 "sources": ["sdp.crm_customer_master", "sdp.crm_account_master"],
                 "stages": [
-                    {"name": "ingest", "status": "success", "detail": "CNDI validate + land"},
+                    {"name": "ingest", "status": "success", "detail": "IngestPipeline validate + land"},
                     {"name": "sdp", "status": "success", "detail": "CRM Customer + Account SDPs"},
                     {"name": "transform", "status": "success", "detail": "SID Party/Account SCD2"},
                     {"name": "publish", "status": "success", "detail": f"{product} current rows"},
@@ -673,7 +673,7 @@ class BigQueryStub:
                     )
 
         migrated_stages = [
-            {"name": "ingest", "status": "success", "detail": "CNDI validate + land"},
+            {"name": "ingest", "status": "success", "detail": "IngestPipeline validate + land"},
             {
                 "name": "sdp" if (product_tier or "").lower() == "sdp" else "transform",
                 "status": "success",

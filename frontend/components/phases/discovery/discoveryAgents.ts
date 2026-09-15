@@ -3,7 +3,7 @@
 /**
  * Split agentic flows:
  *   Activity  → discover pipeline (scan)
- *   Inventory → inventory pipeline (catalog + lineage)
+ *   Profiling → inventory pipeline (catalog + lineage)
  */
 
 export type DiscoveryPipeline = "discover" | "inventory";
@@ -18,7 +18,7 @@ export const DISCOVER_STAGES: { id: string; agent: string; label: string }[] = [
 ];
 
 export const INVENTORY_STAGES: { id: string; agent: string; label: string }[] = [
-  { id: "inventory", agent: "InventoryProfiler", label: "Inventory" },
+  { id: "inventory", agent: "InventoryProfiler", label: "Profiling" },
   { id: "lineage", agent: "LineageStitcher", label: "Lineage" },
 ];
 

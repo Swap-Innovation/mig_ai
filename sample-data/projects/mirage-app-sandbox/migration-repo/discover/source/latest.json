@@ -1,0 +1,32 @@
+{
+  "stage": "discover/source",
+  "section": "discover",
+  "view": "source",
+  "project_id": 6,
+  "sample_slug": "mirage-app-sandbox",
+  "status": "ready",
+  "run_id": null,
+  "written_at": "2026-09-15T10:42:27.104567Z",
+  "prior_stage": null,
+  "prior_run_id": null,
+  "summary": {
+    "project_id": 6,
+    "name": "App Store sandbox",
+    "legacy_source_type": "sample",
+    "legacy_root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/mirage-app-sandbox/legacy",
+    "sample_slug": "mirage-app-sandbox",
+    "workspace_slug": "mirage-app-sandbox",
+    "source_sample_id": "mirage-app-sandbox",
+    "estate_label": "Sample: mirage-app-sandbox",
+    "git_url": "",
+    "git_branch": "main",
+    "git_commit": "",
+    "bound_at": "2026-09-15T10:42:27.101986Z",
+    "migration_repo": "../sample-data/projects/mirage-app-sandbox/migration-repo"
+  },
+  "artifacts": [
+    "binding.json"
+  ],
+  "migration_repo": "../sample-data/projects/mirage-app-sandbox/migration-repo",
+  "path": "migration-repo/discover/source"
+}

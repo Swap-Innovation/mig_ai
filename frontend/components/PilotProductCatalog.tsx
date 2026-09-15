@@ -158,7 +158,8 @@ export function PilotProductCatalog({
   if (!products.length) {
     return (
       <div className={embedded ? "p-5 text-sm text-tm-gray-600" : "card text-sm text-tm-gray-600"}>
-        No products yet. Run <strong>Data Product Builder</strong> (Model AI) on Accelerators,
+        No products yet. Run <strong>Product Composer</strong> in Build · Accelerators,
+
         then approve in the Review inbox — suggested Wave-2 products also appear here after
         refresh.
       </div>
@@ -354,7 +355,7 @@ export function PilotProductCatalog({
                     </h4>
                     <p className="mt-1 text-tm-gray-700">
                       {product.description ||
-                        "No rationale captured yet — run Model AI on Accelerators."}
+                        "No rationale captured yet — run Product Composer in Build · Accelerators."}
                     </p>
                   </section>
                   <section>
@@ -521,7 +522,7 @@ export function PilotProductCatalog({
                   ))}
                   {!docs.length && (
                     <p className="text-xs text-tm-gray-500">
-                      No docs yet — run Contract &amp; Docs on Accelerators.
+                      No docs yet — run Contract &amp; Docs in Build · Accelerators.
                     </p>
                   )}
                   {docPreview && (
@@ -596,7 +597,7 @@ export function PilotProductCatalog({
                     })}
                     {!(code.files || []).length && (
                       <li className="text-xs text-tm-gray-500">
-                        No code pack yet — run Coding Skills on Accelerators.
+                        No code pack yet — run Code Transformation in Build · Accelerators.
                       </li>
                     )}
                   </ul>

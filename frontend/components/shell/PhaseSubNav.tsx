@@ -1,8 +1,9 @@
 "use client";
 
 import {
-  NAV_PHASES,
+  SUITE_GALLERY_HREF,
   getPhase,
+  getToolByPhase,
   phaseHref,
   type PhaseId,
   type PhaseView,
@@ -12,34 +13,12 @@ import type { PageHeaderStepNav } from "@/components/shell/PageHeader";
 type StepRef = {
   phaseId: PhaseId;
   view: PhaseView;
-  phaseShort: string;
+  stageName: string;
 };
 
-/** Flat Discover → Retire journey used for header ← / →. */
-export function deliverySteps(): StepRef[] {
-  const steps: StepRef[] = [];
-  for (const phase of NAV_PHASES) {
-    for (const view of phase.views) {
-      steps.push({
-        phaseId: phase.id as PhaseId,
-        view,
-        phaseShort: phase.short,
-      });
-    }
-  }
-  return steps;
-}
-
-function stepLabel(step: StepRef, fromPhaseId: PhaseId): string {
-  if (step.phaseId === fromPhaseId) return step.view.label;
-  return `${step.phaseShort} · ${step.view.label}`;
-}
-
 /**
- * Build step-nav props for PageHeader.
- * Prev/next follow the full Discover → Retire journey so every page has a
- * forward path (gate CTAs in the page body remain for approval actions).
- * Step N of M is the journey position across all delivery spaces.
+ * Build step-nav for PageHeader — pages **within the current tool only**.
+ * Crossing tools goes through Suite Gallery (not a direct jump to Decide/Align/…).
  */
 export function buildPhaseStepNav(
   phaseId: PhaseId,
@@ -48,48 +27,54 @@ export function buildPhaseStepNav(
   const resolvedPhaseId: PhaseId =
     phaseId === "4_metadata" ? "3_mapping" : phaseId;
   const phase = getPhase(resolvedPhaseId);
-  if (!phase) return null;
+  if (!phase || phase.views.length === 0) return null;
 
-  // Mobilisation / hidden spaces still get local paging when opened directly
-  const journey = NAV_PHASES.some((p) => p.id === resolvedPhaseId)
-    ? deliverySteps()
-    : phase.views.map((view) => ({
-        phaseId: resolvedPhaseId,
-        view,
-        phaseShort: phase.short,
-      }));
+  const tool = getToolByPhase(resolvedPhaseId);
+  const stageName = tool?.stageName || phase.short;
 
-  if (journey.length <= 1) return null;
+  const journey: StepRef[] = phase.views.map((view) => ({
+    phaseId: resolvedPhaseId,
+    view,
+    stageName,
+  }));
 
   const activeViewId = viewId || phase.defaultView;
-  const journeyIdx = journey.findIndex(
-    (s) => s.phaseId === resolvedPhaseId && s.view.id === activeViewId
-  );
+  const journeyIdx = journey.findIndex((s) => s.view.id === activeViewId);
   const safeIdx = journeyIdx >= 0 ? journeyIdx : 0;
   const current = journey[safeIdx];
 
-  const prevStep = safeIdx > 0 ? journey[safeIdx - 1] : null;
-  const nextStep =
+  const prevView = safeIdx > 0 ? journey[safeIdx - 1] : null;
+  const nextView =
     safeIdx < journey.length - 1 ? journey[safeIdx + 1] : null;
 
+  const toolHome = tool
+    ? phaseHref(resolvedPhaseId, tool.entryView)
+    : phaseHref(resolvedPhaseId);
+
   return {
-    phaseShort: phase.short,
-    phaseHref: phaseHref(resolvedPhaseId),
+    phaseShort: stageName,
+    phaseHref: toolHome,
     currentLabel: current.view.label,
     group: current.view.group,
     step: safeIdx + 1,
     total: journey.length,
-    prev: prevStep
+    prev: prevView
       ? {
-          label: stepLabel(prevStep, resolvedPhaseId),
-          href: phaseHref(prevStep.phaseId, prevStep.view.id),
+          label: prevView.view.label,
+          href: phaseHref(prevView.phaseId, prevView.view.id),
         }
-      : null,
-    next: nextStep
+      : {
+          label: "Stage map",
+          href: SUITE_GALLERY_HREF,
+        },
+    next: nextView
       ? {
-          label: stepLabel(nextStep, resolvedPhaseId),
-          href: phaseHref(nextStep.phaseId, nextStep.view.id),
+          label: nextView.view.label,
+          href: phaseHref(nextView.phaseId, nextView.view.id),
         }
-      : null,
+      : {
+          label: "Stage map",
+          href: SUITE_GALLERY_HREF,
+        },
   };
 }

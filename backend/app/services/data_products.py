@@ -55,7 +55,7 @@ def dossier_from_identification(
     project: Project | None = None,
     run_id: int | None = None,
 ) -> dict[str, Any]:
-    """Build dossier fields from Model AI / data_product_identification output."""
+    """Build dossier fields from Semantic modeling / data_product_identification output."""
     contract = output.get("candidate_contract") or output.get("contract") or {}
     name = (
         output.get("product_name")
@@ -93,7 +93,7 @@ def dossier_from_identification(
             "schema_version": "0.1.0",
             "sla": f"{freshness}h",
             "pii": "email" in src or "cust" in src,
-            "tool": "CNDI",
+            "tool": "IngestPipeline",
         }
         for src in landing_sources
     ]
@@ -173,7 +173,7 @@ def dossier_from_identification(
     return {
         "name": name,
         "description": output.get("rationale")
-        or f"Canonical {name} product proposed by Model AI.",
+        or f"Canonical {name} product proposed by Semantic modeling.",
         "product_kind": kind,
         "product_tier": (
             str(output.get("product_tier") or "adp").lower()

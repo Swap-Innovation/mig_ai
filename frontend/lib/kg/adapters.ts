@@ -109,7 +109,7 @@ export function buildRepoDiscoveryGraph(input: EstateGraphInput): {
       edges: [],
       title: `${projectLabel} · lineage`,
       description:
-        "No LineageStitcher edges yet — run Find inventory after source identification.",
+        "No LineageStitcher edges yet — run Profiling after source identification.",
     };
   }
 
@@ -242,6 +242,7 @@ export function buildRepoDiscoveryGraph(input: EstateGraphInput): {
         path: meta?.source_path || null,
         dag_id: meta?.extra?.dag_id || null,
         object_kind: "script",
+        inventory_id: meta?.id ?? null,
         linked_by: "lineage_stitcher",
       },
       position: { x: 0, y: 0 },
@@ -263,13 +264,14 @@ export function buildRepoDiscoveryGraph(input: EstateGraphInput): {
       natco: "",
       contract_ref: "",
       labels: ["Table"],
-      properties: {
-        fqn,
-        row_count: meta?.row_count ?? null,
-        source_path: meta?.source_path || null,
-        object_kind: "table",
-        linked_by: "lineage_stitcher",
-      },
+        properties: {
+          fqn,
+          row_count: meta?.row_count ?? null,
+          source_path: meta?.source_path || null,
+          object_kind: "table",
+          inventory_id: meta?.id ?? null,
+          linked_by: "lineage_stitcher",
+        },
       position: { x: 0, y: 0 },
     });
   }

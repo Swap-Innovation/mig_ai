@@ -1,0 +1,978 @@
+[
+  {
+    "seq": 1,
+    "name": "queued",
+    "status": "success",
+    "message": "Live Cursor discovery scan queued \u2014 leaf\u2192root (SQL \u2192 scripts \u2192 DAGs \u2192 catalog)",
+    "detail": {
+      "legacy_root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-customer-wave1/legacy",
+      "runtime": "cursor_sdk",
+      "pipeline": "discover",
+      "agents": [
+        "DiscoveryCoordinator",
+        "StructureAnalyst",
+        "SqlLeafScanner",
+        "ScriptScanner",
+        "OrchestrationScanner",
+        "CatalogUsageHarvester"
+      ]
+    }
+  },
+  {
+    "seq": 2,
+    "name": "agent.live.plan",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 DiscoveryCoordinator",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 3,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Activity \u00b7 discovery scan (Cursor agents)\n\u2500\u2500 DiscoveryCoordinator \u00b7 plan \u2500\u2500\n$ cursor agent create \u00b7 DiscoveryCoordinator \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-customer-wave1/legacy\n$ agent_id agent-d2a417ad-0e27-4472-b871-bf47f8bd5c17\n$ run run-195a3fb6-f1b3-4833-bef8-2b589312e19c \u00b7 streaming\u2026\nInspecting the legacy estate root to map out a leaf-to-root migration plan. I will identify top-level folders and assign agents for each layer: SQL, scripts, DAGs, catalog, lineage, and inventory.The estate structure is now clear.\nReading repo.json, dag.json, and agent configs to assign the right agents to each folder.Searching for the discovery agents configuration elsewhere.Reading discoveryAgents.ts to identify agent roles and responsibilities.Ready to draft the leaf-to-root migration plan.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 4,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "The estate root contains six top-level folders: catalog/, dags/, scheduler/, scripts/, sql/, and usage/. It also holds repo.json. The legacy side is a Teradata warehouse with marts and staging databases. Two DAGs exist: crm_daily with three tasks and billing_snap with one upstream task. Root sql/ and scripts/ mirror DAG-scoped assets. The catalog/tables.json file stores table metadata. The usage/ folder contains query_log.csv and report_log.csv. The scheduler/ folder defines Control-M-style parallel jobs.\nFour SQL files span root sql/ and dags/*/sql/. Scripts live in root scripts/ and dags/*/scripts/. DAG orchestration lives in dags/*/uler/scheduler.json. Catalog comes from catalog/tables.json. Lineage traces from stitch repo through DAGs, tasks, scripts, SQL, and tables. Inventory rolls up lineage with usage enrichment. The discover pipeline runs DiscoveryCoordinator through StructureAnalyst, SqlLeafScanner, ScriptScanner, OrchestrationScanner, and CatalogUsageHarvester. The inventory pipeline runs InventoryProfiler through LineageStitcher and EstateParser.\n## Estate root: `party-customer-wave1/legacy`\n**Top-level:** `catalog/` \u00b7 `dags/` \u00b7 `scheduler/` \u00b7 `scripts/` \u00b7 `sql/` \u00b7 `usage/` \u00b7 `repo.json`\n**Context:** Teradata on-prem (`legacy`, `marts`, `staging`); 2 DAGs (`crm_daily`, `billing_snap`); Control-M\u2013style `scheduler/scheduler.json`.\n### Leaf\u2192root plan\n1. **SQL** \u2014 Parse `dags/*/sql/*.sql` (primary) + root `sql/` mirrors; extract reads/writes, schemas, PII columns.\n2. ",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 5,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "3. **DAGs/orchestration** \u2014 Parse `dags/*/dag.json` (tasks, deps, schedules, `upstream_dags`); reconcile with `scheduler/scheduler.json`.\n4. **Catalog** \u2014 Harvest `catalog/tables.json`; reconcile with SQL writes and DAG task metadata.\n5. **Lineage** \u2014 Stitch repo \u2192 DAG \u2192 task \u2192 script \u2192 SQL \u2192 table (inputs vs outputs); note cross-DAG edge `billing_snap` \u2192 `crm_daily`.\n6. **Inventory** \u2014 Roll up tables, scripts, DAGs, repo metadata; enrich with `usage/query_log.csv` and `usage/report_log.csv` for hot objects and PII hints.\n### Agents (run order)\n| Pipeline | Agents |\n|----------|--------|\n| **Discover** | `DiscoveryCoordinator` \u2192 `StructureAnalyst` \u2192 `SqlLeafScanner` \u2192 `ScriptScanner` \u2192 `OrchestrationScanner` \u2192 `CatalogUsageHarvester` |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 6,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| **Inventory** | `InventoryProfiler` \u2192 `LineageStitcher` (+ `EstateParser` to materialize inventory) |\n**Focus:** Executable assets live under `dags/<dag_id>/`; root `sql/` and `scripts/` are scheduler mirrors \u2014 scan DAG-scoped paths first, then reconcile root copies.\n$ agent DiscoveryCoordinator finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 7,
+    "name": "agent.live.plan.done",
+    "status": "success",
+    "message": "Cursor agent DiscoveryCoordinator completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-d2a417ad-0e27-4472-b871-bf47f8bd5c17",
+      "run_id": "run-195a3fb6-f1b3-4833-bef8-2b589312e19c",
+      "status": "finished",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 8,
+    "name": "agent.plan",
+    "status": "success",
+    "message": "Coordinator: leaf\u2192root estate scan \u2014 SQL \u2192 scripts \u2192 DAGs \u2192 catalog",
+    "detail": {
+      "pipeline": [
+        "StructureAnalyst",
+        "SqlLeafScanner",
+        "ScriptScanner",
+        "OrchestrationScanner",
+        "CatalogUsageHarvester"
+      ],
+      "strategy": "bottom_up",
+      "runtime": "cursor_sdk",
+      "flow": "discover",
+      "agent": "DiscoveryCoordinator",
+      "phase": "plan"
+    }
+  },
+  {
+    "seq": 9,
+    "name": "agent.live.structure",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 StructureAnalyst",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 10,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 StructureAnalyst \u00b7 structure \u2500\u2500\n$ cursor agent create \u00b7 StructureAnalyst \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-customer-wave1/legacy\n$ agent_id agent-7ab196a7-fba4-46f4-9a3a-60f7dc0a8c0c\n$ run run-11a3f5d2-6af0-49b9-bb2c-b991518e55ad \u00b7 streaming\u2026\nAnalyzing the repository layout under the current working directory.\nThe target path appears to be a legacy project under the party-customer-wave1 sample data directory. I will inspect the top-level folders, check for dags, sql, scripts, and catalog directories, look for a git remote, and identify likely technologies such as SQL, Airflow, shell, dbt, and Spark.Reading repo.json, dag.json samples, and scheduler.json to identify specific technologies.Ready to map the repository layout.\nThe repository contains `catalog/`, `dags/`, `scheduler/`, `scripts/`, `sql/`, and `usage/` directories. Root-level `sql/` holds 3 files and root-level `scripts/` holds 2 shell scripts. The `dags/` folder contains 2 DAGs (`billing_snap`, `crm_daily`) each with their own `dag.json`, `sql/`, and `scripts/`. `catalog/` holds `tables.json`. Total file count is 20.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 11,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Git remote points to GitLab. repo.json declares a fictional internal remote. Likely stack: Teradata SQL, Airflow DAG JSON, Bash scripts, and Control-M. No dbt or Spark.\n## StructureAnalyst \u2014 `party-customer-wave1/legacy`\n**CWD:** `sample-data/projects/party-customer-wave1/legacy` (20 files total)\n### Top-level layout\n| Path | Role |\n|------|------|\n| `dags/` | 2 workflow bundles (`billing_snap/`, `crm_daily/`) |\n| `sql/` | Shared SQL (3 files) |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 12,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| `scripts/` | Root shell runners (2 `.sh`) |\n| `catalog/` | Table metadata (`tables.json`) |\n| `scheduler/` | Control-M\u2013style job defs (`scheduler.json`) |\n| `usage/` | Query/report CSV logs |\n| `repo.json` | Discovery manifest (Teradata on-prem CRM ETL) |\n### Key folders\n- **dags/** \u2014 present (2 DAGs: `billing_snap`, `crm_daily`; each has `dag.json`, `sql/`, `scripts/`)\n- **sql/** \u2014 present (4 SQL files total, including copies under `dags/*/sql/`)",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 13,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "- **scripts/** \u2014 present (4 `.sh` under DAGs + 2 root runners)\n- **catalog/** \u2014 present (`tables.json`)\n### Git\n- **Parent repo remote:** `origin` \u2192 `https://gitlab.devops.telekom.de/swapnil.kodgire/mirage_ai.git`\n- **Declared legacy remote** (`repo.json`): `https://git.corp.example/dw/crm-onprem-etl.git` (sample metadata)\n### Likely technologies\n| Tech | Evidence |\n|------|----------|",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 14,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| **SQL** | `.sql` loads/marts; Teradata warehouse in `repo.json` |\n| **Airflow (JSON DAGs)** | `dag.json` with cron, tasks, deps \u2014 not Python DAGs |\n| **Shell** | `.sh` orchestration per task |\n| **Control-M / scheduler** | `scheduler/scheduler.json` |\n| **dbt** | Not present |\n| **Spark** | Not present (0 `.py`/PySpark) |\n$ agent StructureAnalyst finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 15,
+    "name": "agent.live.structure.done",
+    "status": "success",
+    "message": "Cursor agent StructureAnalyst completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-7ab196a7-fba4-46f4-9a3a-60f7dc0a8c0c",
+      "run_id": "run-11a3f5d2-6af0-49b9-bb2c-b991518e55ad",
+      "status": "finished",
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 16,
+    "name": "structure.understand",
+    "status": "success",
+    "message": "Mapped estate layout under legacy: 20 files",
+    "detail": {
+      "root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-customer-wave1/legacy",
+      "files": 20,
+      "sql": 4,
+      "scripts": 4,
+      "spark": 0,
+      "schedulers": 1,
+      "dags": 2,
+      "repo_remote": "https://git.corp.example/dw/crm-onprem-etl.git",
+      "warehouse": "teradata",
+      "folders": [
+        "catalog",
+        "dags",
+        "scheduler",
+        "scripts",
+        "sql",
+        "usage"
+      ],
+      "agent": "StructureAnalyst",
+      "phase": "structure"
+    }
+  },
+  {
+    "seq": 17,
+    "name": "structure.detect_tech",
+    "status": "success",
+    "message": "Detected technologies: sql, shell, airflow, scheduler, cognos, catalog",
+    "detail": {
+      "technologies": [
+        {
+          "id": "sql",
+          "evidence": "7 SQL files",
+          "role": "leaf"
+        },
+        {
+          "id": "shell",
+          "evidence": "6 shell wrappers",
+          "role": "script"
+        },
+        {
+          "id": "airflow",
+          "evidence": "DAG definitions under dags/",
+          "role": "orchestration"
+        },
+        {
+          "id": "scheduler",
+          "evidence": "Scheduler definitions",
+          "role": "orchestration"
+        },
+        {
+          "id": "cognos",
+          "evidence": "BI / Cognos-style report usage log",
+          "role": "bi"
+        },
+        {
+          "id": "catalog",
+          "evidence": "Warehouse table catalog",
+          "role": "metadata"
+        }
+      ],
+      "agent": "StructureAnalyst",
+      "phase": "structure",
+      "tech": "sql,shell,airflow,scheduler,cognos,catalog"
+    }
+  },
+  {
+    "seq": 18,
+    "name": "discover.clear_jobs",
+    "status": "success",
+    "message": "Cleared prior orchestration jobs (6)",
+    "detail": {
+      "cleared_jobs": 6,
+      "agent": "DiscoveryCoordinator",
+      "phase": "prepare"
+    }
+  },
+  {
+    "seq": 19,
+    "name": "agent.live.sql",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 SqlLeafScanner",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 20,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 SqlLeafScanner \u00b7 sql \u2500\u2500\n$ cursor agent create \u00b7 SqlLeafScanner \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-customer-wave1/legacy\n$ agent_id agent-3adaa79d-03ef-43da-ad73-406a079f1988\n$ run run-0499f781-88a7-4cd5-b406-9b47935541e2 \u00b7 streaming\u2026\nScanning the current working directory for SQL files.\nFound 4 SQL files. Reading them to infer table names from CREATE, INSERT, and FROM statements.Seven SQL files were found, though the context indicates scanning four.\nThe four target files are sql/load_customer_account.sql, sql/mart_cust_360_t, sql/mart_cust_360_team_b.sql, and dags/billing_snap/sql/billing_snap.sql. Duplicates in dags/crm_daily/sql/ were excluded. Full contents will be reviewed next.Enough information gathered. Preparing a concise response within 30 lines.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 21,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Four canonical SQL paths identified, including two mirrored files. Duplicates will be noted briefly to stay within the 30-line limit.\n## SqlLeafScanner \u2014 `legacy/` (4 canonical SQL files)\nFound **7** `.sql` paths; **4 unique** scripts (`sql/` and `dags/crm_daily/sql/` are duplicates).\n| Path | Outputs (INSERT INTO) | Inputs (FROM/JOIN) |\n|------|----------------------|-------------------|\n| `sql/load_customer_account.sql` | `legacy.crm_cust_mstr`, `legacy.crm_acct_mstr`, `legacy.crm_cust_acct_bridge` | `legacy.stg_cust_daily`, `legacy.stg_acct_daily`, `legacy.crm_acct_mstr` |\n| `sql/mart_cust_360_team_a.sql` | `marts.dm_cust_360_team_a` | `legacy.crm_cust_mstr`, `legacy.crm_acct_mstr` |\n| `sql/mart_cust_360_team_b.sql` | `marts.dm_cust_360_team_b` | `legacy.crm_cust_mstr`, `legacy.crm_acct_mstr` |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 22,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| `dags/billing_snap/sql/billing_snap.sql` | `legacy.billing_acct_snap` | `legacy.crm_acct_mstr` |\n**Duplicates:** `dags/crm_daily/sql/{load_customer_account,mart_cust_360_team_a,mart_cust_360_team_b}.sql` mirror `sql/`.\n**Flow:** staging \u2192 CRM masters/bridge \u2192 billing snap + customer 360 marts. No `CREATE TABLE`/`CREATE VIEW` in these files.\n$ agent SqlLeafScanner finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 23,
+    "name": "agent.live.sql.done",
+    "status": "success",
+    "message": "Cursor agent SqlLeafScanner completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-3adaa79d-03ef-43da-ad73-406a079f1988",
+      "run_id": "run-0499f781-88a7-4cd5-b406-9b47935541e2",
+      "status": "finished",
+      "agent": "SqlLeafScanner",
+      "phase": "sql"
+    }
+  },
+  {
+    "seq": 24,
+    "name": "sql.begin",
+    "status": "success",
+    "message": "SqlLeafScanner: 4 SQL leaves (sources \u2192 targets)",
+    "detail": {
+      "count": 4,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 25,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/billing_snap/sql/billing_snap.sql: 1 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/billing_snap/sql/billing_snap.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "crm_acct_mstr"
+      ],
+      "targets": [
+        "billing_acct_snap",
+        "legacy.billing_acct_snap"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 26,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/crm_daily/sql/load_customer_account.sql: 2 inputs \u2192 6 outputs",
+    "detail": {
+      "path": "dags/crm_daily/sql/load_customer_account.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "stg_acct_daily",
+        "stg_cust_daily"
+      ],
+      "targets": [
+        "crm_acct_mstr",
+        "crm_cust_acct_bridge",
+        "crm_cust_mstr",
+        "legacy.crm_acct_mstr",
+        "legacy.crm_cust_acct_bridge",
+        "legacy.crm_cust_mstr"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 27,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/crm_daily/sql/mart_cust_360_team_a.sql: 2 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/crm_daily/sql/mart_cust_360_team_a.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "crm_acct_mstr",
+        "crm_cust_mstr"
+      ],
+      "targets": [
+        "dm_cust_360_team_a",
+        "marts.dm_cust_360_team_a"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 28,
+    "name": "sql.parse",
+    "status": "success",
+    "message": "dags/crm_daily/sql/mart_cust_360_team_b.sql: 2 inputs \u2192 2 outputs",
+    "detail": {
+      "path": "dags/crm_daily/sql/mart_cust_360_team_b.sql",
+      "parser": "sqlglot",
+      "sources": [
+        "crm_acct_mstr",
+        "crm_cust_mstr"
+      ],
+      "targets": [
+        "dm_cust_360_team_b",
+        "marts.dm_cust_360_team_b"
+      ],
+      "warning": null,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 29,
+    "name": "agent.live.scripts",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 ScriptScanner",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 30,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 ScriptScanner \u00b7 scripts \u2500\u2500\n$ cursor agent create \u00b7 ScriptScanner \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-customer-wave1/legacy\n$ agent_id agent-98c7375d-ce16-4ae1-a498-da650eade7dd\n$ run run-1c39b66e-22ae-4b40-84e3-6d7a6c63d998 \u00b7 streaming\u2026\nScanning the current working directory for shell and Python ETL scripts.\nSearching for four scripts and four SQL files. Will list script paths and any invoked SQL or mentioned tables.Scanning the current directory for shell and Python ETL scripts. Will list their paths and any SQL or tables they reference.\nReading all shell scripts to extract SQL invocations and table mentions.Reading the SQL files too to capture table mentions.I have a complete picture. I will keep the response to \u226425 lines.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 31,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Six shell scripts found, no Python. Three CRM daily scripts reference SQL files. One uses inline \\copy. One invokes load_customer_account.sql. Two mart_cust_360 scripts reference team_a.sql and team_b.sql. A billing snap script references billing_snap.sql.\nTwo more shell scripts were found: `run_cust_load.sh` and `run_marts.sh`. Both reference SQL files. No Python ETL scripts were found.\n## ScriptScanner \u2014 `legacy/` ETL scripts\n**6 shell scripts, 0 Python.** Primary pipeline: **4 DAG scripts \u2192 4 SQL files**.\n| Script | SQL invoked | Tables (script + invoked SQL) |\n|--------|-------------|--------------------------------|\n| `dags/crm_daily/scripts/01_stg_cust_ingest.sh` | *(inline `\\copy`)* | `legacy.stg_cust_daily` |\n| `dags/crm_daily/scripts/02_load_cust_acct.sh` | `../sql/load_customer_account.sql` | `legacy.stg_cust_daily`, `legacy.stg_acct_daily`, `legacy.crm_cust_mstr`, `legacy.crm_acct_mstr`, `legacy.crm_cust_acct_bridge` |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 32,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "| `dags/crm_daily/scripts/03_mart_cust_360.sh` | `../sql/mart_cust_360_team_a.sql`, `../sql/mart_cust_360_team_b.sql` | `marts.dm_cust_360_team_a`, `marts.dm_cust_360_team_b`, `legacy.crm_cust_mstr`, `legacy.crm_acct_mstr` |\n| `dags/billing_snap/scripts/01_billing_snap.sh` | `../sql/billing_snap.sql` | `legacy.billing_acct_snap`, `legacy.crm_acct_mstr` |\n**Wrappers** (same SQL, absolute paths):\n- `scripts/run_cust_load.sh` \u2192 `/etl/sql/load_customer_account.sql`\n- `scripts/run_marts.sh` \u2192 `/etl/sql/mart_cust_360_team_a.sql`, `/etl/sql/mart_cust_360_team_b.sql`\n**Flow:** ingest \u2192 load_customer_account \u2192 mart team A/B; billing_snap runs separately.\n$ agent ScriptScanner finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 33,
+    "name": "agent.live.scripts.done",
+    "status": "success",
+    "message": "Cursor agent ScriptScanner completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-98c7375d-ce16-4ae1-a498-da650eade7dd",
+      "run_id": "run-1c39b66e-22ae-4b40-84e3-6d7a6c63d998",
+      "status": "finished",
+      "agent": "ScriptScanner",
+      "phase": "scripts"
+    }
+  },
+  {
+    "seq": 34,
+    "name": "script.begin",
+    "status": "success",
+    "message": "ScriptScanner: 4 wrappers linking DAGs to SQL",
+    "detail": {
+      "count": 4,
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "shell"
+    }
+  },
+  {
+    "seq": 35,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/billing_snap/scripts/01_billing_snap.sh: params & credential refs",
+    "detail": {
+      "path": "dags/billing_snap/scripts/01_billing_snap.sh",
+      "kind": "shell",
+      "engine": "shell",
+      "params": [
+        "DB_HOST",
+        "DB_PASSWORD",
+        "DB_USER",
+        "SCRIPT_DIR"
+      ],
+      "control_flow": [],
+      "credential_refs": [
+        "PASSWORD"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "shell"
+    }
+  },
+  {
+    "seq": 36,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/crm_daily/scripts/01_stg_cust_ingest.sh: params & credential refs",
+    "detail": {
+      "path": "dags/crm_daily/scripts/01_stg_cust_ingest.sh",
+      "kind": "shell",
+      "engine": "shell",
+      "params": [
+        "DB_HOST",
+        "DB_PASSWORD",
+        "DB_USER",
+        "INFILE",
+        "LANDING_DIR",
+        "RUN_DATE"
+      ],
+      "control_flow": [],
+      "credential_refs": [
+        "PASSWORD"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "shell"
+    }
+  },
+  {
+    "seq": 37,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/crm_daily/scripts/02_load_cust_acct.sh: params & credential refs",
+    "detail": {
+      "path": "dags/crm_daily/scripts/02_load_cust_acct.sh",
+      "kind": "shell",
+      "engine": "shell",
+      "params": [
+        "DB_HOST",
+        "DB_PASSWORD",
+        "DB_USER",
+        "SCRIPT_DIR"
+      ],
+      "control_flow": [],
+      "credential_refs": [
+        "PASSWORD"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "shell"
+    }
+  },
+  {
+    "seq": 38,
+    "name": "script.parse",
+    "status": "success",
+    "message": "dags/crm_daily/scripts/03_mart_cust_360.sh: params & credential refs",
+    "detail": {
+      "path": "dags/crm_daily/scripts/03_mart_cust_360.sh",
+      "kind": "shell",
+      "engine": "shell",
+      "params": [
+        "DB_HOST",
+        "DB_PASSWORD",
+        "DB_USER",
+        "SCRIPT_DIR"
+      ],
+      "control_flow": [],
+      "credential_refs": [
+        "PASSWORD"
+      ],
+      "agent": "ScriptScanner",
+      "phase": "mid",
+      "tech": "shell"
+    }
+  },
+  {
+    "seq": 39,
+    "name": "sql.tables_inferred",
+    "status": "success",
+    "message": "Inferred 8 tables from SQL / Spark lineage",
+    "detail": {
+      "tables": [
+        "billing_acct_snap",
+        "crm_acct_mstr",
+        "crm_cust_acct_bridge",
+        "crm_cust_mstr",
+        "dm_cust_360_team_a",
+        "dm_cust_360_team_b",
+        "stg_acct_daily",
+        "stg_cust_daily"
+      ],
+      "count": 8,
+      "agent": "SqlLeafScanner",
+      "phase": "leaf",
+      "tech": "sql"
+    }
+  },
+  {
+    "seq": 40,
+    "name": "agent.live.orchestration",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 OrchestrationScanner",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 41,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 OrchestrationScanner \u00b7 orchestration \u2500\u2500\n$ cursor agent create \u00b7 OrchestrationScanner \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-customer-wave1/legacy\n$ agent_id agent-dc49d8cd-3cc6-45e4-a06b-6948ae839556\n$ run run-f16511e6-b48c-4945-bf7c-fb03a0639074 \u00b7 streaming\u2026\nScanning the current directory for DAG and scheduler definitions. Will list DAG IDs, schedules, and task-to-script links. Output will stay within 30 lines and avoid file modifications.\nThe current working directory is `/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-custom/legacy`. I am now searching for the two DAG directories and the scheduler file.Reading the DAG and scheduler files to extract IDs, schedules, and task-to-script links.All required information has been gathered. Compiling a concise \u226430 line report now.\n## OrchestrationScanner \u2014 `legacy/`",
+    "detail": {
+      "kind": "terminal",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 42,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "**Sources:** `dags/crm_daily/dag.json`, `dags/billing_snap/dag.json`, `scheduler/scheduler.json`\n---\n### DAG: `crm_daily`\n| Schedule | `0 2 * * *` (UTC) |\n|---|---|\n| **stg_cust_ingest** | `scripts/01_stg_cust_ingest.sh` |\n| **load_cust_acct** | `scripts/02_load_cust_acct.sh` (+ `sql/load_customer_account.sql`) |\n| **mart_cust_360** | `scripts/03_mart_cust_360.sh` (+ `sql/mart_cust_360_team_a.sql`, `mart_cust_360_team_b.sql`) |",
+    "detail": {
+      "kind": "terminal",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 43,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Deps: `stg_cust_ingest` \u2192 `load_cust_acct` \u2192 `mart_cust_360`\n---\n### DAG: `billing_snap`\n| Schedule | `0 5 * * *` (UTC) |\n|---|---|\n| **billing_snap** | `scripts/01_billing_snap.sh` (+ `sql/billing_snap.sql`) |\nUpstream DAG: `crm_daily`\n---",
+    "detail": {
+      "kind": "terminal",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 44,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "### Scheduler jobs (`scheduler/scheduler.json`)\n| Job | Schedule | Script |\n|---|---|---|\n| job_stg_cust_ingest | `0 2 * * *` | `scripts/run_cust_load.sh` |\n| job_load_cust_acct | `30 2 * * *` | `sql/load_customer_account.sql` |\n| job_mart_cust_360 | `0 4 * * *` | `scripts/run_marts.sh` |\n| job_billing_snap | `0 5 * * *` | `sql/billing_snap.sql` |\nScheduler deps: ingest \u2192 load \u2192 {mart, billing}",
+    "detail": {
+      "kind": "terminal",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 45,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "$ agent OrchestrationScanner finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 46,
+    "name": "agent.live.orchestration.done",
+    "status": "success",
+    "message": "Cursor agent OrchestrationScanner completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-dc49d8cd-3cc6-45e4-a06b-6948ae839556",
+      "run_id": "run-f16511e6-b48c-4945-bf7c-fb03a0639074",
+      "status": "finished",
+      "agent": "OrchestrationScanner",
+      "phase": "orchestration"
+    }
+  },
+  {
+    "seq": 47,
+    "name": "orch.begin",
+    "status": "success",
+    "message": "OrchestrationScanner: 2 DAGs / schedulers and task dependencies",
+    "detail": {
+      "dags": 2,
+      "schedulers": 1,
+      "agent": "OrchestrationScanner",
+      "phase": "top",
+      "tech": "airflow"
+    }
+  },
+  {
+    "seq": 48,
+    "name": "orch.dag",
+    "status": "success",
+    "message": "DAG billing_snap: 1 tasks \u00b7 deps \u00b7 0 5 * * *",
+    "detail": {
+      "dag_id": "billing_snap",
+      "dag_name": "Billing Account Snapshot",
+      "engine": "airflow",
+      "tasks": [
+        "billing_snap.billing_snap"
+      ],
+      "task_names": [
+        "Write billing_acct_snap"
+      ],
+      "spark_jobs": [],
+      "task_deps": {
+        "billing_snap.billing_snap": []
+      },
+      "schedule": "0 5 * * *",
+      "owner": "etl.billing@demo.local",
+      "tags": [
+        "billing",
+        "on-prem"
+      ],
+      "agent": "OrchestrationScanner",
+      "phase": "top",
+      "tech": "airflow"
+    }
+  },
+  {
+    "seq": 49,
+    "name": "orch.dag",
+    "status": "success",
+    "message": "DAG crm_daily: 3 tasks \u00b7 deps \u00b7 0 2 * * *",
+    "detail": {
+      "dag_id": "crm_daily",
+      "dag_name": "CRM Daily Load",
+      "engine": "airflow",
+      "tasks": [
+        "crm_daily.stg_cust_ingest",
+        "crm_daily.load_cust_acct",
+        "crm_daily.mart_cust_360"
+      ],
+      "task_names": [
+        "Stage customer landing file",
+        "Load customer & account masters",
+        "Build cust 360 marts (team A/B)"
+      ],
+      "spark_jobs": [],
+      "task_deps": {
+        "crm_daily.stg_cust_ingest": [],
+        "crm_daily.load_cust_acct": [
+          "crm_daily.stg_cust_ingest"
+        ],
+        "crm_daily.mart_cust_360": [
+          "crm_daily.load_cust_acct"
+        ]
+      },
+      "schedule": "0 2 * * *",
+      "owner": "etl.crm@demo.local",
+      "tags": [
+        "crm",
+        "party",
+        "on-prem"
+      ],
+      "agent": "OrchestrationScanner",
+      "phase": "top",
+      "tech": "airflow"
+    }
+  },
+  {
+    "seq": 50,
+    "name": "orch.repo_meta",
+    "status": "success",
+    "message": "Git warehouse repo \u00b7 teradata",
+    "detail": {
+      "remote": "https://git.corp.example/dw/crm-onprem-etl.git",
+      "branch": "main",
+      "databases": [
+        "legacy",
+        "marts",
+        "staging"
+      ],
+      "agent": "OrchestrationScanner",
+      "phase": "top"
+    }
+  },
+  {
+    "seq": 51,
+    "name": "agent.live.catalog",
+    "status": "running",
+    "message": "Starting live Cursor agent \u00b7 CatalogUsageHarvester",
+    "detail": {
+      "kind": "agent_start",
+      "runtime": "cursor_sdk",
+      "agent": "CatalogUsageHarvester",
+      "phase": "catalog"
+    }
+  },
+  {
+    "seq": 52,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "\u2500\u2500 CatalogUsageHarvester \u00b7 catalog \u2500\u2500\n$ cursor agent create \u00b7 CatalogUsageHarvester \u00b7 model=composer-2.5\n$ cwd /Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/party-customer-wave1/legacy\n$ agent_id agent-1ab22ef9-1183-4352-af69-599e6efeed83\n$ run run-765e1788-8898-4219-9d02-d1585431ddcc \u00b7 streaming\u2026\nScanning the current working directory for catalog or BI metadata and usage hints.Found key catalog and usage files. Reading them now.\nChecking catalog/tables.json, usage/report_log.csv, usage/query_log.csv, repo.json, and scheduler.json for metadata and usage hints.I have enough information to summarize my findings.\nChecking scheduler.json for BI hints.CatalogUsageHarvester has finished scanning the current directory. A concise summary of findings is being prepared.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "CatalogUsageHarvester",
+      "phase": "catalog"
+    }
+  },
+  {
+    "seq": 53,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "**CatalogUsageHarvester summary** (`party-customer-wave1/legacy`)\n**Catalog** \u2014 `catalog/tables.json`: 14 tables across `legacy`, `marts`, `archive_src`, `sandbox`. CRM core (`crm_cust_mstr`, `crm_acct_mstr`, `crm_party_role`, `crm_cust_acct_bridge`), staging, two near-duplicate 360 marts (`dm_cust_360_team_a` / `_b`), billing snap, archive, and low-use sandbox. Column stats, row counts, and flags (`unsound_logic`, `duplicate_of`, `retention_required`).\n**Usage \u2014 reports** \u2014 `usage/report_log.csv`: BI/report access by object. Dashboards: `exec_crm`, `billing_workspace`, `powerbi_crm`, `finance_pack`, `network_ops_bi`. Hot objects: `device_msisdn_map` (2200), `crm_acct_mstr` (1200), `dm_cust_360_team_a` (1100).\n**Usage \u2014 queries** \u2014 `usage/query_log.csv`: Consumer-level access. Top: `device_msisdn_map` \u2192 `network_ops` (9000), `crm_acct_mstr` \u2192 `billing_reports` (5100), `crm_cust_mstr` \u2192 `crm_360` (4200). Low use: `dm_cust_360_team_b` (12, last Mar 2026), `ref_acct_status`, `crm_contact_pref`.\n**Repo hints** \u2014 `repo.json`: Teradata on-prem; `catalog/` and `usage/` are discovery scan targets alongside `dags/`.\n**No other BI exports** \u2014 No Tableau/Power BI/Looker XML or lineage files beyond the CSV usage logs and table catalog.\n$ agent CatalogUsageHarvester finished \u00b7 status=finished",
+    "detail": {
+      "kind": "terminal",
+      "agent": "CatalogUsageHarvester",
+      "phase": "catalog"
+    }
+  },
+  {
+    "seq": 54,
+    "name": "agent.live.catalog.done",
+    "status": "success",
+    "message": "Cursor agent CatalogUsageHarvester completed",
+    "detail": {
+      "kind": "agent_done",
+      "runtime": "cursor_sdk",
+      "agent_id": "agent-1ab22ef9-1183-4352-af69-599e6efeed83",
+      "run_id": "run-765e1788-8898-4219-9d02-d1585431ddcc",
+      "status": "finished",
+      "agent": "CatalogUsageHarvester",
+      "phase": "catalog"
+    }
+  },
+  {
+    "seq": 55,
+    "name": "meta.catalog",
+    "status": "success",
+    "message": "Catalog: 15 tables",
+    "detail": {
+      "tables": [
+        "crm_cust_mstr",
+        "crm_acct_mstr",
+        "crm_party_role",
+        "crm_cust_acct_bridge",
+        "dm_cust_360_team_a",
+        "dm_cust_360_team_b",
+        "stg_cust_daily",
+        "stg_acct_daily",
+        "cust_hist_2012",
+        "tmp_cust_experiment",
+        "crm_addr",
+        "crm_contact_pref",
+        "ref_acct_status",
+        "dm_billing_cust_snap",
+        "device_msisdn_map"
+      ],
+      "agent": "CatalogUsageHarvester",
+      "phase": "metadata",
+      "tech": "catalog"
+    }
+  },
+  {
+    "seq": 56,
+    "name": "meta.usage_bi",
+    "status": "success",
+    "message": "Usage & BI harvest: 13 objects \u00b7 12 consumers (incl. Cognos-style reports)",
+    "detail": {
+      "objects_with_usage": 13,
+      "consumers_sample": [
+        "Account Health Pack",
+        "Billing Join Report",
+        "Customer 360 Report",
+        "Month-end Billing Snap",
+        "Network Device Map",
+        "Self-serve 360",
+        "adhoc_analyst",
+        "billing_reports",
+        "crm_360",
+        "etl_ops",
+        "marketing",
+        "network_ops"
+      ],
+      "agent": "CatalogUsageHarvester",
+      "phase": "metadata",
+      "tech": "cognos"
+    }
+  },
+  {
+    "seq": 57,
+    "name": "discover.jobs",
+    "status": "success",
+    "message": "Orchestration findings: 6 DAG/task nodes",
+    "detail": {
+      "jobs": 6,
+      "dags": 2,
+      "agent": "OrchestrationScanner",
+      "phase": "top"
+    }
+  },
+  {
+    "seq": 58,
+    "name": "terminal.log",
+    "status": "running",
+    "message": "Discovery scan complete.",
+    "detail": {
+      "kind": "terminal",
+      "agent": "DiscoveryCoordinator",
+      "phase": "complete"
+    }
+  },
+  {
+    "seq": 59,
+    "name": "complete",
+    "status": "success",
+    "message": "Discovery scan complete \u2014 run Inventory agents for inventory & lineage",
+    "detail": {
+      "pipeline": "discover",
+      "objects": 0,
+      "jobs": 6,
+      "sql_files": 4,
+      "scripts": 4,
+      "spark_files": 0,
+      "tables_inferred": 8,
+      "schedulers": 0,
+      "dags": 2,
+      "lineage_edges": 0,
+      "technologies": [
+        "sql",
+        "shell",
+        "airflow",
+        "scheduler",
+        "cognos",
+        "catalog"
+      ],
+      "repo_remote": "https://git.corp.example/dw/crm-onprem-etl.git",
+      "warehouse_engine": "teradata",
+      "run_id": 56,
+      "runtime": "cursor_sdk",
+      "confidence": 0.9,
+      "outcomes": {
+        "scan": true,
+        "inventory": false,
+        "lineage": false
+      },
+      "terminal_open": true,
+      "agent": "DiscoveryCoordinator",
+      "phase": "complete"
+    }
+  }
+]

@@ -19,7 +19,7 @@ with DAG(
     start_date=datetime(2024, 1, 1),
     schedule_interval="@daily",
     catchup=False,
-    tags=["lumina", "build", "migrate", "airflow_k8s"],
+    tags=["mirage", "build", "migrate", "airflow_k8s"],
 ) as dag:
     start = EmptyOperator(task_id="start")
     land = EmptyOperator(task_id="land_to_warehouse")

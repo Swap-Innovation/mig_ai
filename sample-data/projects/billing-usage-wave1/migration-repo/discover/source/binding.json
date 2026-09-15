@@ -1,12 +1,15 @@
 {
-  "project_id": 3,
-  "name": "DWH-M",
+  "project_id": 2,
+  "name": "Billing & Usage Wave-1",
   "legacy_source_type": "sample",
-  "legacy_root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/billing-usage-wave1/legacy",
+  "legacy_root": "/Users/A104007227/Desktop/Myspace/Prem_to_Cloud_migration/sample-data/projects/dwh-m/legacy",
   "sample_slug": "billing-usage-wave1",
-  "estate_label": "Sample: billing-usage-wave1",
+  "workspace_slug": "billing-usage-wave1",
+  "source_sample_id": "dwh-m",
+  "estate_label": "Sample: dwh-m \u2192 workspace billing-usage-wave1",
   "git_url": "",
   "git_branch": "main",
   "git_commit": "",
-  "bound_at": "2026-09-08T06:15:09.187705Z"
+  "bound_at": "2026-09-11T07:57:42.694184Z",
+  "migration_repo": "../sample-data/projects/billing-usage-wave1/migration-repo"
 }

@@ -8,7 +8,8 @@ import { Kpi } from "@/components/phases/discovery/shared";
 const VIEWS: { id: string; label: string }[] = [
   { id: "sources", label: "Sources" },
   { id: "console", label: "Discovery console" },
-  { id: "inventory", label: "Technical inventory" },
+  { id: "profiling", label: "Profiling" },
+  { id: "inventory", label: "Profiling" }, // legacy alias
   { id: "lineage", label: "Lineage graph" },
   { id: "jobs", label: "Job DAG" },
   { id: "review", label: "Review & sign-off" },
@@ -27,7 +28,7 @@ export function Phase1Discovery({
   view,
   ...props
 }: Props) {
-  const initial = view || (embedded ? "inventory" : "sources");
+  const initial = view || (embedded ? "profiling" : "sources");
   const [sub, setSub] = useState(initial);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export function Phase1Discovery({
     String(props.discoveryRun?.status || "").toLowerCase()
   );
 
-  const activeView = embedded || view ? view || "inventory" : sub;
+  const activeView = embedded || view ? view || "profiling" : sub;
 
   if (embedded || view) {
     return (
@@ -126,11 +127,11 @@ export function Phase1Discovery({
       )}
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Kpi label="Inventory objects" value={props.inventory.length} hint="Tables, scripts, jobs" />
+        <Kpi label="Profiling objects" value={props.inventory.length} hint="Tables, scripts, jobs" />
         <Kpi
           label="Tables / columns"
           value={`${profileStats.tables} / ${profileStats.cols}`}
-          hint="Column-level inventory"
+          hint="Column-level profiling"
         />
         <Kpi
           label="Lineage edges"

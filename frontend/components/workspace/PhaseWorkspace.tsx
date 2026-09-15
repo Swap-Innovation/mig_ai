@@ -4,17 +4,27 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
+import { pilotActionChatLines } from "@/lib/agentChat";
 import {
   NAV_PHASES,
+  activeWaveSummary,
   getPhase,
+  getToolByPhase,
   phaseHref,
+  toolHref,
+  SUITE_GALLERY_HREF,
+  FORGE_ACCELERATOR_TASKS,
   type PhaseId,
 } from "@/lib/phases";
 import { PageHeader, StatusStrip } from "@/components/shell/PageHeader";
 import { buildPhaseStepNav } from "@/components/shell/PhaseSubNav";
 import { useWorkspace } from "@/components/workspace/WorkspaceProvider";
+import { SuiteThemeShell } from "@/components/workspace/SuiteThemeShell";
+import { ForgeToolSuite } from "@/components/workspace/ForgeToolSuite";
+import { ForgeAcceleratorWorkbench } from "@/components/workspace/ForgeAcceleratorWorkbench";
 import { DiscoveryPhase } from "@/components/phases/discovery/DiscoveryPhase";
 import { Phase0Mobilisation } from "@/components/phases/Phase0Mobilisation";
+import { PhasePlan } from "@/components/PhasePlan";
 import { Phase2Disposition } from "@/components/Phase2Disposition";
 import { Phase3SidMapping } from "@/components/Phase3SidMapping";
 import { Phase4Metadata } from "@/components/Phase4Metadata";
@@ -36,13 +46,13 @@ export function PhaseWorkspace({ phaseId, viewId, hub }: Props) {
   const view = viewId || phase?.defaultView;
 
   useEffect(() => {
-    // Setup (Phase 0) is hidden from the demo path — bounce to Discovery
     if (phaseId === "0_mobilisation") {
       router.replace(phaseHref("1_discovery"));
       return;
     }
     if (!ws.pid) return;
     if (phaseId === "1_discovery") ws.loadPhase1();
+    if (phaseId === "2_plan") ws.loadPhase1();
     if (phaseId === "2_disposition") {
       ws.loadPhase1();
       ws.loadPhase2();
@@ -53,8 +63,10 @@ export function PhaseWorkspace({ phaseId, viewId, hub }: Props) {
       ws.pollAgents();
     }
     if (phaseId === "4_build") {
+      ws.loadPhase1();
       ws.loadBuild();
       ws.loadPhase4();
+      ws.loadPhase5();
     }
     if (phaseId === "4_metadata") {
       router.replace(phaseHref("3_mapping", "entities"));
@@ -86,12 +98,90 @@ export function PhaseWorkspace({ phaseId, viewId, hub }: Props) {
   }
 
   const activeView = phase.views.find((v) => v.id === view);
+  const tool = getToolByPhase(phaseId);
   const title = activeView?.label || phase.title;
-  const subtitle = `${phase.number}. ${phase.short} · ${activeView?.group || "Space"}`;
+  const subtitle = activeView?.group || tool?.tagline || phase.focus;
   const stepNav = buildPhaseStepNav(phaseId, view);
+  const resolvedView = view || phase.defaultView;
+
+  const fill =
+    (phaseId === "1_discovery" &&
+      (view === "lineage" ||
+        view === "console" ||
+        view === "profiling" ||
+        view === "inventory" ||
+        view === "review" ||
+        view === "assessment" ||
+        view === "signoff")) ||
+    (phaseId === "2_plan" && (view === "overview" || view === "approve")) ||
+    (phaseId === "3_mapping" &&
+      (view === "workbench" || view === "gaps" || view === "entities")) ||
+    (phaseId === "4_build" &&
+      (view === "suite" ||
+        view === "tables" ||
+        view === "scripts" ||
+        view === "pipelines" ||
+        view === "reports" ||
+        view === "data" ||
+        view === "code" ||
+        view === "dags" ||
+        view === "approve" ||
+        view === "accelerators" ||
+        view === "cataloguer" ||
+        view === "composer" ||
+        view === "transform" ||
+        view === "contracts")) ||
+    (phaseId === "5_pilot_product" &&
+      (view === "reviews" ||
+        view === "product" ||
+        view === "test_env" ||
+        view === "pipeline" ||
+        view === "reconcile"));
+
+  const hideStatus = phaseId === "1_discovery" ||
+    (phaseId === "3_mapping" && (view === "workbench" || view === "gaps"));
+
+  // Forge owns its own Applications / tool theme chrome
+  if (phaseId === "4_build") {
+    return (
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+        {renderPhase(phaseId, resolvedView, ws, router)}
+      </div>
+    );
+  }
+
+  if (tool) {
+    const viewTabs = phase.views.map((v) => ({
+      id: v.id,
+      label: v.label,
+      group: v.group,
+    }));
+    return (
+      <SuiteThemeShell
+        tool={tool}
+        view={resolvedView}
+        viewTabs={viewTabs}
+        projectName={ws.project?.name}
+        title={title}
+        subtitle={subtitle}
+        actions={<PhaseActions phaseId={phaseId} view={view} />}
+        banner={
+          !hideStatus ? (
+            <div className="suite-theme-status">
+              <PhaseStatus phaseId={phaseId} view={view} />
+            </div>
+          ) : null
+        }
+        fill={!!fill}
+      >
+        {renderPhase(phaseId, resolvedView, ws, router)}
+      </SuiteThemeShell>
+    );
+  }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div className="suite-theme forge-pad flex min-h-0 flex-1 flex-col overflow-hidden">
+      <div className="forge-pad-atmosphere" aria-hidden />
       <PageHeader
         key={`${phaseId}-${view}`}
         title={title}
@@ -99,33 +189,15 @@ export function PhaseWorkspace({ phaseId, viewId, hub }: Props) {
         stepNav={stepNav}
         actions={<PhaseActions phaseId={phaseId} view={view} />}
       />
-      {!(
-        (phaseId === "1_discovery" &&
-          (view === "lineage" || view === "console" || view === "inventory")) ||
-        (phaseId === "3_mapping" && (view === "workbench" || view === "gaps"))
-      ) ? (
-        <PhaseStatus phaseId={phaseId} view={view} />
-      ) : null}
+      {!hideStatus ? <PhaseStatus phaseId={phaseId} view={view} /> : null}
       <div
         className={
-          (phaseId === "1_discovery" &&
-            (view === "lineage" || view === "console" || view === "inventory")) ||
-          (phaseId === "3_mapping" &&
-            (view === "workbench" || view === "gaps" || view === "entities")) ||
-          (phaseId === "4_build" &&
-            (view === "tables" || view === "code" || view === "dags" || view === "approve")) ||
-          (phaseId === "5_pilot_product" &&
-            (view === "agents" ||
-              view === "reviews" ||
-              view === "product" ||
-              view === "test_env" ||
-              view === "pipeline" ||
-              view === "reconcile"))
-            ? "flex min-h-0 flex-1 flex-col overflow-hidden"
-            : "min-h-0 flex-1 overflow-auto"
+          fill
+            ? "relative z-[1] flex min-h-0 flex-1 flex-col overflow-hidden"
+            : "relative z-[1] min-h-0 flex-1 overflow-auto"
         }
       >
-        {renderPhase(phaseId, view || phase.defaultView, ws, router)}
+        {renderPhase(phaseId, resolvedView, ws, router)}
       </div>
     </div>
   );
@@ -258,6 +330,26 @@ function PhaseStatus({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
       />
     );
   }
+  if (phaseId === "2_plan") {
+    const waves = ws.project?.wave_plan?.waves || [];
+    const active = activeWaveSummary(ws.project);
+    return (
+      <StatusStrip
+        items={[
+          { label: "Profiling", value: ws.inventory.length },
+          { label: "Waves", value: waves.length || "—" },
+          {
+            label: "Active",
+            value: active ? active.name : "—",
+          },
+          {
+            label: "Plan",
+            value: ws.project?.plan_approved ? "Approved" : "Open",
+          },
+        ]}
+      />
+    );
+  }
   if (phaseId === "3_mapping") {
     const entityCount = new Set(
       (ws.mappings || [])
@@ -318,12 +410,27 @@ function PhaseStatus({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
   }
   if (phaseId === "4_build") {
     const by = ws.buildSummary?.by_kind || {};
+    if (view === "suite") {
+      return (
+        <StatusStrip
+          items={[
+            { label: "Tools", value: 5 },
+            { label: "Survivors", value: ws.buildSummary?.survivors ?? "—" },
+            { label: "Artifacts", value: ws.buildArtifacts.length },
+            {
+              label: "Approved",
+              value: ws.project?.build_approved ? "Yes" : "No",
+            },
+          ]}
+        />
+      );
+    }
     return (
       <StatusStrip
         items={[
           { label: "Tables", value: by.table ?? 0 },
-          { label: "Code", value: by.code ?? 0 },
-          { label: "DAGs", value: by.dag ?? 0 },
+          { label: "Scripts", value: by.code ?? 0 },
+          { label: "Pipelines", value: by.dag ?? 0 },
           {
             label: "Approved",
             value: ws.project?.build_approved ? "Yes" : "No",
@@ -353,6 +460,75 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
   // Gate CTA for approval / phase-exit. Header ← / → always walks Discover → Retire;
   // that pager is navigation only and does not replace these gated actions.
 
+  if (phaseId === "2_plan") {
+    const approved = !!ws.project?.plan_approved;
+    const canApprove = [
+      "change_board",
+      "architect",
+      "product_owner",
+      "engineer",
+    ].includes(ws.session.role);
+    const hasWaves = (ws.project?.wave_plan?.waves || []).length > 0;
+
+    if (view === "overview") {
+      if (approved) {
+        return (
+          <Link href={SUITE_GALLERY_HREF} className="btn" title="Return to Stage map">
+            Stage map
+          </Link>
+        );
+      }
+      return (
+        <Link
+          href={toolHref("horizon", "approve")}
+          className="btn"
+          title={
+            hasWaves
+              ? "Review wave scope and approve"
+              : "Build waves first, then review and approve"
+          }
+        >
+          Review & approve
+        </Link>
+      );
+    }
+
+    if (view !== "approve") return null;
+
+    if (approved) {
+      return (
+        <Link href={SUITE_GALLERY_HREF} className="btn" title="Return to Stage map">
+          Stage map
+        </Link>
+      );
+    }
+
+    return (
+      <button
+        type="button"
+        className="btn"
+        disabled={ws.busy || !canApprove || !hasWaves}
+        title={
+          !canApprove
+            ? "Requires engineer, architect, product owner, or change board"
+            : !hasWaves
+              ? "Build waves on Overview first"
+              : "Approve wave plan and return to Gallery"
+        }
+        onClick={() =>
+          void ws
+            .run("Approve wave plan", () =>
+              api(`/projects/${ws.pid}/plan/approve`, { method: "POST" })
+            )
+            .then(() => ws.refreshProject())
+            .then(() => router.push(SUITE_GALLERY_HREF))
+        }
+      >
+        Approve → Stage map
+      </button>
+    );
+  }
+
   if (phaseId === "2_disposition") {
     if (view !== "approve") return null;
 
@@ -364,12 +540,11 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
       "engineer",
     ].includes(ws.session.role);
     const hasRegister = (ws.dispositions?.length || 0) > 0;
-    const mapHref = phaseHref("3_mapping");
 
     if (approved) {
       return (
-        <Link href={mapHref} className="btn" title="Open Align (SID Mapping & Metadata)">
-          Continue to Align
+        <Link href={SUITE_GALLERY_HREF} className="btn" title="Return to Stage map">
+          Stage map
         </Link>
       );
     }
@@ -384,17 +559,18 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
             ? "Requires engineer, architect, product owner, or change board"
             : !hasRegister
               ? "Run Analyze on the Board first"
-              : "Approve disposition register and open Align"
+              : "Approve disposition register and return to Gallery"
         }
         onClick={() =>
           void ws
             .run("Change Board approval", () =>
               api(`/projects/${ws.pid}/disposition/approve`, { method: "POST" })
             )
-            .then(() => router.push(mapHref))
+            .then(() => ws.refreshProject())
+            .then(() => router.push(SUITE_GALLERY_HREF))
         }
       >
-        Approve → Align
+        Approve → Stage map
       </button>
     );
   }
@@ -410,22 +586,20 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
       "engineer",
     ].includes(ws.session.role);
     const completenessOk = !!ws.completeness?.complete;
-    const buildHref = phaseHref("4_build");
-    const entitiesHref = phaseHref("3_mapping", "entities");
 
     if (metadataComplete) {
-      if (view === "approve" || view === "entities") {
+      if (view === "approve") {
         return (
-          <Link href={buildHref} className="btn" title="Open Platform Conversion (Build)">
-            Continue to Build
+          <Link href={SUITE_GALLERY_HREF} className="btn" title="Return to Stage map">
+            Stage map
           </Link>
         );
       }
       return null;
     }
 
-    // Entities owns the metadata gate (Complete → Build)
-    if (view === "entities" && mappingApproved) {
+    // Approve owns the metadata gate (Complete → Stage map)
+    if (view === "approve" && mappingApproved) {
       return (
         <button
           type="button"
@@ -435,8 +609,8 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
             !canCompleteMetadata
               ? "Requires product owner, data owner, change board, architect, or engineer"
               : !completenessOk
-                ? "Will seed SID entities from mappings, then open Build"
-                : "Mark metadata complete and open Build"
+                ? "Will seed SID entities from mappings, then return to Gallery"
+                : "Mark metadata complete and return to Gallery"
           }
           onClick={() =>
             void ws
@@ -454,20 +628,11 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
                 });
                 await ws.refreshProject();
               })
-              .then(() => router.push(buildHref))
+              .then(() => router.push(SUITE_GALLERY_HREF))
           }
         >
-          Complete → Build
+          Complete → Stage map
         </button>
-      );
-    }
-
-    // Approve page: overview + pack approval only (CTA lives on the page)
-    if (view === "approve" && mappingApproved) {
-      return (
-        <Link href={entitiesHref} className="btn" title="Open Entities to finish ownership">
-          Continue to Entities
-        </Link>
       );
     }
 
@@ -485,12 +650,11 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
       "product_owner",
     ].includes(ws.session.role);
     const hasPack = (ws.buildArtifacts?.length || 0) > 0;
-    const pilotHref = phaseHref("5_pilot_product");
 
     if (approved) {
       return (
-        <Link href={pilotHref} className="btn" title="Open Pilot Data Product">
-          Continue to Pilot
+        <Link href={toolHref("prove")} className="btn" title="Continue to Pilot">
+          Continue → Pilot
         </Link>
       );
     }
@@ -504,18 +668,73 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
           !canApprove
             ? "Requires engineer, architect, product owner, or change board"
             : !hasPack
-              ? "Generate the Build pack on Tables / Code / DAGs first"
-              : "Approve conversion pack and open Pilot"
+              ? "Generate in-scope convert apps from Forge apps first"
+              : "Approve build and open Pilot"
         }
         onClick={() =>
           void ws
             .run("Build pack approval", () =>
               api(`/projects/${ws.pid}/build/approve`, { method: "POST" })
             )
-            .then(() => router.push(pilotHref))
+            .then(() => ws.refreshProject())
+            .then(() => router.push(toolHref("prove")))
         }
       >
-        Approve → Pilot
+        Approve build → Pilot
+      </button>
+    );
+  }
+
+  if (phaseId === "5_pilot_product") {
+    // Gate exit on Reconcile — Continue → Migrate
+    if (view !== "reconcile") return null;
+
+    const reconcilePassed = !!(
+      ws.reconcileLatest?.passed ?? ws.reconcileLatest?.metrics?.passed
+    );
+    const alreadyMigrate =
+      ws.project?.phase === "6_migrate" || !!ws.project?.prod_env_ready;
+    const canContinue = [
+      "architect",
+      "engineer",
+      "product_owner",
+      "change_board",
+    ].includes(ws.session.role);
+
+    if (alreadyMigrate) {
+      return (
+        <Link
+          href={toolHref("transit")}
+          className="btn"
+          title="Open Migrate cutover"
+        >
+          Continue → Migrate
+        </Link>
+      );
+    }
+
+    return (
+      <button
+        type="button"
+        className="btn"
+        disabled={ws.busy || !canContinue || !reconcilePassed}
+        title={
+          !canContinue
+            ? "Requires engineer, architect, product owner, or change board"
+            : !reconcilePassed
+              ? "Pass Reconcile within tolerance first"
+              : "Unlock Migrate and open cutover"
+        }
+        onClick={() =>
+          void ws
+            .run("Continue to Migrate", () =>
+              api(`/projects/${ws.pid}/pilot/continue`, { method: "POST" })
+            )
+            .then(() => ws.refreshProject())
+            .then(() => router.push(toolHref("transit")))
+        }
+      >
+        Continue → Migrate
       </button>
     );
   }
@@ -524,11 +743,10 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
     if (view !== "signoff") return null;
     const complete = ws.cutover?.status === "complete";
     const signed = !!(ws.cutover?.prod_env?.signoff?.signed_at || ws.project?.prod_env?.signoff?.signed_at);
-    const retireHref = phaseHref("7_decommission");
     if (complete || signed) {
       return (
-        <Link href={retireHref} className="btn" title="Open Decommission & Hypercare">
-          Continue to Retire
+        <Link href={SUITE_GALLERY_HREF} className="btn" title="Return to Stage map">
+          Stage map
         </Link>
       );
     }
@@ -537,36 +755,216 @@ function PhaseActions({ phaseId, view }: { phaseId: PhaseId; view?: string }) {
 
   if (phaseId === "7_decommission") {
     if (view !== "close") return null;
-    const closed =
-      !!ws.project?.change_closed ||
-      ws.project?.status === "closed" ||
-      ws.project?.status === "pilot_complete";
-    if (closed) {
+
+    const journeyClosed =
+      !!ws.project?.change_closed || ws.project?.status === "closed";
+    const readyToClose =
+      journeyClosed ||
+      ws.project?.status === "pilot_complete" ||
+      ws.cutover?.status === "complete";
+    const canClose = [
+      "change_board",
+      "architect",
+      "product_owner",
+      "engineer",
+    ].includes(ws.session.role);
+
+    if (journeyClosed) {
       return (
-        <Link href="/workspace" className="btn" title="Back to workspace home">
-          Journey complete
+        <Link
+          href="/workspace"
+          className="btn"
+          title="Open Dashboard — this estate is complete"
+          onClick={() => {
+            void ws.loadPortfolio({ projectId: null, days: 30 });
+          }}
+        >
+          Journey complete · Dashboard
+        </Link>
+      );
+    }
+
+    if (!readyToClose) return null;
+
+    return (
+      <button
+        type="button"
+        className="btn"
+        disabled={ws.busy || !canClose}
+        title={
+          !canClose
+            ? "Requires Change Board or Architect"
+            : "Close the migration change, mark this estate complete on the Dashboard"
+        }
+        onClick={() =>
+          void ws
+            .run("Complete journey", () =>
+              api(`/projects/${ws.pid}/change/close`, {
+                method: "POST",
+                body: JSON.stringify({ finalize: true }),
+              })
+            )
+            .then(() => ws.refreshProject())
+            .then(() => ws.loadPhase67())
+            .then(() => ws.loadPortfolio({ projectId: null, days: 30 }))
+            .then(() => router.push("/workspace"))
+        }
+      >
+        Complete journey → Dashboard
+      </button>
+    );
+  }
+
+  if (phaseId !== "1_discovery") return null;
+
+  const v = view || "profiling";
+  const discoverRun = ws.discoveryRunDiscover;
+  const inventoryRun = ws.discoveryRunInventory;
+  const discoverStatus = String(discoverRun?.status || "").toLowerCase();
+  const inventoryStatus = String(inventoryRun?.status || "").toLowerCase();
+  const discoverActive = ["queued", "running"].includes(discoverStatus);
+  const inventoryActive = ["queued", "running"].includes(inventoryStatus);
+  const discoverDone = discoverStatus === "completed";
+  const estateBound = !!(
+    ws.estate?.exists ||
+    ws.project?.sample_slug ||
+    ws.project?.legacy_root
+  );
+  const cursorReady = ws.llmStatus?.cursor_configured !== false;
+
+  const runDiscover = () =>
+    void ws.run("Discovery scan queued", async () => {
+      const result = await api<any>(`/projects/${ws.pid}/discovery/run`, {
+        method: "POST",
+        body: JSON.stringify({ pipeline: "discover" }),
+      });
+      if (result?.run_id) {
+        const detail = await api(`/projects/${ws.pid}/discovery/runs/${result.run_id}`);
+        ws.setDiscoveryRunDiscover(detail);
+        ws.setDiscoveryRun(detail);
+      }
+      await ws.loadPhase1();
+      router.push(phaseHref("1_discovery", "console"));
+      return result;
+    });
+
+  const runInventory = () =>
+    void ws.run("Profiling & lineage queued", async () => {
+      const result = await api<any>(`/projects/${ws.pid}/discovery/run`, {
+        method: "POST",
+        body: JSON.stringify({ pipeline: "inventory" }),
+      });
+      if (result?.run_id) {
+        const detail = await api(`/projects/${ws.pid}/discovery/runs/${result.run_id}`);
+        ws.setDiscoveryRunInventory(detail);
+        ws.setDiscoveryRun(detail);
+      }
+      await ws.loadPhase1();
+      router.push(phaseHref("1_discovery", "profiling"));
+      return result;
+    });
+
+  if (v === "sources") {
+    const canRun = estateBound && !ws.busy && !discoverActive && cursorReady;
+    return (
+      <button
+        type="button"
+        className="btn text-xs"
+        disabled={!canRun}
+        title={
+          !estateBound
+            ? "Connect a source first"
+            : !cursorReady
+              ? "Set CURSOR_API_KEY"
+              : discoverActive
+                ? "Discovery in progress"
+                : "Start discovery scan"
+        }
+        onClick={runDiscover}
+      >
+        {discoverActive ? "Scanning…" : "Start discovery"}
+      </button>
+    );
+  }
+
+  if (v === "console") {
+    const canRerun =
+      (discoverDone || discoverStatus === "failed" || !discoverRun) &&
+      !ws.busy &&
+      !discoverActive &&
+      estateBound;
+    return (
+      <button
+        type="button"
+        className="btn text-xs"
+        disabled={!canRerun}
+        title={
+          discoverActive
+            ? "Discovery scan in progress"
+            : !estateBound
+              ? "Connect a source first"
+              : "Run discovery scan"
+        }
+        onClick={runDiscover}
+      >
+        {discoverActive
+          ? "Running…"
+          : discoverRun
+            ? "Re-run scan"
+            : "Run scan"}
+      </button>
+    );
+  }
+
+  if (v === "profiling" || v === "inventory" || v === "usage") {
+    const canRun =
+      !ws.busy &&
+      !inventoryActive &&
+      estateBound &&
+      (discoverDone ||
+        (ws.discoveryRuns || []).some(
+          (r: any) =>
+            String((r.summary || {}).pipeline || "discover").toLowerCase() ===
+              "discover" &&
+            String(r.status || "").toLowerCase() === "completed"
+        ));
+    const label = inventoryActive
+      ? "Profiling…"
+      : inventoryRun || (ws.inventory?.length || 0) > 0
+        ? "Re-run profiling"
+        : "Run profiling";
+    return (
+      <button
+        type="button"
+        className="btn text-xs"
+        disabled={!canRun}
+        title={
+          !estateBound
+            ? "Connect a source first"
+            : !discoverDone
+              ? "Complete Activity scan first"
+              : "Run InventoryProfiler & LineageStitcher"
+        }
+        onClick={runInventory}
+      >
+        {label}
+      </button>
+    );
+  }
+
+  if (v === "lineage" || v === "jobs") {
+    return null;
+  }
+
+  if (v === "review" || v === "assessment" || v === "signoff") {
+    if (ws.project?.inventory_signed_off) {
+      return (
+        <Link href={toolHref("horizon")} className="btn text-xs" title="Open Plan · Mirage Horizon">
+          Continue → Plan
         </Link>
       );
     }
     return null;
-  }
-
-  if (phaseId !== "1_discovery") return null;
-  if (view !== "review" && view !== "assessment" && view !== "signoff") {
-    return null;
-  }
-
-  const signed = !!ws.project?.inventory_signed_off;
-  const decideHref = phaseHref("2_disposition");
-
-  // Approval CTA lives on the Review page (with HITL Accept/Flag). Header only
-  // continues after the gate is passed — one destination, one primary action.
-  if (signed) {
-    return (
-      <Link href={decideHref} className="btn" title="Open Disposition (Decide)">
-        Continue to Decide
-      </Link>
-    );
   }
 
   return null;
@@ -678,7 +1076,7 @@ function renderPhase(
           )
         }
         onProbeHub={() =>
-          ws.run("UDP Hub probe", () =>
+          ws.run("Platform Hub probe", () =>
             api(`/projects/${pid}/udp-hub/probe`, { method: "POST" }).then(() =>
               ws.loadPhase0()
             )
@@ -697,7 +1095,14 @@ function renderPhase(
   }
 
   if (phaseId === "1_discovery") {
-    const bleed = view === "lineage" || view === "console" || view === "inventory";
+    const bleed =
+      view === "lineage" ||
+      view === "console" ||
+      view === "profiling" ||
+      view === "inventory" ||
+      view === "review" ||
+      view === "assessment" ||
+      view === "signoff";
     return (
       <div className={bleed ? "flex min-h-0 flex-1 flex-col overflow-hidden" : "space-y-4 p-5"}>
         <DiscoveryPhase
@@ -758,7 +1163,7 @@ function renderPhase(
           onRunDiscovery={(pipeline = "discover") =>
             ws.run(
               pipeline === "inventory"
-                ? "Inventory & lineage queued"
+                ? "Profiling & lineage queued"
                 : "Discovery scan queued",
               async () => {
                 const result = await api<any>(`/projects/${pid}/discovery/run`, {
@@ -780,7 +1185,7 @@ function renderPhase(
                 if (pipeline === "discover") {
                   router.push(phaseHref("1_discovery", "console"));
                 } else {
-                  router.push(phaseHref("1_discovery", "inventory"));
+                  router.push(phaseHref("1_discovery", "profiling"));
                 }
                 return result;
               }
@@ -808,10 +1213,26 @@ function renderPhase(
               })
             );
             await ws.refreshProject();
-            router.push(phaseHref("2_disposition"));
+            router.push(toolHref("horizon"));
           }}
         />
       </div>
+    );
+  }
+
+  if (phaseId === "2_plan") {
+    return (
+      <PhasePlan
+        view={view}
+        project={ws.project}
+        inventory={ws.inventory}
+        lineage={ws.lineage}
+        jobs={ws.jobs}
+        busy={ws.busy}
+        sessionRole={ws.session.role}
+        onRefreshProject={ws.refreshProject}
+        onMsg={(m) => ws.setMsg(m)}
+      />
     );
   }
 
@@ -824,6 +1245,7 @@ function renderPhase(
         dispositions={ws.dispositions}
         benefits={ws.benefits}
         inventorySignedOff={!!ws.project.inventory_signed_off}
+        planApproved={!!ws.project.plan_approved}
         busy={ws.busy}
         msg={ws.msg}
         sessionRole={ws.session.role}
@@ -875,7 +1297,8 @@ function renderPhase(
           await ws.run("Change Board approval", () =>
             api(`/projects/${pid}/disposition/approve`, { method: "POST" })
           );
-          router.push(phaseHref("3_mapping"));
+          await ws.refreshProject();
+          router.push(SUITE_GALLERY_HREF);
         }}
       />
     );
@@ -916,7 +1339,8 @@ function renderPhase(
             await ws.run("Metadata phase gate", () =>
               api(`/projects/${pid}/metadata/complete`, { method: "POST" })
             );
-            router.push(phaseHref("4_build"));
+            await ws.refreshProject();
+            router.push(SUITE_GALLERY_HREF);
           }}
         />
       );
@@ -939,7 +1363,7 @@ function renderPhase(
         onGenerate={async (opts) => {
           const advanced = !!opts?.advanced_ai;
           return ws.run(
-            advanced ? "SID mapping + Model AI" : "SID mapping agent",
+            advanced ? "SID mapping + semantic enrichment" : "SID mapping agent",
             async () => {
               const result = await api<any>(`/projects/${pid}/mappings/generate`, {
                 method: "POST",
@@ -997,6 +1421,66 @@ function renderPhase(
   }
 
   if (phaseId === "4_build") {
+    const accelViews = [
+      "accelerators",
+      "cataloguer",
+      "composer",
+      "transform",
+      "contracts",
+    ];
+    if (view === "suite") {
+      return (
+        <ForgeToolSuite
+          project={ws.project}
+          inventory={ws.inventory}
+          summary={ws.buildSummary}
+          artifacts={ws.buildArtifacts}
+          metadataComplete={!!ws.project.metadata_complete}
+          buildApproved={!!ws.project.build_approved}
+          busy={ws.busy}
+          agentRuns={ws.agentRuns.filter((r) =>
+            FORGE_ACCELERATOR_TASKS.includes(r.task)
+          )}
+          onApproveBuild={() =>
+            ws.run("Build pack approval", async () => {
+              await api(`/projects/${pid}/build/approve`, { method: "POST" });
+              await ws.refreshProject();
+              router.push(toolHref("prove"));
+            })
+          }
+        />
+      );
+    }
+    if (accelViews.includes(view || "")) {
+      return (
+        <ForgeAcceleratorWorkbench
+          project={ws.project}
+          view={view || "accelerators"}
+          buildApproved={!!ws.project.build_approved}
+          metadataComplete={!!ws.project.metadata_complete}
+          agentRuns={ws.agentRuns.filter((r) =>
+            FORGE_ACCELERATOR_TASKS.includes(r.task)
+          )}
+          products={ws.products}
+          busy={ws.busy}
+          msg={ws.msg}
+          onPollAgents={() => ws.pollAgents()}
+          onRunAgent={(task, payload) =>
+            ws.run(`Agent: ${task}`, async () => {
+              const runRow = await api(`/projects/${pid}/agents/${task}/runs`, {
+                method: "POST",
+                body: JSON.stringify({ payload }),
+              });
+              ws.setAgentRuns((prev) => [
+                runRow,
+                ...prev.filter((r) => r.id !== runRow.id),
+              ]);
+              return runRow;
+            })
+          }
+        />
+      );
+    }
     return (
       <PhaseBuild
         embedded
@@ -1008,12 +1492,18 @@ function renderPhase(
         busy={ws.busy}
         msg={ws.msg}
         sessionRole={ws.session.role}
-        onGenerate={(targets) =>
+        onGenerate={(targets, tool) =>
           ws.run("Generate Build pack", () =>
             api(`/projects/${pid}/build/generate`, {
               method: "POST",
-              body: JSON.stringify({ targets: targets || {} }),
-            }).then(() => ws.loadBuild())
+              body: JSON.stringify({
+                targets: targets || {},
+                ...(tool ? { tool } : {}),
+              }),
+            }).then(async () => {
+              await ws.loadBuild();
+              // Stay on the convert tool — Generate is source→target only
+            })
           )
         }
         onSaveTargets={(targets) =>
@@ -1036,6 +1526,7 @@ function renderPhase(
           ws.run("Build pack approval", async () => {
             await api(`/projects/${pid}/build/approve`, { method: "POST" });
             await ws.refreshProject();
+            router.push(toolHref("prove"));
           })
         }
       />
@@ -1090,7 +1581,16 @@ function renderPhase(
                 decision,
                 notes: decision === "approve" ? "Demo approval" : "Needs work",
               }),
-            }).then(() => ws.loadPhase5())
+            }).then(() => {
+              ws.appendAgentChatLines(
+                pilotActionChatLines(
+                  "reviews",
+                  `Review #${id} ${decision === "approve" ? "approved" : "rejected"}`,
+                  pid
+                )
+              );
+              return ws.loadPhase5();
+            })
           )
         }
         onBulkReview={(decision) =>
@@ -1106,7 +1606,18 @@ function renderPhase(
                       ? "Bulk demo approval"
                       : "Bulk reject",
                 }),
-              }).then(() => ws.loadPhase5())
+              }).then(() => {
+                ws.appendAgentChatLines(
+                  pilotActionChatLines(
+                    "reviews",
+                    decision === "approve"
+                      ? "Bulk-approved pending Reviews"
+                      : "Bulk-rejected pending Reviews",
+                    pid
+                  )
+                );
+                return ws.loadPhase5();
+              })
           )
         }
         onPipeline={(productId) =>
@@ -1117,9 +1628,27 @@ function renderPhase(
             async () => {
               const ids = Array.isArray(productId) ? productId : [productId];
               for (const id of ids) {
-                await api(`/projects/${pid}/products/${id}/pipeline/run`, {
-                  method: "POST",
-                });
+                const result = await api<any>(
+                  `/projects/${pid}/products/${id}/pipeline/run`,
+                  { method: "POST" }
+                );
+                const stages = (result?.stages || result?.blueprint?.stages || [])
+                  .map((s: any) =>
+                    `· ${s.label || s.id || s.name || "stage"} · ${s.status || "ok"}`
+                  )
+                  .slice(0, 8);
+                ws.appendAgentChatLines(
+                  pilotActionChatLines(
+                    "pipeline",
+                    `Dual pipeline completed for product #${id}${
+                      result?.dataset_name ? ` · ${result.dataset_name}` : ""
+                    }`,
+                    pid,
+                    stages.length
+                      ? stages
+                      : ["· ingest / landing / transform / publish succeeded"]
+                  )
+                );
               }
               await ws.loadPhase5();
             }
@@ -1131,9 +1660,22 @@ function renderPhase(
             ids.length > 1 ? `Reconcile ×${ids.length}` : "Reconciliation",
             async () => {
               for (const id of ids) {
-                await api(`/projects/${pid}/products/${id}/reconcile`, {
-                  method: "POST",
-                });
+                const metrics = await api<any>(
+                  `/projects/${pid}/products/${id}/reconcile`,
+                  { method: "POST" }
+                );
+                const passed = !!(metrics?.passed ?? metrics?.metrics?.passed);
+                const delta =
+                  metrics?.delta_pct ?? metrics?.metrics?.delta_pct;
+                ws.appendAgentChatLines(
+                  pilotActionChatLines(
+                    "reconcile",
+                    `Reconcile ${passed ? "passed" : "failed"} for product #${id}${
+                      delta != null ? ` · Δ ${Number(delta).toFixed(2)}%` : ""
+                    }`,
+                    pid
+                  )
+                );
               }
             }
           );
@@ -1148,6 +1690,15 @@ function renderPhase(
                 environment: "test",
               }),
             });
+            ws.appendAgentChatLines(
+              pilotActionChatLines(
+                "test_env",
+                `Migrate to Test · promoted ${productIds.length} product${
+                  productIds.length === 1 ? "" : "s"
+                } (${productIds.join(", ")})`,
+                pid
+              )
+            );
             await ws.refreshProject();
             await ws.loadPhase5();
           })
@@ -1221,7 +1772,7 @@ function renderPhase(
           );
           await ws.refreshProject();
           await ws.loadPhase67();
-          router.push(phaseHref("7_decommission"));
+          router.push(SUITE_GALLERY_HREF);
         }}
         onCompleteItem={async (itemId, productId) => {
           await ws.run(`Cutover: ${itemId}`, () =>
@@ -1235,7 +1786,7 @@ function renderPhase(
           await ws.refreshProject();
           await ws.loadPhase67();
           if (itemId === "signoff") {
-            router.push(phaseHref("7_decommission"));
+            router.push(SUITE_GALLERY_HREF);
           }
         }}
       />
@@ -1265,10 +1816,16 @@ function renderPhase(
           )
         }
         onCloseChange={async () => {
-          await ws.run("Close change", () =>
-            api(`/projects/${pid}/change/close`, { method: "POST" })
+          await ws.run("Close change / complete wave", () =>
+            api(`/projects/${pid}/change/close`, {
+              method: "POST",
+              body: JSON.stringify({ finalize: true }),
+            })
           );
+          await ws.refreshProject();
           await ws.loadPhase67();
+          await ws.loadPortfolio({ projectId: null, days: 30 });
+          router.push("/workspace");
         }}
       />
     );

@@ -71,6 +71,7 @@ type Props = {
   dispositions: any[];
   benefits: any | null;
   inventorySignedOff: boolean;
+  planApproved?: boolean;
   busy: boolean;
   msg: string;
   sessionRole: string;
@@ -91,6 +92,7 @@ export function Phase2Disposition({
   dispositions,
   benefits,
   inventorySignedOff,
+  planApproved = true,
   busy,
   msg,
   sessionRole,
@@ -186,12 +188,14 @@ export function Phase2Disposition({
         <div className="flex flex-wrap gap-2">
           <button
             className="btn"
-            disabled={busy || !inventorySignedOff}
+            disabled={busy || !inventorySignedOff || !planApproved}
             onClick={runAnalyze}
             title={
               !inventorySignedOff
-                ? "Complete Phase 1 sign-off first"
-                : "Run disposition agents across inventory object types"
+                ? "Complete Discover sign-off first"
+                : !planApproved
+                  ? "Approve Plan waves first — Decide runs on the active wave"
+                  : "Run disposition agents across inventory object types"
             }
           >
             {dispositions.length ? "Re-analyze" : "Analyze"}
@@ -206,12 +210,18 @@ export function Phase2Disposition({
           <code className="text-xs">migration-repo/decide/</code>.
         </div>
       )}
-      {inventorySignedOff && !dispositions.length && (
+      {inventorySignedOff && !planApproved && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-warn">
+          Approve a wave plan in Plan (Mirage Horizon) first. Decide analyzes only the
+          active wave scope.
+        </div>
+      )}
+      {inventorySignedOff && planApproved && !dispositions.length && (
         <div className="rounded-xl border border-tm-gray-200 bg-tm-gray-50 px-4 py-3 text-sm text-tm-gray-600">
           Ready to Analyze — input comes from Discovery (
           <code className="text-xs">discover/inventory</code> +{" "}
           <code className="text-xs">discover/lineage</code>
-          ). Results land in{" "}
+          ), scoped to the active Plan wave. Results land in{" "}
           <code className="text-xs">migration-repo/decide/board/register.json</code> for
           Retirement and Approve.
         </div>
@@ -382,12 +392,14 @@ export function Phase2Disposition({
                   <button
                     type="button"
                     className="btn text-xs"
-                    disabled={busy || !inventorySignedOff}
+                    disabled={busy || !inventorySignedOff || !planApproved}
                     onClick={runAnalyze}
                     title={
                       !inventorySignedOff
                         ? "Complete Discovery sign-off first"
-                        : "Run UsageProfiler · LineageImpact · RetentionPolicy · DispositionRecommender"
+                        : !planApproved
+                          ? "Approve Plan waves first"
+                          : "Run UsageProfiler · LineageImpact · RetentionPolicy · DispositionRecommender"
                     }
                   >
                     {busy
@@ -943,12 +955,12 @@ function BenefitsDashboard({
 
   const gateNote = dispositionApproved ? (
     <div className="badge-success w-fit text-xs">
-      Disposition register approved — use Continue to Align in the header
+      Disposition register approved — use Suite Gallery in the header
     </div>
   ) : (
     <p className="max-w-sm text-xs text-tm-gray-500">
-      Use <span className="font-medium text-tm-ink">Approve → Align</span> in the
-      page header to freeze the register and open SID Mapping &amp; Metadata.
+      Use <span className="font-medium text-tm-ink">Approve → Gallery</span> in the
+      page header to freeze the register and update the suite journey.
     </p>
   );
 

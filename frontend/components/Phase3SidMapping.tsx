@@ -3,11 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { InspectorPanel } from "@/components/shell/InspectorPanel";
 import { DataToolbar } from "@/components/shell/DataToolbar";
-import {
-  DiscoveryTerminal,
-  type TerminalLine,
-} from "@/components/phases/discovery/DiscoveryTerminal";
 import { api } from "@/lib/api";
+import { useWorkspace } from "@/components/workspace/WorkspaceProvider";
 
 type SubTab = "workbench" | "gaps" | "approve";
 
@@ -44,31 +41,6 @@ type Props = {
   view?: string;
 };
 
-function terminalLinesFromMappingRun(run: any | null): TerminalLine[] {
-  if (!run) return [];
-  const steps = run.steps || [];
-  const lines: TerminalLine[] = [];
-  for (const s of steps) {
-    const isTerm =
-      s?.name === "terminal.log" || s?.detail?.kind === "terminal";
-    if (isTerm) {
-      lines.push({
-        ts: s.detail?.ts,
-        agent: s.detail?.agent || "MappingCoordinator",
-        line: s.message || "",
-      });
-      continue;
-    }
-    if (s?.message) {
-      lines.push({
-        agent: s.detail?.agent || "MappingCoordinator",
-        line: `${s.status === "failed" ? "✗" : s.status === "running" ? "…" : "·"} ${s.message}`,
-      });
-    }
-  }
-  return lines;
-}
-
 export function Phase3SidMapping({
   project,
   mappings,
@@ -89,6 +61,7 @@ export function Phase3SidMapping({
   embedded = false,
   view,
 }: Props) {
+  const { setAgentRuns } = useWorkspace();
   const [sub, setSub] = useState<SubTab>(() => resolveMapView(view));
 
   const [q, setQ] = useState("");
@@ -147,6 +120,12 @@ export function Phase3SidMapping({
         );
         if (cancelled) return;
         setMappingRun(detail);
+        if (detail?.id) {
+          setAgentRuns((prev) => [
+            detail,
+            ...prev.filter((r) => r.id !== detail.id),
+          ]);
+        }
         onPollAgents();
         if (["completed", "failed"].includes(String(detail?.status))) {
           await onRefreshMappings?.();
@@ -167,6 +146,7 @@ export function Phase3SidMapping({
     project?.id,
     onPollAgents,
     onRefreshMappings,
+    setAgentRuns,
   ]);
 
   const entities = useMemo(() => {
@@ -284,11 +264,6 @@ export function Phase3SidMapping({
       ? mappings.find((m) => m.id === selectedId) || null
       : null;
 
-  const terminalLines = useMemo(
-    () => terminalLinesFromMappingRun(mappingRun),
-    [mappingRun]
-  );
-
   const runMapping = useCallback(async () => {
     const result = await onGenerate({ advanced_ai: advancedAi });
     if (result?.run_id) {
@@ -357,7 +332,7 @@ export function Phase3SidMapping({
                   checked={advancedAi}
                   onChange={(e) => setAdvancedAi(e.target.checked)}
                 />
-                Advanced Model AI
+                Advanced semantic enrichment
               </label>
             </>
           }
@@ -371,7 +346,7 @@ export function Phase3SidMapping({
                 !dispositionApproved
                   ? "Complete Decide approval first"
                   : advancedAi
-                    ? "Run Standards Mapping + Model AI enrichment"
+                    ? "Run Standards Mapping + semantic enrichment"
                     : "Run Standards Mapping Agent"
               }
               onClick={() => void runMapping()}
@@ -463,7 +438,7 @@ export function Phase3SidMapping({
                   <p className="max-w-md text-xs leading-relaxed text-tm-gray-500">
                     {sub === "gaps"
                       ? "Run mapping on the Workbench first. Unresolved and low-confidence rows appear here for Accept / Flag."
-                      : "Run the Standards Mapping Agent to propose SID domain → entity → attribute for migrate/rebuild survivors. Enable Advanced Model AI for an enrichment pass. Gaps stay unresolved for architecture review — never invented."}
+                      : "Run the Standards Mapping Agent to propose SID domain → entity → attribute for migrate/rebuild survivors. Enable advanced semantic enrichment for a second pass. Gaps stay unresolved for architecture review — never invented."}
                   </p>
                   {sub !== "gaps" ? (
                     <button
@@ -699,13 +674,6 @@ export function Phase3SidMapping({
             )}
           </InspectorPanel>
         </div>
-
-        <DiscoveryTerminal
-          lines={terminalLines}
-          active={mappingActive}
-          emptyHint="Standards Mapping Agent output streams here when you Run mapping…"
-          defaultHeight={200}
-        />
       </div>
     ) : null;
 

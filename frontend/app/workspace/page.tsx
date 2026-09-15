@@ -1,7 +1,7 @@
 "use client";
 
-import { WorkspaceHome } from "@/components/workspace/WorkspaceHome";
+import { SuiteDashboard } from "@/components/workspace/SuiteDashboard";
 
 export default function WorkspaceHomePage() {
-  return <WorkspaceHome />;
+  return <SuiteDashboard />;
 }

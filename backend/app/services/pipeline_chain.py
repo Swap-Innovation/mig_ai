@@ -234,7 +234,7 @@ def blueprint_for_product(
                 "id": "ingest",
                 "kind": "motion",
                 "label": "Ingestion",
-                "tool": "CNDI",
+                "tool": "IngestPipeline",
                 "pattern": "extract → validate → land",
                 "status": node_status("ingest"),
             }
@@ -253,7 +253,7 @@ def blueprint_for_product(
                 "id": "transform",
                 "kind": "transform",
                 "label": "Transform",
-                "tool": "Coding Skills",
+                "tool": "Code generator",
                 "files": (prod.code_links or {}).get("files")
                 or [f"transformations/{slug}_sdp.sql"],
                 "status": node_status("transform"),
@@ -274,7 +274,7 @@ def blueprint_for_product(
             pass
         title = f"Create SDP · {prod.name}"
         subtitle = (
-            "Source → CNDI ingest → landing → transform → this source-aligned data product"
+            "Source → IngestPipeline ingest → landing → transform → this source-aligned data product"
         )
 
     elif tier == "cdp":
@@ -286,7 +286,7 @@ def blueprint_for_product(
                 "id": "transform",
                 "kind": "transform",
                 "label": "Transform",
-                "tool": "Coding Skills",
+                "tool": "Code generator",
                 "files": (prod.code_links or {}).get("files")
                 or [f"transformations/{slug}_cdp.sql"],
                 "status": node_status("transform"),
@@ -309,7 +309,7 @@ def blueprint_for_product(
                 "id": "transform",
                 "kind": "transform",
                 "label": "Transform",
-                "tool": "Coding Skills",
+                "tool": "Code generator",
                 "blurb": "SID align · SCD2 · tests · reconcile",
                 "files": (prod.code_links or {}).get("files")
                 or [
@@ -359,12 +359,12 @@ def blueprint_for_product(
         "focus": focus_node,
         "policies": _policies(prod),
         "transform": {
-            "tool": "Coding Skills",
+            "tool": "Code generator",
             "files": (prod.code_links or {}).get("files") or [],
             "repo": (prod.code_links or {}).get("repo") or git_url or "migration-repo",
         },
         "ingestion": {
-            "tool": "CNDI",
+            "tool": "IngestPipeline",
             "pattern": "extract → validate → land → catalogue",
         },
         # Back-compat for older UI (empty / minimal)
@@ -402,7 +402,7 @@ def stage_details_from_result(
                     "stage": "ingest",
                     "status": "success",
                     "detail": {
-                        "tool": "CNDI",
+                        "tool": "IngestPipeline",
                         "dag": dag,
                         "message": "Ingestion validated and landed batch",
                     },
@@ -423,7 +423,7 @@ def stage_details_from_result(
             "stage": "transform",
             "status": "success",
             "detail": {
-                "tool": "Coding Skills",
+                "tool": "Code generator",
                 "files": blueprint.get("transform", {}).get("files") or [],
                 "message": f"Transform into {tier.upper()} completed",
             },

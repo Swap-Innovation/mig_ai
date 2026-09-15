@@ -69,7 +69,7 @@ export function WorkspaceHome() {
         items={[
           { label: "Phase", value: project?.phase?.replace(/_/g, " ") || "—" },
           { label: "Projects", value: projects.length },
-          { label: "Inventory", value: inventory.length },
+          { label: "Profiling", value: inventory.length },
           { label: "Agent runs", value: agentRuns.length },
           {
             label: "Discovery",

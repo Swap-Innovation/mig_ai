@@ -41,18 +41,18 @@ def _push(run: AgentRun, db, steps: list[dict[str, Any]], entry: dict[str, Any])
 # Live preamble shown in Accelerator terminal before the task body runs
 _ACCEL_PREAMBLE: dict[str, list[tuple[str, str]]] = {
     "source_interface_acquisition": [
-        ("AcquisitionAI", "▶ AcquisitionAI · catalogue source interface & PII"),
-        ("CNDI", "▶ CNDI · generate ingestion pipeline (extract → validate → land)"),
-        ("CNDI", "  writing technical metadata pack…"),
+        ("SourceCataloguer", "▶ SourceCataloguer · catalogue source interface & PII"),
+        ("IngestPipeline", "▶ IngestPipeline · generate ingestion pipeline (extract → validate → land)"),
+        ("IngestPipeline", "  writing technical metadata pack…"),
     ],
     "data_product_identification": [
-        ("DataProductBuilder", "▶ Data Product Builder · load Align metadata & mappings"),
-        ("ModelAI", "▶ ModelAI · propose product boundary & semantic model"),
-        ("ModelAI", "  scoring candidate entities…"),
+        ("ProductComposer", "▶ Product Composer · load Align metadata & mappings"),
+        ("SemanticModeler", "▶ SemanticModeler · propose product boundary & semantic model"),
+        ("SemanticModeler", "  scoring candidate entities…"),
     ],
     "code_transformation": [
-        ("CodingSkills", "▶ Coding Skills · generate transform, tests & reconcile SQL"),
-        ("CodingSkills", "  writing pipeline artifacts to migration-repo…"),
+        ("CodeGenerator", "▶ Code generator · generate transform, tests & reconcile SQL"),
+        ("CodeGenerator", "  writing pipeline artifacts to migration-repo…"),
     ],
     "contract_documentation": [
         ("ContractDocs", "▶ Contract Docs · draft product contract & catalogue docs"),

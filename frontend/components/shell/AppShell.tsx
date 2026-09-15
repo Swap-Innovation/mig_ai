@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { TopBar } from "./TopBar";
 import { LeftNav } from "./LeftNav";
 import { ActivityDrawer } from "./ActivityDrawer";
 import { AboutDrawer } from "./AboutDrawer";
+import { ProjectAgentChat } from "@/components/workspace/ProjectAgentChat";
 import type { Session } from "@/lib/api";
+import { getTool } from "@/lib/phases";
 
 type Props = {
   session: Session;
@@ -14,7 +15,6 @@ type Props = {
   msg?: string;
   onSignOut: () => void;
   activity?: React.ReactNode;
-  projectSwitcher?: React.ReactNode;
   children: React.ReactNode;
 };
 
@@ -24,24 +24,28 @@ export function AppShell({
   msg,
   onSignOut,
   activity,
-  projectSwitcher,
   children,
 }: Props) {
   const [collapsed, setCollapsed] = useState(false);
   const [activityOpen, setActivityOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const pathname = usePathname();
+  const toolMatch = pathname?.match(/\/workspace\/tools\/([^/]+)/);
   const phaseMatch = pathname?.match(/\/workspace\/phase\/([^/]+)/);
-  const phaseId = phaseMatch?.[1] || null;
+  const phaseId =
+    phaseMatch?.[1] ||
+    (toolMatch?.[1] ? getTool(toolMatch[1])?.phaseId : null) ||
+    null;
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-tm-gray-50">
-      <TopBar
+    <div className="flex h-screen overflow-hidden bg-[#f2f2f7]">
+      <LeftNav
         session={session}
         project={project}
         msg={msg}
+        collapsed={collapsed}
+        onToggleCollapse={() => setCollapsed((v) => !v)}
         onSignOut={onSignOut}
-        projectSwitcher={projectSwitcher}
         activityOpen={activityOpen}
         onToggleActivity={
           activity
@@ -57,24 +61,20 @@ export function AppShell({
           setActivityOpen(false);
         }}
       />
-      <div className="flex min-h-0 flex-1">
-        <LeftNav
-          project={project}
-          collapsed={collapsed}
-          onToggleCollapse={() => setCollapsed((v) => !v)}
-        />
+      <div className="flex min-h-0 min-w-0 flex-1">
         <main className="ws-canvas">{children}</main>
-        <AboutDrawer
-          open={aboutOpen}
-          phaseId={phaseId}
-          onClose={() => setAboutOpen(false)}
-        />
-        {activity ? (
-          <ActivityDrawer open={activityOpen} onClose={() => setActivityOpen(false)}>
-            {activity}
-          </ActivityDrawer>
-        ) : null}
+        <ProjectAgentChat />
       </div>
+      <AboutDrawer
+        open={aboutOpen}
+        phaseId={phaseId}
+        onClose={() => setAboutOpen(false)}
+      />
+      {activity ? (
+        <ActivityDrawer open={activityOpen} onClose={() => setActivityOpen(false)}>
+          {activity}
+        </ActivityDrawer>
+      ) : null}
     </div>
   );
 }

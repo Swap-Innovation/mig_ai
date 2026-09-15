@@ -40,6 +40,8 @@ class Project(Base):
     status: Mapped[str] = mapped_column(String(64), default="draft")
     phase: Mapped[str] = mapped_column(String(64), default="0_mobilisation")
     inventory_signed_off: Mapped[bool] = mapped_column(Boolean, default=False)
+    plan_approved: Mapped[bool] = mapped_column(Boolean, default=False)
+    wave_plan: Mapped[Any] = mapped_column(JSON, default=dict)
     disposition_approved: Mapped[bool] = mapped_column(Boolean, default=False)
     mapping_approved: Mapped[bool] = mapped_column(Boolean, default=False)
     metadata_complete: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -389,6 +391,8 @@ def init_db() -> None:
                 ("hub_spoke_id", "VARCHAR(64) DEFAULT ''"),
                 ("hub_probe", "JSON DEFAULT '{}'"),
                 ("change_closed", "BOOLEAN DEFAULT 0"),
+                ("plan_approved", "BOOLEAN DEFAULT 0"),
+                ("wave_plan", "JSON DEFAULT '{}'"),
                 ("build_approved", "BOOLEAN DEFAULT 0"),
                 ("build_targets", "JSON DEFAULT '{}'"),
                 ("test_env_ready", "BOOLEAN DEFAULT 0"),

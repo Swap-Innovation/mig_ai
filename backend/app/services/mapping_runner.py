@@ -207,14 +207,14 @@ def execute_mapping_run(
         # Optional Advanced AI pass (real OpenAI when configured; mock narrative otherwise)
         if use_llm:
             steps.append(
-                _term("ModelAI", "▶ ModelAI · advanced enrichment pass on proposed mappings")
+                _term("SemanticModeler", "▶ SemanticModeler · advanced enrichment pass on proposed mappings")
             )
             steps.append(
                 _step(
                     "advanced_ai",
                     "running",
-                    "Advanced Model AI enrichment",
-                    "ModelAI",
+                    "Advanced semantic enrichment",
+                    "SemanticModeler",
                 )
             )
             run.steps = list(steps)
@@ -223,7 +223,7 @@ def execute_mapping_run(
             enrichment = result.get("llm_enrichment") or {}
             if enrichment.get("status") == "ok":
                 msg = f"OpenAI enrichment · {enrichment.get('model') or 'model'}"
-                steps.append(_term("ModelAI", f"  {msg}"))
+                steps.append(_term("SemanticModeler", f"  {msg}"))
             else:
                 # Demo-friendly advanced pass when LLM is mock
                 narrative = (
@@ -239,16 +239,16 @@ def execute_mapping_run(
                 }
                 cites = list(result.get("citations") or [])
                 cites.append(
-                    {"type": "llm", "id": "model-ai:advanced", "ref": "advanced mapping pass"}
+                    {"type": "llm", "id": "semantic:advanced", "ref": "advanced mapping pass"}
                 )
                 result["citations"] = cites
-                steps.append(_term("ModelAI", f"  {narrative}"))
+                steps.append(_term("SemanticModeler", f"  {narrative}"))
             steps.append(
                 _step(
                     "advanced_ai",
                     "success",
-                    "Advanced Model AI enrichment complete",
-                    "ModelAI",
+                    "Advanced semantic enrichment complete",
+                    "SemanticModeler",
                 )
             )
             run.steps = list(steps)

@@ -19,10 +19,10 @@ export function DataToolbar({
   countLabel,
 }: Props) {
   return (
-    <div className="flex flex-wrap items-center gap-2 border-b border-brand-line bg-white px-3 py-2">
+    <div className="atlas-toolbar atlas-toolbar-compact atlas-data-toolbar">
       {onSearchChange != null && (
         <input
-          className="input !mt-0 max-w-xs"
+          className="input !mt-0 !max-w-[11rem] !py-1.5 !text-xs"
           placeholder={searchPlaceholder}
           value={search || ""}
           onChange={(e) => onSearchChange(e.target.value)}
@@ -30,7 +30,9 @@ export function DataToolbar({
       )}
       {filters}
       {countLabel ? (
-        <span className="ml-auto text-xs text-brand-muted">{countLabel}</span>
+        <span className="ml-auto text-[11px] font-medium tabular-nums text-[#86868b]">
+          {countLabel}
+        </span>
       ) : (
         <span className="ml-auto" />
       )}

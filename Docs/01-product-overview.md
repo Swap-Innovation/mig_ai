@@ -1,8 +1,10 @@
-# Lumina Control Plane — product overview
+# Mirage Suite — product overview
 
-**Lumina** is an enterprise control plane for transitioning legacy analytics estates — warehouses, ETL graphs, schedulers, and reporting marts — into **owned, contracted data products** on a cloud platform.
+**Mirage Suite** is an enterprise control plane for transitioning legacy analytics estates — warehouses, ETL graphs, schedulers, and reporting marts — into **owned, contracted data products** on a cloud platform.
 
 It is deliberately **not** lift-and-shift. Every object is discovered with evidence, dispositioned, aligned to standards where it survives, converted to target-platform artifacts, piloted under dual-run, cut over per product, and retired when legacy cost and risk can leave.
+
+After login, users land on a **portfolio Dashboard**, open the sequential **Suite Gallery**, then work inside one **named tool** at a time — not a single mega-navigator of every phase.
 
 ---
 
@@ -18,69 +20,72 @@ It is deliberately **not** lift-and-shift. Every object is discovered with evide
 
 ---
 
-## Delivery journey
+## Mirage Suite tools
 
 ```text
-Mobilise → Discover → Decide → Align → Build → Pilot → Migrate → Retire
+Dashboard → Gallery → Discover → Plan → Decide → Align → Build → Pilot → Migrate → Retire
 ```
 
-| Phase | Focus | Exit evidence |
+| Sequence | Product | Job |
 | --- | --- | --- |
-| **Discover** | Inventory, lineage, jobs/DAGs, profiling, usage | Signed-off technical pack |
-| **Decide** | Migrate / rebuild / consolidate / archive / retire | Approved register + benefits case |
-| **Align** | Reference mapping + business metadata | Approved standards pack |
-| **Build** | Warehouse DDL, compute jobs, orchestration | Approved conversion pack |
-| **Pilot** | Contract, pipeline, dual-run, reconcile | Product within tolerance |
-| **Migrate** | Promote, switch consumers, freeze | Production sign-off |
-| **Retire** | Archive, release infrastructure, hypercare | Legacy cost/risk removed |
+| 1 | **Mirage Atlas** | Profiling, lineage, assessment, HITL |
+| 2 | **Mirage Horizon** | Split estate into delivery waves (dependency, complexity, consumers, usage, volume, retention) |
+| 3 | **Mirage Verdict** | Disposition register and benefits case (per active wave) |
+| 4 | **Mirage Compass** | SID mapping and business metadata |
+| 5 | **Mirage Forge** | Convert suite + accelerators (catalogue, compose, transform, contracts) |
+| 6 | **Mirage Prove** | HITL reviews, dual-run, reconcile |
+| 7 | **Mirage Transit** | Promote, consumers, freeze, sign-off |
+| 8 | **Mirage Sunset** | Archive, hypercare, close change (then next wave if any) |
+
+Phase IDs in the API remain for compatibility; suite names are the presentation and routing layer (`/workspace/tools/:toolId`).
 
 ![Workspace home](./assets/screenshots/02-workspace-home.png)
 
-*Figure 1 — Workspace home with gated delivery plan.*
+*Figure 1 — Portfolio Dashboard (suite landing) with gallery entry.*
 
 ---
 
 ## Capabilities in the working control plane
 
-### Discover
+### Mirage Atlas (Discover)
 
 Automated scan of estate sources (SQL, scripts, schedulers, catalogues). Produces inventory, lineage, and job graphs. Low-confidence findings require human Accept or Flag.
 
-![Discovery inventory](./assets/screenshots/03-discovery-inventory.png)
+![Discovery profiling](./assets/screenshots/03-discovery-inventory.png)
 
-*Figure 2 — Inventory with agent terminal and lineage completion.*
+*Figure 2 — Atlas inventory with agent terminal and lineage completion.*
 
-### Decide
+### Mirage Verdict (Decide)
 
 Evidence-based disposition. The benefits view quantifies avoidance versus survivors before platform conversion is authorised.
 
 ![Disposition board](./assets/screenshots/04-disposition-board.png)
 
-*Figure 3 — Disposition board.*
+*Figure 3 — Verdict disposition board.*
 
-### Align
+### Mirage Compass (Align)
 
 Domain → entity → attribute mapping to an industry reference model, with ownership and classification as hard gates.
 
 ![SID workbench](./assets/screenshots/05-align-workbench.png)
 
-*Figure 4 — SID mapping workbench.*
+*Figure 4 — Compass SID mapping workbench.*
 
-### Build
+### Mirage Forge (Build)
 
 Survivors convert to target artifacts — e.g. BigQuery DDL, Dataproc/Spark jobs, Composer Airflow DAGs — with lane-level technology targets.
 
 ![Build DAGs](./assets/screenshots/06-build-dags.png)
 
-*Figure 5 — DAG conversion pack (Airflow → Cloud Composer).*
+*Figure 5 — Forge DAG conversion pack (Airflow → Cloud Composer).*
 
-### Pilot & Migrate
+### Mirage Prove & Transit (Pilot & Migrate)
 
 Product contracts, dual-run pipelines, reconcile within tolerance, per-product promote, consumer switch, freeze, and production sign-off.
 
 ![Migrate sign-off](./assets/screenshots/08-migrate-signoff.png)
 
-*Figure 6 — Production readiness gates.*
+*Figure 6 — Transit production readiness gates.*
 
 ---
 
@@ -99,7 +104,7 @@ Roles include engineer, architect, data owner, data steward, product owner, and 
 
 ## Platform fit
 
-Lumina coordinates migration work; it does not replace:
+Mirage Suite coordinates migration work; it does not replace:
 
 - Managed warehouse, Spark, or Airflow runtimes  
 - Source control or CI  
@@ -113,5 +118,5 @@ Generated configuration is reviewed and versioned; runtime services execute only
 ## Further reading
 
 - [Architecture](./02-architecture.md)  
-- [White paper](./Lumina-White-Paper.md)  
-- [Presentation](./Lumina-Presentation.html)
+- [White paper](./Mirage-White-Paper.md)  
+- [Presentation](./Mirage-Presentation.html)

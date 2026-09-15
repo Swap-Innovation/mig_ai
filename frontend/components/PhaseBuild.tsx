@@ -2,8 +2,12 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { DataToolbar } from "@/components/shell/DataToolbar";
+import {
+  ForgeThemePanel,
+  ForgeThemeShell,
+} from "@/components/workspace/ForgeThemeShell";
 
-type SubTab = "tables" | "code" | "dags" | "approve";
+type SubTab = "tables" | "scripts" | "pipelines" | "reports" | "data" | "approve" | "code" | "dags";
 
 type Lane = {
   id?: string;
@@ -27,7 +31,7 @@ type Props = {
   busy: boolean;
   msg: string;
   sessionRole: string;
-  onGenerate: (targets?: Record<string, string>) => void;
+  onGenerate: (targets?: Record<string, string>, tool?: string) => void;
   onSaveTargets?: (targets: Record<string, string>) => void;
   onSaveArtifact?: (id: number, body: Record<string, any>) => void;
   onApprove: () => void;
@@ -38,6 +42,14 @@ type Props = {
 /** Asset types that belong on each convert view. */
 const ASSETS_FOR_VIEW: Record<string, string[]> = {
   tables: ["table", "view"],
+  scripts: [
+    "script",
+    "procedure",
+    "package",
+    "function",
+    "job",
+    "repo",
+  ],
   code: [
     "script",
     "procedure",
@@ -47,30 +59,68 @@ const ASSETS_FOR_VIEW: Record<string, string[]> = {
     "repo",
     "report",
   ],
+  pipelines: ["dag"],
   dags: ["dag"],
+  reports: ["report"],
+  data: ["table", "view"],
 };
+
+const BUILD_VIEWS = [
+  "tables",
+  "scripts",
+  "pipelines",
+  "reports",
+  "data",
+  "approve",
+  "code",
+  "dags",
+] as const;
 
 const VIEW_COPY: Record<
   string,
   { title: string; blurb: string; emptyHint: string }
 > = {
   tables: {
-    title: "Tables & views",
-    blurb: "Warehouse objects → analytical store (BigQuery, Snowflake, …).",
+    title: "Table Migration",
+    blurb: "Warehouse tables & views → analytical store (BigQuery, Snowflake, …).",
     emptyHint:
       "No table/view artifacts yet. Confirm targets for Tables/Views, then Generate pack.",
   },
+  scripts: {
+    title: "Script Migration",
+    blurb: "Shell, Spark, PL/SQL, and job scripts → Dataproc / managed compute.",
+    emptyHint:
+      "No script artifacts yet. Confirm targets for scripts and Spark jobs, then Generate pack.",
+  },
   code: {
-    title: "Scripts, jobs & procedures",
+    title: "Script Migration",
     blurb: "On-prem Spark / shell / PL/SQL → Dataproc / managed compute.",
     emptyHint:
       "No code artifacts yet. Confirm targets for scripts and Spark jobs, then Generate pack.",
   },
+  pipelines: {
+    title: "Pipeline Migration",
+    blurb: "Airflow DAGs and schedules → Composer / MWAA.",
+    emptyHint:
+      "No DAG artifacts yet. Discovery should find every Airflow DAG under legacy/dags — Generate pack to convert them.",
+  },
   dags: {
-    title: "DAGs & schedules",
+    title: "Pipeline Migration",
     blurb: "Airflow DAGs from discovery → Composer / MWAA.",
     emptyHint:
       "No DAG artifacts yet. Discovery should find every Airflow DAG under legacy/dags — Generate pack to convert them.",
+  },
+  reports: {
+    title: "Report Migration",
+    blurb: "BI / reporting assets → cloud semantic layer or export targets.",
+    emptyHint:
+      "No report artifacts yet. Reports surface from discovery inventory (object type report) after Generate pack.",
+  },
+  data: {
+    title: "Data Migration",
+    blurb: "Historical load, CDC, and backfill for migrate/rebuild survivor tables.",
+    emptyHint:
+      "No in-scope tables for data movement yet. Approve Align survivors, then Generate pack to plan loads.",
   },
 };
 
@@ -86,27 +136,69 @@ function lanesForView(lanes: Lane[], view: SubTab): Lane[] {
 
 function artifactsForView(artifacts: any[], view: SubTab): any[] {
   if (view === "approve") return artifacts;
+  const forgeOf = (a: any) => String(a?.detail?.forge_tool || "").toLowerCase();
+  const anyTagged = artifacts.some((a) => Boolean(forgeOf(a)));
   if (view === "tables") {
-    return artifacts.filter(
-      (a) =>
+    return artifacts.filter((a) => {
+      const f = forgeOf(a);
+      if (anyTagged) return f === "tables";
+      if (f === "data" || a.kind === "data") return false;
+      return (
         a.kind === "table" ||
         a.source_type === "table" ||
         a.source_type === "view"
-    );
+      );
+    });
   }
-  if (view === "dags") {
-    return artifacts.filter(
-      (a) => a.kind === "dag" || a.source_type === "dag"
-    );
+  if (view === "data") {
+    return artifacts.filter((a) => {
+      const f = forgeOf(a);
+      if (anyTagged) return f === "data";
+      return a.kind === "data" || a.source_type === "data";
+    });
   }
-  // code: scripts/jobs/reports — not tables or dags
+  if (view === "pipelines" || view === "dags") {
+    return artifacts.filter((a) => {
+      const f = forgeOf(a);
+      if (anyTagged) return f === "pipelines";
+      return a.kind === "dag" || a.source_type === "dag";
+    });
+  }
+  if (view === "reports") {
+    return artifacts.filter((a) => {
+      const f = forgeOf(a);
+      if (anyTagged) return f === "reports";
+      const t = String(a.source_type || "").toLowerCase();
+      const k = String(a.kind || "").toLowerCase();
+      return t === "report" || k === "report";
+    });
+  }
+  // scripts / code
   return artifacts.filter((a) => {
-    const t = a.source_type || "";
-    if (t === "table" || t === "view" || t === "dag") return false;
-    if (a.kind === "dag") return false;
-    if (a.kind === "table") return false;
+    const f = forgeOf(a);
+    if (anyTagged) return f === "scripts";
+    const t = String(a.source_type || "").toLowerCase();
+    if (
+      t === "table" ||
+      t === "view" ||
+      t === "dag" ||
+      t === "report" ||
+      t === "data"
+    )
+      return false;
+    if (a.kind === "dag" || a.kind === "table" || a.kind === "data") return false;
+    if (String(a.kind || "").toLowerCase() === "report") return false;
     return true;
   });
+}
+
+function normalizeBuildView(view?: string): SubTab {
+  if (view === "code") return "scripts";
+  if (view === "dags") return "pipelines";
+  if (view && (BUILD_VIEWS as readonly string[]).includes(view)) {
+    return view as SubTab;
+  }
+  return "tables";
 }
 
 export function PhaseBuild({
@@ -124,10 +216,8 @@ export function PhaseBuild({
   embedded = false,
   view,
 }: Props) {
-  const initial = (view as SubTab) || "tables";
-  const [sub, setSub] = useState<SubTab>(
-    ["tables", "code", "dags", "approve"].includes(initial) ? initial : "tables"
-  );
+  const initial = normalizeBuildView(view);
+  const [sub, setSub] = useState<SubTab>(initial);
   const [q, setQ] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -136,12 +226,12 @@ export function PhaseBuild({
   const allLanes: Lane[] = summary?.lanes || [];
 
   useEffect(() => {
-    if (view && ["tables", "code", "dags", "approve"].includes(view)) {
-      setSub(view as SubTab);
-      setQ("");
-      setTypeFilter("all");
-      setSelectedId(null);
-    }
+    if (!view) return;
+    const next = normalizeBuildView(view);
+    setSub(next);
+    setQ("");
+    setTypeFilter("all");
+    setSelectedId(null);
   }, [view]);
 
   useEffect(() => {
@@ -210,7 +300,17 @@ export function PhaseBuild({
     onSaveTargets?.(next);
   };
 
-  const runGenerate = () => onGenerate(laneTargets);
+  const runGenerate = () => {
+    const tool =
+      sub === "code"
+        ? "scripts"
+        : sub === "dags"
+          ? "pipelines"
+          : ["tables", "scripts", "pipelines", "reports", "data"].includes(sub)
+            ? sub
+            : undefined;
+    onGenerate(laneTargets, tool);
+  };
 
   const discoveredForView = scopedLanes.reduce(
     (n, l) => n + (l.object_count || 0),
@@ -224,16 +324,21 @@ export function PhaseBuild({
   if (embedded && sub === "approve") {
     return (
       <ApproveView
+        projectName={project?.name}
+        packApproved={buildApproved}
         gateNote={
           buildApproved ? (
             <div className="badge-success w-fit text-xs">
-              Build pack approved — use Continue to Pilot in the header
+              Build approved — continue to Pilot from Forge apps
             </div>
           ) : (
             <p className="max-w-md text-xs text-brand-slate">
-              Review the full technology map, generate if needed, then use{" "}
-              <span className="font-medium text-brand-ink">Approve → Pilot</span>{" "}
-              in the page header.
+              Generate each in-scope convert app from Forge apps, then{" "}
+              <span className="font-medium text-brand-ink">
+                Approve build → Pilot
+              </span>{" "}
+              when all in-scope convert apps are done. Accelerators stay available
+              anytime.
             </p>
           )
         }
@@ -253,52 +358,50 @@ export function PhaseBuild({
 
   if (embedded) {
     return (
-      <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-tm-gray-50">
-        {!metadataComplete ? (
-          <div className="shrink-0 border-b border-amber-200 bg-amber-50 px-4 py-2 text-xs text-warn">
-            Complete Align before generating the Build pack.
-          </div>
-        ) : null}
-        {msg ? (
-          <div className="shrink-0 border-b border-brand-line bg-brand-500/5 px-4 py-2 text-xs text-brand-600">
-            {msg}
-          </div>
-        ) : null}
-
-        <div className="shrink-0 border-b border-brand-line bg-white px-5 py-3">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <h2 className="text-sm font-semibold text-brand-ink">
-                {copy?.title || sub}
-              </h2>
-              <p className="mt-0.5 text-[11px] text-brand-slate">{copy?.blurb}</p>
-              <p className="mt-1 text-[11px] tabular-nums text-brand-muted">
-                Discovery: {discoveredForView} objects
-                {inScopeForView
-                  ? ` · ${inScopeForView} migrate/rebuild in scope`
-                  : ""}
-                {viewArtifacts.length
-                  ? ` · ${viewArtifacts.length} generated`
-                  : ""}
-              </p>
+      <ForgeThemeShell
+        projectName={project?.name}
+        title={copy?.title || sub}
+        subtitle="Convert"
+        category="convert"
+        packApproved={buildApproved}
+        fill
+        banner={
+          !metadataComplete ? (
+            <div className="forge-theme-banner is-warn">
+              Complete Align before generating the Build pack.
             </div>
-            <button
-              type="button"
-              className="btn shrink-0"
-              disabled={busy || !canGenerate || !metadataComplete}
-              onClick={runGenerate}
-              title={
-                !metadataComplete
-                  ? "Complete Align first"
-                  : "Generate conversion artifacts for migrate/rebuild survivors"
-              }
-            >
-              Generate pack
-            </button>
-          </div>
-        </div>
-
-        <div className="shrink-0 border-b border-brand-line bg-white">
+          ) : viewArtifacts.length ? (
+            <div className="forge-theme-banner is-info">
+              {copy?.title || "Assets"} generated — return to Forge apps to convert
+              the next in-scope app, then approve build when all are done.
+            </div>
+          ) : msg ? (
+            <div className="forge-theme-banner is-info">{msg}</div>
+          ) : (
+            <div className="forge-theme-banner is-info">
+              Pick target technology, Generate, then continue from Forge apps.
+            </div>
+          )
+        }
+        actions={
+          <button
+            type="button"
+            className="btn"
+            disabled={busy || !canGenerate || !metadataComplete}
+            onClick={runGenerate}
+            title={
+              !metadataComplete
+                ? "Complete Align first"
+                : viewArtifacts.length
+                  ? `Regenerate ${copy?.title || "assets"} in the selected target technology`
+                  : `Generate ${copy?.title || "assets"} in the selected target technology`
+            }
+          >
+            {viewArtifacts.length ? "Regenerate" : "Generate"}
+          </button>
+        }
+      >
+        <ForgeThemePanel padded={false} className="forge-convert-lanes shrink-0">
           <ScopedTechMap
             lanes={scopedLanes}
             laneTargets={laneTargets}
@@ -306,27 +409,30 @@ export function PhaseBuild({
             canEdit={canGenerate}
             busy={busy}
             viewLabel={copy?.title || sub}
+            heading={null}
           />
-        </div>
+        </ForgeThemePanel>
 
-        <Workbench
-          kindLabel={copy?.title || sub}
-          emptyHint={copy?.emptyHint || "Generate the pack to create artifacts."}
-          discoveredCount={discoveredForView}
-          rows={rows}
-          q={q}
-          setQ={setQ}
-          typeFilter={typeFilter}
-          setTypeFilter={setTypeFilter}
-          typeOptions={typeOptions}
-          selectedId={selectedId}
-          setSelectedId={setSelectedId}
-          selected={selected}
-          canEdit={canEdit}
-          busy={busy}
-          onSaveArtifact={onSaveArtifact}
-        />
-      </div>
+        <ForgeThemePanel padded={false} className="forge-theme-panel-fill">
+          <Workbench
+            kindLabel={copy?.title || sub}
+            emptyHint={copy?.emptyHint || "Generate the pack to create artifacts."}
+            discoveredCount={discoveredForView}
+            rows={rows}
+            q={q}
+            setQ={setQ}
+            typeFilter={typeFilter}
+            setTypeFilter={setTypeFilter}
+            typeOptions={typeOptions}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+            selected={selected}
+            canEdit={canEdit}
+            busy={busy}
+            onSaveArtifact={onSaveArtifact}
+          />
+        </ForgeThemePanel>
+      </ForgeThemeShell>
     );
   }
 
@@ -357,8 +463,8 @@ function ScopedTechMap({
 }) {
   if (!lanes.length) {
     return (
-      <div className="px-5 py-3">
-        <p className="text-xs text-brand-slate">
+      <div className="px-4 py-2">
+        <p className="text-[11px] text-brand-slate">
           No Discovery assets of this type yet. Run Discovery (and Decide) so{" "}
           {viewLabel.toLowerCase()} appear here for technology mapping.
         </p>
@@ -367,9 +473,9 @@ function ScopedTechMap({
   }
 
   return (
-    <div className="px-5 py-3">
+    <div className="px-3 py-2">
       {heading ? (
-        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-brand-muted">
+        <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-brand-muted">
           {heading}
         </p>
       ) : null}
@@ -377,10 +483,10 @@ function ScopedTechMap({
         <table className="w-full">
           <thead className="bg-tm-gray-50">
             <tr>
-              <th className="table-th px-3">Asset type</th>
-              <th className="table-th">Objects</th>
-              <th className="table-th">Identified</th>
-              <th className="table-th px-3">Target</th>
+              <th className="table-th !py-1.5 px-3">Asset type</th>
+              <th className="table-th !py-1.5">Objects</th>
+              <th className="table-th !py-1.5">Identified</th>
+              <th className="table-th !py-1.5 px-3">Target</th>
             </tr>
           </thead>
           <tbody>
@@ -429,6 +535,8 @@ function ScopedTechMap({
 }
 
 function ApproveView({
+  projectName,
+  packApproved = false,
   gateNote,
   lanes,
   laneTargets,
@@ -441,6 +549,8 @@ function ApproveView({
   survivors,
   narrative,
 }: {
+  projectName?: string;
+  packApproved?: boolean;
   gateNote: ReactNode;
   lanes: Lane[];
   laneTargets: Record<string, string>;
@@ -454,24 +564,50 @@ function ApproveView({
   narrative?: string;
 }) {
   return (
-    <div className="-m-0 flex min-h-0 flex-1 flex-col overflow-auto bg-tm-gray-50">
-      <div className="shrink-0 border-b border-brand-line bg-white px-5 py-4">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h3 className="text-sm font-semibold text-brand-ink">
-              Build gate · full technology map
-            </h3>
-            <p className="mt-1 text-xs text-brand-slate">
-              All Discovery asset types. Generate the pack, then approve to unlock
-              Pilot.
-            </p>
+    <ForgeThemeShell
+      projectName={projectName}
+      title="Approve pack"
+      subtitle="Pack"
+      meta={
+        packApproved
+          ? "Build approved · Pilot available"
+          : "Full technology map · generate in-scope convert apps from Forge, then approve build → Pilot"
+      }
+      category="pack"
+      packApproved={packApproved}
+      actions={
+        <button
+          type="button"
+          className="btn"
+          disabled={busy || !canEdit || !metadataComplete}
+          onClick={onGenerate}
+          title="Generate or regenerate conversion assets in the selected target technologies"
+        >
+          {Object.values(byKind || {}).some((n) => Number(n) > 0)
+            ? "Regenerate"
+            : "Generate"}
+        </button>
+      }
+      banner={
+        <div className="forge-theme-banner is-info">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="font-semibold text-brand-ink">
+                Build gate · full technology map
+              </p>
+              <p className="mt-0.5 text-[11px] text-brand-slate">
+                All Discovery asset types. Generate converts source→target per Forge
+                app; Approve build opens Pilot. Accelerators are always available.
+              </p>
+            </div>
+            {gateNote}
           </div>
-          {gateNote}
         </div>
-      </div>
-      <div className="mx-auto w-full max-w-5xl space-y-4 p-5">
-        <div className="pane overflow-hidden">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-brand-line px-5 py-3">
+      }
+    >
+      <div className="mx-auto w-full max-w-5xl space-y-4">
+        <ForgeThemePanel padded={false}>
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/5 px-5 py-3">
             <div>
               <h4 className="text-sm font-semibold text-brand-ink">
                 Asset technology map
@@ -480,14 +616,6 @@ function ApproveView({
                 One row per Discovery asset type across the estate.
               </p>
             </div>
-            <button
-              type="button"
-              className="btn"
-              disabled={busy || !canEdit || !metadataComplete}
-              onClick={onGenerate}
-            >
-              Generate pack
-            </button>
           </div>
           <ScopedTechMap
             lanes={lanes}
@@ -498,14 +626,14 @@ function ApproveView({
             viewLabel="all assets"
             heading={null}
           />
-        </div>
+        </ForgeThemePanel>
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <Stat label="Survivors" value={String(survivors ?? "—")} />
           <Stat label="Tables" value={String(byKind.table ?? 0)} tone="accent" />
           <Stat label="Code / scripts" value={String(byKind.code ?? 0)} />
           <Stat label="DAGs" value={String(byKind.dag ?? 0)} />
         </div>
-        <section className="pane p-4">
+        <ForgeThemePanel>
           <h4 className="text-[11px] font-semibold uppercase tracking-wide text-brand-muted">
             Narrative
           </h4>
@@ -513,9 +641,9 @@ function ApproveView({
             {narrative ||
               "Map each Discovery asset type to a target, generate for migrate/rebuild survivors, then approve."}
           </p>
-        </section>
+        </ForgeThemePanel>
       </div>
-    </div>
+    </ForgeThemeShell>
   );
 }
 

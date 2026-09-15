@@ -1,6 +1,6 @@
-# Lumina — architecture
+# Mirage — architecture
 
-This document describes the logical and technical architecture of the Lumina Control Plane: how legacy estates become governed cloud data products under human approval.
+This document describes the logical and technical architecture of **Mirage Suite**: how legacy estates become governed cloud data products under human approval.
 
 ---
 
@@ -13,7 +13,7 @@ This document describes the logical and technical architecture of the Lumina Con
 └────────────────────────────────┬─────────────────────────────────────────┘
                                  │
                     ┌────────────▼────────────┐
-                    │   Lumina Control Plane  │
+                    │     Mirage Suite        │
                     │  UI · API · Agents · DB │
                     └─┬──────────┬──────────┬─┘
           ┌───────────┘          │          └───────────┐
@@ -26,7 +26,7 @@ This document describes the logical and technical architecture of the Lumina Con
 └─────────────────┘   └──────────────────┘   └─────────────────────┘
 ```
 
-Lumina is the **control plane**: it discovers evidence, records decisions, generates reviewable artifacts, and gates progression. Domain **data planes** (warehouse, Spark, Airflow) execute workloads outside Lumina.
+Mirage is the **control plane**: it discovers evidence, records decisions, generates reviewable artifacts, and gates progression. Domain **data planes** (warehouse, Spark, Airflow) execute workloads outside Mirage.
 
 ---
 
@@ -34,8 +34,8 @@ Lumina is the **control plane**: it discovers evidence, records decisions, gener
 
 | Layer | Responsibility | Implementation (MVP) |
 | --- | --- | --- |
-| **Experience** | Phase workspace, table-first views, inspectors, Activity / About | Next.js 14 · Lumina brand |
-| **API / orchestration** | Auth, projects, phase APIs, agent runs, cutover | FastAPI · workers |
+| **Experience** | Suite Dashboard, Gallery, named tool workspaces | Next.js 14 · Mirage brand |
+| **API / orchestration** | Auth, projects, portfolio KPIs, tool/phase APIs, agents | FastAPI · workers |
 | **Intelligence** | Assessment, mapping, product ID, code drafts | Agents (mock / LLM) with structured outputs |
 | **Persistence** | Inventory, dispositions, mappings, products, artifacts, audit | Relational DB + JSON columns |
 | **Artifact store** | Durable stage exports for audit and reuse | `migration-repo/` tree per project |
@@ -44,7 +44,7 @@ Lumina is the **control plane**: it discovers evidence, records decisions, gener
 ```text
 ┌─────────────────────────────────────────────────────────────┐
 │ Experience (Next.js)                                        │
-│  Home · Phases 0–7 · Inspectors · HITL · Role chrome        │
+│  Dashboard · Gallery · Suite tools · HITL · Role chrome     │
 └────────────────────────────┬────────────────────────────────┘
                              │ HTTPS / JWT
 ┌────────────────────────────▼────────────────────────────────┐
@@ -128,7 +128,7 @@ Disposition scoring ──► Disposition register (migrate|rebuild|consolidate|
 
 ## 5. Target platform shape (illustrative)
 
-Lumina is platform-shaped, not vendor-locked. The MVP conversion lanes map as follows:
+Mirage is platform-shaped, not vendor-locked. The MVP conversion lanes map as follows:
 
 | Asset class | Source examples | Target examples |
 | --- | --- | --- |
@@ -212,7 +212,7 @@ backend/
 | Enterprise | UI/API behind gateway; managed DB; object storage for migration-repo; private LLM endpoint optional |
 
 ```text
-[Browser] ──► [Lumina UI] ──► [Lumina API]
+[Browser] ──► [Mirage UI] ──► [Mirage API]
                                   │
                     ┌─────────────┼─────────────┐
                     ▼             ▼             ▼
@@ -226,7 +226,7 @@ backend/
 | Integration | Direction | Purpose |
 | --- | --- | --- |
 | Legacy Git / ZIP | In | Estate source for discovery |
-| UDP / Hub probe | Out | Validate landing / spoke readiness (mobilisation) |
+| Platform Hub probe | Out | Validate landing / spoke readiness (mobilisation) |
 | Target cloud APIs | Out (future) | Optional publish of approved packs |
 | Marketplace / ODPS | Out (adjacent) | Product contracts prepared for publication tooling |
 | Brownfield packaging skills | Adjacent | Spec drafting for existing repos without full estate cutover |
@@ -235,7 +235,7 @@ backend/
 
 ## 10. Quality attributes
 
-| Attribute | How Lumina addresses it |
+| Attribute | How Mirage addresses it |
 | --- | --- |
 | Traceability | Stage exports + audit + agent run history |
 | Controllability | Explicit gates; no silent promote |

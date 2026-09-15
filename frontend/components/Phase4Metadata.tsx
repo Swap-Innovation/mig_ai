@@ -993,7 +993,7 @@ export function Phase4Metadata({
           </ul>
           {project.metadata_complete ? (
             <div className="badge-success w-fit text-sm">
-              Metadata complete — use Continue to Build in the header
+              Metadata complete — use Suite Gallery in the header
             </div>
           ) : (
             <p className="text-xs text-tm-gray-500">

@@ -20,7 +20,7 @@ export function UdpHubPanel({
   if (!hub) {
     return (
       <div className="card p-5 text-sm text-tm-gray-600">
-        UDP Hub status not loaded.
+        Platform Hub status not loaded.
         {onRefresh && (
           <button className="btn mt-3" disabled={busy} onClick={onRefresh}>
             Load hub status

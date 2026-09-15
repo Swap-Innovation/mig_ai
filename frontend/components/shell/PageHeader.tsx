@@ -27,17 +27,22 @@ export function PageHeader({ title, subtitle, actions, stepNav }: Props) {
   return (
     <div className="ws-page-header">
       <div className="min-w-0 flex-1">
-        <h1 className="truncate text-lg font-semibold tracking-tight text-brand-ink">{title}</h1>
+        {hasPager && stepNav.group ? (
+          <p className="suite-theme-kicker">{stepNav.group}</p>
+        ) : null}
+        <h1 className="truncate text-[1.05rem] font-bold tracking-tight text-[#1d1d1f]">
+          {title}
+        </h1>
         {hasPager ? (
-          <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-brand-muted">
+          <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-[#6e6e73]">
             <Link
               href={stepNav.phaseHref}
-              className="font-medium text-brand-slate hover:text-brand-ink"
+              className="font-medium text-[#1d1d1f] hover:text-brand-600"
             >
               {stepNav.phaseShort}
             </Link>
             <span className="text-brand-line">/</span>
-            <span className="font-medium text-brand-ink">{stepNav.currentLabel}</span>
+            <span className="font-medium text-[#1d1d1f]">{stepNav.currentLabel}</span>
             {stepNav.group ? <span>· {stepNav.group}</span> : null}
             <span className="text-brand-line">·</span>
             <span>
@@ -45,7 +50,7 @@ export function PageHeader({ title, subtitle, actions, stepNav }: Props) {
             </span>
           </div>
         ) : subtitle ? (
-          <p className="mt-0.5 text-xs text-brand-muted">{subtitle}</p>
+          <p className="mt-0.5 text-xs text-[#6e6e73]">{subtitle}</p>
         ) : null}
       </div>
 

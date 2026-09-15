@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AgentRunsPanel } from "@/components/AgentRunsPanel";
 import { pipelineOf } from "@/components/phases/discovery/discoveryAgents";
+import { AtlasPage } from "@/components/phases/discovery/shared";
 import {
   fetchHitlDecisions,
   findingKey,
@@ -57,10 +58,10 @@ function confPct(v: unknown) {
 
 function StatusPill({ status }: { status: CoverageStatus }) {
   const map: Record<CoverageStatus, string> = {
-    complete: "bg-emerald-50 text-emerald-800",
-    partial: "bg-amber-50 text-amber-900",
-    missing: "bg-tm-gray-100 text-tm-gray-600",
-    optional: "bg-sky-50 text-sky-800",
+    complete: "atlas-pill is-good",
+    partial: "atlas-pill is-warn",
+    missing: "atlas-pill is-neutral",
+    optional: "atlas-pill is-brand",
   };
   const label: Record<CoverageStatus, string> = {
     complete: "Reviewed",
@@ -68,32 +69,28 @@ function StatusPill({ status }: { status: CoverageStatus }) {
     missing: "Not reviewed",
     optional: "Optional",
   };
-  return (
-    <span className={`rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${map[status]}`}>
-      {label[status]}
-    </span>
-  );
+  return <span className={map[status]}>{label[status]}</span>;
 }
 
 function ConfidenceBar({ value, label }: { value: number | null; label: string }) {
   const v = value ?? 0;
   const tone =
     value == null
-      ? "bg-tm-gray-200"
+      ? "bg-black/10"
       : v >= 85
-        ? "bg-emerald-500"
+        ? "bg-[#34c759]"
         : v >= 70
-          ? "bg-amber-500"
-          : "bg-rose-500";
+          ? "bg-[#ff9f0a]"
+          : "bg-[#ff2d55]";
   return (
     <div className="min-w-0">
-      <div className="mb-1 flex justify-between text-[11px] text-tm-gray-500">
+      <div className="mb-1 flex justify-between text-[11px] text-[#86868b]">
         <span>{label}</span>
-        <span className="font-semibold tabular-nums text-tm-ink">
+        <span className="font-semibold tabular-nums text-[#1d1d1f]">
           {value == null ? "—" : `${v}%`}
         </span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-tm-gray-100">
+      <div className="h-1.5 overflow-hidden rounded-full bg-black/[0.06]">
         <div className={`h-full rounded-full transition-all ${tone}`} style={{ width: `${v}%` }} />
       </div>
     </div>
@@ -163,12 +160,12 @@ export function ReviewView({
             }
           })
           .catch(() => {
-            /* sessionStorage kept; Approve → Decide will re-POST decisions */
+            /* sessionStorage kept; Approve → Gallery will re-POST decisions */
           });
         return next;
       });
       setHitlTick((t) => t + 1);
-      window.dispatchEvent(new Event("lumina-hitl-changed"));
+      window.dispatchEvent(new Event("mirage-hitl-changed"));
     },
     [project?.id, assessmentRun?.id]
   );
@@ -250,7 +247,7 @@ export function ReviewView({
         detail:
           inventory.length > 0
             ? `${inventory.length} objects · ${tables.length} tables · ${scripts.length} scripts`
-            : "Find inventory on Inventory page",
+            : "Run profiling on the Profiling page",
         status: inventory.length > 0 ? (inventoryDone ? "complete" : "partial") : "missing",
         score: inventory.length ? pct(tables.length, Math.max(tables.length, 1)) : 0,
         meta: inventoryDone ? "InventoryProfiler completed" : undefined,
@@ -322,7 +319,7 @@ export function ReviewView({
         label: "Object-level review",
         detail: tables.length
           ? `${tablesAssessed.length}/${tables.length} tables covered by assessment findings`
-          : "Await inventory",
+          : "Await profiling",
         status: !tables.length
           ? "missing"
           : !findings.length
@@ -384,11 +381,11 @@ export function ReviewView({
         saveHitlDecisions(pid, assessmentRun?.id, saved);
       }
       setHitlTick((t) => t + 1);
-      window.dispatchEvent(new Event("lumina-hitl-changed"));
+      window.dispatchEvent(new Event("mirage-hitl-changed"));
       return saved || next;
     } catch {
       setHitlTick((t) => t + 1);
-      window.dispatchEvent(new Event("lumina-hitl-changed"));
+      window.dispatchEvent(new Event("mirage-hitl-changed"));
       return next;
     }
   }, [
@@ -463,100 +460,62 @@ export function ReviewView({
   }, [findings, findingFilter]);
 
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-white">
-      {/* Header */}
-      <div className="shrink-0 border-b border-tm-gray-200 px-5 py-4">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-sm font-semibold text-tm-ink">Review & sign-off</h2>
-              {project.inventory_signed_off ? (
-                <span className="rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-800">
-                  Signed off
-                </span>
-              ) : (
-                <span className="rounded bg-tm-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-tm-gray-600">
-                  Pending approval
-                </span>
-              )}
-            </div>
-            <p className="mt-1 text-xs text-tm-gray-500">
-              Coverage of discovery agents, scan confidence, and architectural sign-off for Phase 1 exit
-            </p>
+    <AtlasPage fill>
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <div className="shrink-0 grid gap-2 border-b border-black/5 bg-white/40 px-4 py-2 sm:grid-cols-4">
+          <div className="atlas-kpi !py-2 !px-3">
+            <p className="atlas-kpi-label">Coverage</p>
+            <p className="atlas-kpi-value !text-base">{coveragePct}%</p>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              className="btn text-xs"
-              disabled={busy || !inventory.length || assessmentActive}
-              title={!inventory.length ? "Inventory required" : "Run legacy code assessment agent"}
-              onClick={onRunAssessment}
-            >
-              {assessmentActive ? "Assessing…" : findings.length ? "Re-run assessment" : "Run assessment"}
-            </button>
+          <div className="atlas-kpi !py-2 !px-3">
+            <ConfidenceBar value={scanConfidence} label="Scan" />
+          </div>
+          <div className="atlas-kpi !py-2 !px-3">
+            <ConfidenceBar value={inventoryConfidence} label="Profiling" />
+          </div>
+          <div className="atlas-kpi !py-2 !px-3">
+            <ConfidenceBar value={assessmentConfidence} label="Assessment" />
           </div>
         </div>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-4">
-          <div className="rounded-lg border border-tm-gray-100 bg-tm-gray-50/80 px-3 py-2.5">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-tm-gray-500">
-              Review coverage
-            </p>
-            <p className="mt-1 text-xl font-semibold tabular-nums text-tm-ink">{coveragePct}%</p>
-            <p className="text-[11px] text-tm-gray-500">
-              {reviewedCount}/{coverageRows.length} areas complete
-            </p>
-          </div>
-          <div className="rounded-lg border border-tm-gray-100 px-3 py-2.5">
-            <ConfidenceBar value={scanConfidence} label="Scan confidence" />
-          </div>
-          <div className="rounded-lg border border-tm-gray-100 px-3 py-2.5">
-            <ConfidenceBar value={inventoryConfidence} label="Inventory confidence" />
-          </div>
-          <div className="rounded-lg border border-tm-gray-100 px-3 py-2.5">
-            <ConfidenceBar value={assessmentConfidence} label="Assessment confidence" />
-          </div>
-        </div>
-      </div>
-
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
         <div className="grid gap-0 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           {/* Coverage */}
-          <section className="border-b border-tm-gray-100 lg:border-b-0 lg:border-r">
-            <div className="border-b border-tm-gray-100 px-5 py-3">
-              <h3 className="text-xs font-semibold uppercase tracking-wide text-tm-gray-500">
+          <section className="border-b border-black/5 lg:border-b-0 lg:border-r">
+            <div className="border-b border-black/5 px-5 py-3">
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-[#86868b]">
                 What has been reviewed
               </h3>
             </div>
-            <ul className="divide-y divide-tm-gray-100">
+            <ul className="divide-y divide-black/5">
               {coverageRows.map((row) => (
                 <li key={row.id} className="px-5 py-3.5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-sm font-medium text-tm-ink">{row.label}</p>
+                        <p className="text-sm font-medium text-[#1d1d1f]">{row.label}</p>
                         <StatusPill status={row.status} />
                       </div>
-                      <p className="mt-1 text-xs text-tm-gray-500">{row.detail}</p>
+                      <p className="mt-1 text-xs text-[#86868b]">{row.detail}</p>
                       {row.meta ? (
-                        <p className="mt-0.5 text-[11px] text-tm-gray-400">{row.meta}</p>
+                        <p className="mt-0.5 text-[11px] text-[#aeaeb2]">{row.meta}</p>
                       ) : null}
                     </div>
                     <div className="w-16 shrink-0 text-right">
-                      <p className="text-sm font-semibold tabular-nums text-tm-ink">
+                      <p className="text-sm font-semibold tabular-nums text-[#1d1d1f]">
                         {row.score != null ? `${row.score}%` : "—"}
                       </p>
                     </div>
                   </div>
                   {row.score != null && row.score > 0 ? (
-                    <div className="mt-2 h-1 overflow-hidden rounded-full bg-tm-gray-100">
+                    <div className="mt-2 h-1 overflow-hidden rounded-full bg-black/[0.04]">
                       <div
                         className={`h-full rounded-full ${
                           row.status === "complete"
                             ? "bg-emerald-500/80"
                             : row.status === "partial"
                               ? "bg-amber-500/80"
-                              : "bg-tm-gray-300"
+                              : "bg-[#d2d2d7]"
                         }`}
                         style={{ width: `${row.score}%` }}
                       />
@@ -567,21 +526,21 @@ export function ReviewView({
             </ul>
 
             {tablesUnassessed.length > 0 && findings.length > 0 ? (
-              <div className="border-t border-tm-gray-100 px-5 py-4">
-                <p className="text-xs font-semibold text-tm-ink">
+              <div className="border-t border-black/5 px-5 py-4">
+                <p className="text-xs font-semibold text-[#1d1d1f]">
                   Not covered by assessment ({tablesUnassessed.length})
                 </p>
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {tablesUnassessed.slice(0, 12).map((t) => (
                     <span
                       key={t.id}
-                      className="rounded bg-tm-gray-50 px-2 py-0.5 font-mono text-[10px] text-tm-gray-600"
+                      className="rounded bg-black/[0.03] px-2 py-0.5 font-mono text-[10px] text-[#6e6e73]"
                     >
                       {t.fully_qualified_name || t.name}
                     </span>
                   ))}
                   {tablesUnassessed.length > 12 ? (
-                    <span className="text-[10px] text-tm-gray-400">
+                    <span className="text-[10px] text-[#aeaeb2]">
                       +{tablesUnassessed.length - 12} more
                     </span>
                   ) : null}
@@ -592,32 +551,55 @@ export function ReviewView({
 
           {/* Assessment findings + agent */}
           <section className="min-h-0">
-            <div className="border-b border-tm-gray-100 px-5 py-3">
+            <div className="border-b border-black/5 px-5 py-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-tm-gray-500">
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-[#86868b]">
                   Assessment findings
                 </h3>
-                <div className="flex gap-1">
-                  {(
-                    [
-                      ["all", "All"],
-                      ["high", "High conf."],
-                      ["low", "Needs HITL"],
-                    ] as const
-                  ).map(([id, label]) => (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => setFindingFilter(id)}
-                      className={`rounded px-2 py-0.5 text-[10px] font-medium ${
-                        findingFilter === id
-                          ? "bg-tm-ink text-white"
-                          : "text-tm-gray-500 hover:bg-tm-gray-50"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex gap-1">
+                    {(
+                      [
+                        ["all", "All"],
+                        ["high", "High conf."],
+                        ["low", "Needs HITL"],
+                      ] as const
+                    ).map(([id, label]) => (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => setFindingFilter(id)}
+                        className={`rounded px-2 py-0.5 text-[10px] font-medium ${
+                          findingFilter === id
+                            ? "bg-[#1d1d1f] text-white"
+                            : "text-[#86868b] hover:bg-black/[0.03]"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className="btn text-[11px] !px-2.5 !py-1"
+                    disabled={
+                      busy ||
+                      assessmentActive ||
+                      !(inventory?.length || 0)
+                    }
+                    title={
+                      !(inventory?.length || 0)
+                        ? "Profiling required"
+                        : "Run legacy code assessment"
+                    }
+                    onClick={() => onRunAssessment()}
+                  >
+                    {assessmentActive
+                      ? "Assessing…"
+                      : assessmentRun
+                        ? "Re-run assessment"
+                        : "Run assessment"}
+                  </button>
                 </div>
               </div>
             </div>
@@ -634,21 +616,21 @@ export function ReviewView({
 
               {assessmentRun ? (
                 <div className="flex flex-wrap items-center gap-2 text-[11px]">
-                  <span className="rounded bg-tm-gray-50 px-2 py-1 font-medium capitalize text-tm-ink">
+                  <span className="rounded bg-black/[0.03] px-2 py-1 font-medium capitalize text-[#1d1d1f]">
                     {assessmentRun.status}
                   </span>
                   {assessmentConfidence != null ? (
-                    <span className="rounded bg-tm-gray-50 px-2 py-1 text-tm-gray-600">
+                    <span className="rounded bg-black/[0.03] px-2 py-1 text-[#6e6e73]">
                       Aggregate {assessmentConfidence}%
                     </span>
                   ) : null}
                   {assessmentRun.prompt_version ? (
-                    <span className="rounded bg-tm-gray-50 px-2 py-1 text-tm-gray-600">
+                    <span className="rounded bg-black/[0.03] px-2 py-1 text-[#6e6e73]">
                       Prompt {assessmentRun.prompt_version}
                     </span>
                   ) : null}
                   {assessmentRun.standards_version ? (
-                    <span className="rounded bg-tm-gray-50 px-2 py-1 text-tm-gray-600">
+                    <span className="rounded bg-black/[0.03] px-2 py-1 text-[#6e6e73]">
                       Standards {assessmentRun.standards_version}
                     </span>
                   ) : null}
@@ -693,11 +675,11 @@ export function ReviewView({
                             ? "border-rose-200/80 bg-rose-50/30"
                             : low
                               ? "border-amber-200/80 bg-amber-50/40"
-                              : "border-tm-gray-100"
+                              : "border-black/5"
                       }`}
                     >
                       <div className="flex items-start justify-between gap-2">
-                        <p className="font-mono text-xs font-semibold text-tm-ink">{f.object}</p>
+                        <p className="font-mono text-xs font-semibold text-[#1d1d1f]">{f.object}</p>
                         <span
                           className={`shrink-0 text-[10px] font-semibold tabular-nums ${
                             low ? "text-amber-800" : "text-emerald-700"
@@ -707,7 +689,7 @@ export function ReviewView({
                         </span>
                       </div>
                       {(f.sources || []).length || (f.targets || []).length ? (
-                        <p className="mt-1 text-[11px] text-tm-gray-500">
+                        <p className="mt-1 text-[11px] text-[#86868b]">
                           {(f.sources || []).length
                             ? `Sources: ${(f.sources || []).slice(0, 3).join(", ")}`
                             : null}
@@ -717,10 +699,10 @@ export function ReviewView({
                             : null}
                         </p>
                       ) : null}
-                      <ul className="mt-2 space-y-0.5 text-xs text-tm-gray-700">
+                      <ul className="mt-2 space-y-0.5 text-xs text-[#6e6e73]">
                         {(f.candidate_business_rules || []).map((r: string, j: number) => (
                           <li key={j} className="flex gap-1.5">
-                            <span className="text-tm-gray-300">·</span>
+                            <span className="text-[#aeaeb2]">·</span>
                             <span>{r}</span>
                           </li>
                         ))}
@@ -728,7 +710,7 @@ export function ReviewView({
                       {low ? (
                         <div className="mt-2 flex flex-wrap items-center gap-2">
                           {decision ? (
-                            <p className="text-[10px] font-medium uppercase tracking-wide text-tm-ink">
+                            <p className="text-[10px] font-medium uppercase tracking-wide text-[#1d1d1f]">
                               {decision === "accepted"
                                 ? "Accepted by reviewer"
                                 : "Flagged — proceed with caution"}
@@ -742,7 +724,7 @@ export function ReviewView({
                             <div className="ml-auto flex gap-1.5">
                               <button
                                 type="button"
-                                className="rounded border border-emerald-300 bg-white px-2 py-0.5 text-[10px] font-semibold text-emerald-800 hover:bg-emerald-50"
+                                className="rounded border border-emerald-300 bg-transparent px-2 py-0.5 text-[10px] font-semibold text-emerald-800 hover:bg-emerald-50"
                                 disabled={busy}
                                 onClick={() => decideHitl(key, "accepted")}
                               >
@@ -750,7 +732,7 @@ export function ReviewView({
                               </button>
                               <button
                                 type="button"
-                                className="rounded border border-rose-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
+                                className="rounded border border-rose-200 bg-transparent px-2 py-0.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
                                 disabled={busy}
                                 onClick={() => decideHitl(key, "flagged")}
                               >
@@ -761,7 +743,7 @@ export function ReviewView({
                           {decision && !project.inventory_signed_off ? (
                             <button
                               type="button"
-                              className="ml-auto text-[10px] text-tm-gray-500 underline hover:text-tm-ink"
+                              className="ml-auto text-[10px] text-[#86868b] underline hover:text-[#1d1d1f]"
                               onClick={() => {
                                 const pid = project?.id;
                                 if (!pid) return;
@@ -772,7 +754,7 @@ export function ReviewView({
                                   return next;
                                 });
                                 setHitlTick((t) => t + 1);
-                                window.dispatchEvent(new Event("lumina-hitl-changed"));
+                                window.dispatchEvent(new Event("mirage-hitl-changed"));
                               }}
                             >
                               Undo
@@ -784,7 +766,7 @@ export function ReviewView({
                   );
                 })}
                 {!filteredFindings.length ? (
-                  <p className="py-6 text-center text-xs text-tm-gray-500">
+                  <p className="py-6 text-center text-xs text-[#86868b]">
                     {assessmentActive
                       ? "Agent running — findings appear when complete."
                       : findings.length
@@ -798,13 +780,13 @@ export function ReviewView({
         </div>
 
         {/* Sign-off gate */}
-        <section className="border-t border-tm-gray-200 bg-tm-gray-50/50 px-5 py-5">
+        <section className="border-t border-black/5 bg-black/[0.03]/50 px-5 py-5">
           <div className="mx-auto flex max-w-3xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-tm-ink">Phase 1 exit gate</h3>
-              <p className="mt-1 text-xs text-tm-gray-500">
+              <h3 className="text-sm font-semibold text-[#1d1d1f]">Phase 1 exit gate</h3>
+              <p className="mt-1 text-xs text-[#86868b]">
                 Accept or flag every low-confidence finding, then approve the inventory pack to open
-                Decide.
+                Plan.
               </p>
               <div
                 className={`mt-2 inline-flex rounded-lg px-3 py-1.5 text-xs font-medium ${
@@ -816,11 +798,11 @@ export function ReviewView({
                 }`}
               >
                 {project.inventory_signed_off
-                  ? "Inventory pack signed off — Phase 1 complete"
+                  ? "Inventory pack signed off — Discover complete · continue to Plan"
                   : assessmentActive
                     ? "Assessment still running…"
                     : !baseExitReady
-                      ? "Complete scan, inventory, and lineage before sign-off"
+                      ? "Complete scan, profiling, and lineage before sign-off"
                       : !hitlDone
                         ? `${hitlPending.length} finding${hitlPending.length === 1 ? "" : "s"} still need Accept or Flag`
                         : !roleOk
@@ -839,21 +821,18 @@ export function ReviewView({
                     : !hitlDone
                       ? "Accept or flag all HITL findings first"
                       : !baseExitReady
-                        ? "Complete inventory and lineage first"
-                        : "Approve Discovery and open Decide"
+                        ? "Complete profiling and lineage first"
+                        : "Approve Discovery and open Plan"
                 }
                 onClick={() => void approveToDecide()}
               >
-                Approve → Decide
+                Approve → Plan
               </button>
-            ) : (
-              <div className="badge-success shrink-0 text-xs">
-                Signed off — use Continue to Decide in the header
-              </div>
-            )}
+            ) : null}
           </div>
         </section>
       </div>
-    </div>
+      </div>
+    </AtlasPage>
   );
 }

@@ -1,35 +1,35 @@
-# Lumina documentation
+# Mirage documentation
 
-Professional product materials for the Lumina Control Plane — legacy data estates to governed cloud data products.
+Professional product materials for **Mirage Suite** — legacy data estates to governed cloud data products via a portfolio Dashboard, sequential tool Gallery, and named tools.
 
 ## Contents
 
 | Document | Description |
 | --- | --- |
-| [Product overview](./01-product-overview.md) | Concise description of Lumina, capabilities, and operating model |
+| [Product overview](./01-product-overview.md) | Mirage Suite tools, capabilities, and operating model |
 | [Architecture](./02-architecture.md) | System context, control-plane layers, journey, integrations |
-| [White paper](./Lumina-White-Paper.md) | Globally publishable practice paper on brownfield productisation |
-| [Presentation (script)](./Lumina-Presentation.md) | Slide narrative and speaker notes |
-| [Presentation (HTML)](./Lumina-Presentation.html) | Present-mode deck — arrow keys / click; `P` to print PDF |
-| [Screenshots](./assets/screenshots/) | Captures from the working control-plane workspace |
+| [White paper](./Mirage-White-Paper.md) | Globally publishable practice paper on brownfield productisation |
+| [Presentation (script)](./Mirage-Presentation.md) | Slide narrative and speaker notes |
+| [Presentation (HTML)](./Mirage-Presentation.html) | Present-mode deck — arrow keys / click; `P` to print PDF |
+| [Screenshots](./assets/screenshots/) | Captures from the working suite workspace |
 | [Positioning notes](./00-positioning-notes.md) | Design-system alignment and complementary platform fit |
 
 ## Screenshots
 
 | Capture | View |
 | --- | --- |
-| ![Workspace home](./assets/screenshots/02-workspace-home.png) | Home — delivery plan and next gate |
-| ![Inventory](./assets/screenshots/03-discovery-inventory.png) | Discover — inventory & lineage agents |
-| ![Disposition](./assets/screenshots/04-disposition-board.png) | Decide — disposition board |
-| ![SID mapping](./assets/screenshots/05-align-workbench.png) | Align — SID mapping workbench |
-| ![Build DAGs](./assets/screenshots/06-build-dags.png) | Build — DAG conversion pack |
-| ![Pilot](./assets/screenshots/07-pilot-reviews.png) | Pilot — review inbox |
-| ![Migrate](./assets/screenshots/08-migrate-signoff.png) | Migrate — production readiness gates |
+| ![Workspace home](./assets/screenshots/02-workspace-home.png) | Dashboard — portfolio KPIs (refresh after Suite UI) |
+| ![Profiling](./assets/screenshots/03-discovery-inventory.png) | Atlas — profiling & lineage agents |
+| ![Disposition](./assets/screenshots/04-disposition-board.png) | Verdict — disposition board |
+| ![SID mapping](./assets/screenshots/05-align-workbench.png) | Compass — SID mapping workbench |
+| ![Build DAGs](./assets/screenshots/06-build-dags.png) | Forge — DAG conversion pack |
+| ![Pilot](./assets/screenshots/07-pilot-reviews.png) | Prove — review inbox |
+| ![Migrate](./assets/screenshots/08-migrate-signoff.png) | Transit — production readiness gates |
 
 ## Design system
 
 - Magenta `#E20074` · Ink `#0B1220` · IBM Plex Sans  
-- Table-first workspace · role-gated approvals · durable migration artifacts  
+- Suite shell (Dashboard · Gallery · tool chrome) · role-gated approvals · durable migration artifacts  
 
 ## Refresh screenshots
 

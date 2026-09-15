@@ -43,9 +43,9 @@ export default function HomePage() {
       <header className="ws-topbar !h-14 border-b border-brand-line bg-white">
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6">
           <div className="flex items-center gap-2.5">
-            <div className="brand-mark">L</div>
+            <div className="brand-mark">M</div>
             <div>
-              <div className="text-sm font-semibold text-brand-ink">Lumina</div>
+              <div className="text-sm font-semibold text-brand-ink">Mirage</div>
               <div className="text-[11px] text-brand-muted">Control Plane</div>
             </div>
           </div>

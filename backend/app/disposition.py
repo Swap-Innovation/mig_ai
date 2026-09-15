@@ -182,7 +182,7 @@ def build_dependents_map(edges: list[LineageEdge]) -> dict[str, list[str]]:
 
 
 def objects_for_disposition(db: Session, project_id: int) -> list[InventoryObject]:
-    """Tables, scripts, repos, and DAGs — everything Decide should score."""
+    """Tables, scripts, repos, and DAGs — scoped to active wave when Plan is approved."""
     rows = (
         db.query(InventoryObject)
         .filter(
@@ -192,7 +192,16 @@ def objects_for_disposition(db: Session, project_id: int) -> list[InventoryObjec
         .order_by(InventoryObject.object_type, InventoryObject.fully_qualified_name)
         .all()
     )
-    return rows
+    project = db.query(Project).get(project_id)
+    if not project or not project.plan_approved:
+        return rows
+    from app.services.wave_plan import active_wave_object_ids
+
+    scoped = active_wave_object_ids(project)
+    if scoped is None:
+        return rows
+    allow = set(scoped)
+    return [r for r in rows if r.id in allow]
 
 
 def hydrate_inventory_from_discover_disk(db: Session, project: Project) -> dict[str, int]:
