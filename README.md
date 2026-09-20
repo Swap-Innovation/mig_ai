@@ -54,30 +54,35 @@ UI: http://localhost:3000
 
 > On macOS, prefer `127.0.0.1` over `localhost` for the API URL — `localhost` can resolve to IPv6 (`::1`) and hit a different process on port 8000.
 
-### GitHub Pages (product site + one-click demo)
+### Local vs GitHub Pages (kept separate)
 
-The static site at **https://swap-innovation.github.io/mig_ai/** ships a marketing homepage and a **mock-mode** workspace (no backend). One-click demo: `/demo`.
+| | **Local** | **Published (Pages)** |
+|---|---|---|
+| Command | `cd frontend && npm run dev` | `npm run publish:pages` |
+| Config | `frontend/.env.local` | `frontend/.env.pages` |
+| Backend | Live FastAPI | None (mock fixtures) |
+| Auto on `main` push? | — | **No** — publish only when you choose |
 
-Enable once in the repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+**One-time Pages setup:** Settings → Pages → **Deploy from a branch** → `gh-pages` / `(root)`.
 
-Deploy runs on every push to `main` via [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
-
-Local static preview:
-
-```bash
-cd frontend
-npm run build:pages
-# Serve with basePath:
-mkdir -p /tmp/ghpages && rm -rf /tmp/ghpages/mig_ai && cp -R out /tmp/ghpages/mig_ai
-cd /tmp/ghpages && python3 -m http.server 4173
-# Open http://127.0.0.1:4173/mig_ai/
-```
-
-Refresh mock fixtures from a running API (`:8001`):
+**Stabilize → sync → publish:**
 
 ```bash
-python3 scripts/capture-demo-fixtures.py
+# 1) Work locally as usual (API + npm run dev)
+
+# 2) When demo data should match local API:
+cd frontend && npm run sync:demo
+
+# 3) Preview static site (http://127.0.0.1:4173/mig_ai/)
+npm run preview:pages
+
+# 4) Publish when ready (updates gh-pages only; main/dev unchanged)
+npm run publish:pages
 ```
+
+CI alternative (same artifact): Actions → **Publish GitHub Pages** → Run workflow, or `git push origin HEAD:publish/pages`.
+
+Live: **https://swap-innovation.github.io/mig_ai/** · Demo: **/demo/**
 
 ### Docker Compose
 

@@ -1,21 +1,28 @@
-name: Deploy GitHub Pages
+name: Publish GitHub Pages
+
+# Intentionally NOT on every main push — keep local/dev independent of the live site.
+#
+# Publish when stabilized (any one):
+#   1. Actions → Publish GitHub Pages → Run workflow
+#   2. git push origin HEAD:publish/pages
+#   3. ./scripts/publish-pages.sh   (local build + push gh-pages)
+#
+# One-time: Settings → Pages → Deploy from a branch → gh-pages / (root)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+  push:
+    branches: [publish/pages]
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: pages-publish
   cancel-in-progress: true
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,27 +37,15 @@ jobs:
         working-directory: frontend
         run: npm ci
 
-      - name: Build static demo site
-        working-directory: frontend
-        run: npm run build:pages
-        env:
-          NEXT_PUBLIC_DEMO_MODE: "1"
-          NEXT_PUBLIC_STATIC_EXPORT: "1"
-          NEXT_PUBLIC_BASE_PATH: "/mig_ai"
+      - name: Build static site (.env.pages)
+        run: bash scripts/build-pages.sh
 
-      - name: Add .nojekyll
-        run: touch frontend/out/.nojekyll
-
-      - uses: actions/upload-pages-artifact@v3
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: frontend/out
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: frontend/out
+          publish_branch: gh-pages
+          force_orphan: true
+          enable_jekyll: false
+          commit_message: "Publish Mirage Pages from ${{ github.sha }}"

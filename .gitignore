@@ -11,3 +11,6 @@ backend/migrate.db
 sample-data/workspaces/
 *.egg-info/
 .env
+.env.local
+frontend/.env.local
+.pages-publish/

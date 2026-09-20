@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "build:pages": "NEXT_PUBLIC_DEMO_MODE=1 NEXT_PUBLIC_STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH=/mig_ai next build",
-    "build:pages:root": "NEXT_PUBLIC_DEMO_MODE=1 NEXT_PUBLIC_STATIC_EXPORT=1 next build"
+    "build:pages": "bash ../scripts/build-pages.sh",
+    "preview:pages": "bash ../scripts/preview-pages.sh",
+    "sync:demo": "bash ../scripts/sync-demo-from-local.sh",
+    "publish:pages": "bash ../scripts/publish-pages.sh"
   },
   "dependencies": {
     "@dagrejs/dagre": "^3.1.1",
