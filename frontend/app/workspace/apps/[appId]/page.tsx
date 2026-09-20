@@ -1,10 +1,10 @@
-"use client";
+import Client from "./Client";
+import { appStaticParams } from "@/lib/staticParams";
 
-import { useParams } from "next/navigation";
-import { StandaloneAppShell } from "@/components/workspace/StandaloneAppShell";
+export function generateStaticParams() {
+  return appStaticParams();
+}
 
-export default function StandaloneAppPage() {
-  const params = useParams();
-  const appId = String(params.appId || "");
-  return <StandaloneAppShell appId={appId} />;
+export default function Page() {
+  return <Client />;
 }

@@ -4,6 +4,7 @@ __pycache__/
 *.db
 node_modules/
 .next/
+frontend/out/
 .pdf_pages/
 .DS_Store
 backend/migrate.db

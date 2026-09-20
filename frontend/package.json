@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "build:pages": "NEXT_PUBLIC_DEMO_MODE=1 NEXT_PUBLIC_STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH=/mig_ai next build",
+    "build:pages:root": "NEXT_PUBLIC_DEMO_MODE=1 NEXT_PUBLIC_STATIC_EXPORT=1 next build"
   },
   "dependencies": {
     "@dagrejs/dagre": "^3.1.1",

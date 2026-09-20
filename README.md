@@ -1,6 +1,6 @@
 # Mirage Suite — Legacy → Cloud Migration MVP
 
-Enterprise suite for legacy data estate discovery, disposition, TM Forum SID mapping, metadata, LLM-assisted delivery, and a Party & Customer Account pilot on a GCP-shaped stack. Post-login: **Dashboard → Gallery → named tools** (Atlas, Verdict, Compass, Forge, Prove, Transit, Sunset).
+Enterprise suite for legacy data estate discovery, disposition, TM Forum SID mapping, metadata, LLM-assisted delivery, and a Party & Customer Account pilot on a GCP-shaped stack. Post-login: **Dashboard → Stage map → named tools** (Atlas, Horizon, Verdict, Compass, Forge, Prove, Transit, Sunset).
 
 ## Repository layout
 
@@ -53,6 +53,32 @@ npm run dev
 UI: http://localhost:3000
 
 > On macOS, prefer `127.0.0.1` over `localhost` for the API URL — `localhost` can resolve to IPv6 (`::1`) and hit a different process on port 8000.
+
+### GitHub Pages (product site + one-click demo)
+
+The static site at **https://swap-innovation.github.io/mig_ai/** ships a marketing homepage and a **mock-mode** workspace (no backend). One-click demo: `/demo`.
+
+Enable once in the repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+Deploy runs on every push to `main` via [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
+
+Local static preview:
+
+```bash
+cd frontend
+npm run build:pages
+# Serve with basePath:
+mkdir -p /tmp/ghpages && rm -rf /tmp/ghpages/mig_ai && cp -R out /tmp/ghpages/mig_ai
+cd /tmp/ghpages && python3 -m http.server 4173
+# Open http://127.0.0.1:4173/mig_ai/
+```
+
+Refresh mock fixtures from a running API (`:8001`):
+
+```bash
+python3 scripts/capture-demo-fixtures.py
+```
+
 ### Docker Compose
 
 ```bash
@@ -90,28 +116,37 @@ Optional LLM enrichment: `export LLM_MODE=openai OPENAI_API_KEY=…` (falls back
 
 After login, open **http://localhost:3000/workspace** (legacy `/project` redirects here).
 
-- **Home** — next action, gate chips, recent runs
-- **Left nav** — Phases 0–7 (collapsible)
-- **Phase pages** — deep links `/workspace/phase/<id>/<view>` (e.g. `…/1_discovery/inventory`)
-- Slim top bar + **About** drawer (product + phase guidance) + **Activity** drawer for agent runs
-- Table-first views (Inventory, Disposition board, Mapping workbench, Pilot reviews/product) use a full-bleed canvas and a closeable **inspector** for row detail — not stacked card walls
+- **Dashboard** — portfolio KPIs across estates (not tied to the active project alone)
+- **App Store** — accelerator / app catalogue entry
+- **Projects** — switch estates; under each estate: **Stage map** + Discover→Retire tool links
+- **Named tools** — `/workspace/tools/:toolId/:view` (Atlas, Horizon, Verdict, Compass, Forge, Prove, Transit, Sunset)
+- Legacy `/workspace/phase/*` redirects into suite tool routes
+- Right-rail **Mirage** chat scoped to the active estate; About / Activity / Sign out in the project chrome
 
-### Screenshot notes (demo / deck)
+### Screenshot notes (demo / Docs)
 
-Capture these after a fresh login (`engineer@demo.local` / `demo`) with the API on `:8000`:
+Regenerate Docs captures with UI on `:3000` and API on `:8001` (see `frontend/.env.local`):
+
+```bash
+node Docs/assets/capture-screenshots.mjs
+```
 
 | # | Route | What to show |
 |---|---|---|
-| 1 | `/workspace` | Home: next action, gate chips, recent runs |
-| 2 | `/workspace/phase/1_discovery/sources` | Estate bind / ZIP / Git source setup |
-| 3 | `/workspace/phase/1_discovery/console` | Async discovery steps (after Run discovery) |
-| 4 | `/workspace/phase/1_discovery/inventory` | Full-bleed inventory table + row inspector |
-| 5 | `/workspace/phase/2_disposition/board` | Disposition table + category chips + inspector |
-| 6 | `/workspace/phase/3_mapping/workbench` | Mapping workbench + SID detail inspector |
-| 7 | `/workspace/phase/5_pilot_product/reviews` | HITL review inbox table + payload inspector |
-| 8 | Top bar → **About** | Phase-aware About drawer (open any phase first) |
+| 1 | `/workspace` | Dashboard — portfolio KPIs, Portfolio health, Activity over time |
+| 2 | `/workspace/gallery` | Stage map — Discover→Retire (Atlas→Sunset) |
+| 3 | `/workspace/tools/atlas/sources` | Estate bind / ZIP / Git |
+| 4 | `/workspace/tools/atlas/profiling` | Profiling (after Activity scan) |
+| 5 | `/workspace/tools/atlas/lineage` | Lineage |
+| 6 | `/workspace/tools/horizon/overview` | Wave plan overview |
+| 7 | `/workspace/tools/verdict/board` | Disposition board |
+| 8 | `/workspace/tools/compass/workbench` | SID mapping workbench |
+| 9 | `/workspace/tools/forge/pipelines` | Pipeline Migration (DAGs → Composer) |
+| 10 | `/workspace/tools/prove/reviews` | Prove reviews inbox |
+| 11 | `/workspace/tools/transit/signoff` | Production sign-off |
+| 12 | `/workspace/tools/sunset/archive` | Sunset archive |
 
-Tips: collapse the left nav for density; open **Activity** while an agent is `running`; use `viewer@demo.local` on the product table to show PII masking.
+Inventory + captions: [Docs/assets/screenshots/README.md](Docs/assets/screenshots/README.md). Use `viewer@demo.local` where PII masking should be shown.
 
 ### Phase 1 discovery (async)
 

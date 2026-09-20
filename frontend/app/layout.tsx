@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Mirage Control Plane · Legacy → Cloud",
+  title: "Mirage Suite · Legacy estates → governed data products",
   description:
-    "Enterprise control plane for legacy data estate discovery, disposition, SID mapping, and source-aligned data products",
+    "AI-powered control plane for brownfield transformation — discover, decide, deliver, and retire with human-in-the-loop governance.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

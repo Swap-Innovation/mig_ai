@@ -1,7 +1,10 @@
-"use client";
+import Client from "./Client";
+import { phaseViewStaticParams } from "@/lib/staticParams";
 
-import { LegacyPhaseRedirect } from "@/components/workspace/LegacyPhaseRedirect";
+export function generateStaticParams() {
+  return phaseViewStaticParams();
+}
 
-export default function PhaseViewRedirectPage() {
-  return <LegacyPhaseRedirect />;
+export default function Page() {
+  return <Client />;
 }

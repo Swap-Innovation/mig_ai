@@ -1,0 +1,4033 @@
+{
+  "GET /auth/demo-users": [
+    {
+      "email": "architect@demo.local",
+      "password": "demo",
+      "role": "architect",
+      "name": "Alex Architect"
+    },
+    {
+      "email": "owner@demo.local",
+      "password": "demo",
+      "role": "product_owner",
+      "name": "Pat Product Owner"
+    },
+    {
+      "email": "dataowner@demo.local",
+      "password": "demo",
+      "role": "data_owner",
+      "name": "Dana Data Owner"
+    },
+    {
+      "email": "steward@demo.local",
+      "password": "demo",
+      "role": "data_steward",
+      "name": "Sam Data Steward"
+    },
+    {
+      "email": "board@demo.local",
+      "password": "demo",
+      "role": "change_board",
+      "name": "Casey Change Board"
+    },
+    {
+      "email": "engineer@demo.local",
+      "password": "demo",
+      "role": "engineer",
+      "name": "Jordan Engineer"
+    },
+    {
+      "email": "viewer@demo.local",
+      "password": "demo",
+      "role": "viewer",
+      "name": "Riley Viewer"
+    }
+  ],
+  "GET /health": {
+    "status": "ok",
+    "sample_project": "party-customer-wave1",
+    "legacy_path": "../sample-data/projects/party-customer-wave1/legacy"
+  },
+  "GET /me": {
+    "id": 1,
+    "email": "architect@demo.local",
+    "name": "Alex Architect",
+    "role": "architect"
+  },
+  "GET /projects": [
+    {
+      "id": 1,
+      "name": "Aq",
+      "description": "On-prem Spark estate: 5 Airflow DAGs, each with 2\u20133 Spark scripts (4\u20135 source tables \u2192 1\u20132 targets).",
+      "status": "draft",
+      "phase": "0_mobilisation",
+      "inventory_signed_off": false,
+      "plan_approved": false,
+      "wave_plan": {},
+      "disposition_approved": false,
+      "mapping_approved": false,
+      "metadata_complete": false,
+      "build_approved": false,
+      "build_targets": {},
+      "test_env_ready": false,
+      "test_env": {},
+      "prod_env_ready": false,
+      "prod_env": {},
+      "mobilisation_ready": false,
+      "change_closed": false,
+      "legacy_source_type": "sample",
+      "legacy_root": "/Users/A104007227/Desktop/github/mig_ai/sample-data/projects/aq/legacy",
+      "estate_label": "Sample: aq",
+      "sample_slug": "aq",
+      "managed": true,
+      "git_url": "",
+      "git_branch": "main",
+      "git_path_prefix": "",
+      "git_commit": "",
+      "last_synced_at": "2026-09-15T11:34:46.426731",
+      "created_at": "2026-09-15T11:34:46.425831"
+    },
+    {
+      "id": 2,
+      "name": "Billing & Usage Wave-1",
+      "description": "Pilot migration for billing usage on-prem warehouse (git ETL DAGs: usage_hourly + usage_mart_daily).",
+      "status": "active",
+      "phase": "0_mobilisation",
+      "inventory_signed_off": false,
+      "plan_approved": false,
+      "wave_plan": {},
+      "disposition_approved": false,
+      "mapping_approved": false,
+      "metadata_complete": false,
+      "build_approved": false,
+      "build_targets": {},
+      "test_env_ready": false,
+      "test_env": {},
+      "prod_env_ready": false,
+      "prod_env": {},
+      "mobilisation_ready": false,
+      "change_closed": false,
+      "legacy_source_type": "sample",
+      "legacy_root": "/Users/A104007227/Desktop/github/mig_ai/sample-data/projects/billing-usage-wave1/legacy",
+      "estate_label": "Sample: billing-usage-wave1",
+      "sample_slug": "billing-usage-wave1",
+      "managed": false,
+      "git_url": "",
+      "git_branch": "main",
+      "git_path_prefix": "",
+      "git_commit": "",
+      "last_synced_at": "2026-09-15T11:34:46.502622",
+      "created_at": "2026-09-15T11:34:46.501857"
+    },
+    {
+      "id": 3,
+      "name": "dwh-m",
+      "description": "",
+      "status": "active",
+      "phase": "0_mobilisation",
+      "inventory_signed_off": false,
+      "plan_approved": false,
+      "wave_plan": {},
+      "disposition_approved": false,
+      "mapping_approved": false,
+      "metadata_complete": false,
+      "build_approved": false,
+      "build_targets": {},
+      "test_env_ready": false,
+      "test_env": {},
+      "prod_env_ready": false,
+      "prod_env": {},
+      "mobilisation_ready": false,
+      "change_closed": false,
+      "legacy_source_type": "sample",
+      "legacy_root": "",
+      "estate_label": "",
+      "sample_slug": "dwh-m",
+      "managed": false,
+      "git_url": "",
+      "git_branch": "main",
+      "git_path_prefix": "",
+      "git_commit": "",
+      "last_synced_at": null,
+      "created_at": "2026-09-15T11:34:46.568943"
+    },
+    {
+      "id": 4,
+      "name": "App Store sandbox",
+      "description": "Hidden sandbox for App Store standalone apps \u2014 not an estate journey.",
+      "status": "draft",
+      "phase": "0_mobilisation",
+      "inventory_signed_off": false,
+      "plan_approved": false,
+      "wave_plan": {},
+      "disposition_approved": false,
+      "mapping_approved": false,
+      "metadata_complete": false,
+      "build_approved": false,
+      "build_targets": {},
+      "test_env_ready": false,
+      "test_env": {},
+      "prod_env_ready": false,
+      "prod_env": {},
+      "mobilisation_ready": false,
+      "change_closed": false,
+      "legacy_source_type": "sample",
+      "legacy_root": "/Users/A104007227/Desktop/github/mig_ai/sample-data/projects/mirage-app-sandbox/legacy",
+      "estate_label": "Sample: mirage-app-sandbox",
+      "sample_slug": "mirage-app-sandbox",
+      "managed": true,
+      "git_url": "",
+      "git_branch": "main",
+      "git_path_prefix": "",
+      "git_commit": "",
+      "last_synced_at": "2026-09-15T11:34:46.571279",
+      "created_at": "2026-09-15T11:34:46.570796"
+    },
+    {
+      "id": 5,
+      "name": "Party & Customer Account Wave-1",
+      "description": "Pilot migration for CRM Party / CustomerAccount on-prem warehouse (git ETL: dags \u2192 scripts \u2192 sql).",
+      "status": "active",
+      "phase": "0_mobilisation",
+      "inventory_signed_off": false,
+      "plan_approved": false,
+      "wave_plan": {},
+      "disposition_approved": false,
+      "mapping_approved": false,
+      "metadata_complete": false,
+      "build_approved": false,
+      "build_targets": {},
+      "test_env_ready": false,
+      "test_env": {},
+      "prod_env_ready": false,
+      "prod_env": {
+        "consumers": {
+          "assurance_desk": {
+            "status": "pending",
+            "contract": "",
+            "notes": "",
+            "updated_at": null
+          },
+          "care_desktop": {
+            "status": "pending",
+            "contract": "",
+            "notes": "",
+            "updated_at": null
+          },
+          "network_ops": {
+            "status": "pending",
+            "contract": "",
+            "notes": "",
+            "updated_at": null
+          }
+        }
+      },
+      "mobilisation_ready": false,
+      "change_closed": false,
+      "legacy_source_type": "sample",
+      "legacy_root": "/Users/A104007227/Desktop/github/mig_ai/sample-data/projects/party-customer-wave1/legacy",
+      "estate_label": "Sample: party-customer-wave1",
+      "sample_slug": "party-customer-wave1",
+      "managed": false,
+      "git_url": "",
+      "git_branch": "main",
+      "git_path_prefix": "",
+      "git_commit": "",
+      "last_synced_at": "2026-09-15T11:34:46.621022",
+      "created_at": "2026-09-15T11:34:46.620422"
+    }
+  ],
+  "GET /estate/samples": [
+    {
+      "id": "aq",
+      "name": "Aq",
+      "description": "On-prem Spark estate: 5 Airflow DAGs, each with 2\u20133 Spark scripts (4\u20135 source tables \u2192 1\u20132 targets).",
+      "wave": 1,
+      "status": "draft",
+      "managed": true,
+      "legacy_path": "../sample-data/projects/aq/legacy",
+      "has_legacy": true
+    },
+    {
+      "id": "billing-usage-wave1",
+      "name": "Billing & Usage Wave-1",
+      "description": "Pilot migration for billing usage on-prem warehouse (git ETL DAGs: usage_hourly + usage_mart_daily).",
+      "wave": 1,
+      "status": "active",
+      "managed": false,
+      "legacy_path": "../sample-data/projects/billing-usage-wave1/legacy",
+      "has_legacy": true
+    },
+    {
+      "id": "dwh-m",
+      "name": "dwh-m",
+      "description": "",
+      "wave": 1,
+      "status": "",
+      "managed": false,
+      "legacy_path": "",
+      "has_legacy": false
+    },
+    {
+      "id": "mirage-app-sandbox",
+      "name": "App Store sandbox",
+      "description": "Hidden sandbox for App Store standalone apps \u2014 not an estate journey.",
+      "wave": 1,
+      "status": "draft",
+      "managed": true,
+      "legacy_path": "../sample-data/projects/mirage-app-sandbox/legacy",
+      "has_legacy": true
+    },
+    {
+      "id": "party-customer-wave1",
+      "name": "Party & Customer Account Wave-1",
+      "description": "Pilot migration for CRM Party / CustomerAccount on-prem warehouse (git ETL: dags \u2192 scripts \u2192 sql).",
+      "wave": 1,
+      "status": "active",
+      "managed": false,
+      "legacy_path": "../sample-data/projects/party-customer-wave1/legacy",
+      "has_legacy": true
+    }
+  ],
+  "GET /portfolio/dashboard": {
+    "generated_at": "2026-09-20T15:43:57.203956Z",
+    "filters": {
+      "project_id": null,
+      "days": null,
+      "scope": "portfolio"
+    },
+    "portfolio_health": {
+      "active_estates": 4,
+      "total_estates": 4,
+      "complete_estates": 0,
+      "gated_estates": 4,
+      "pct_by_stage": {
+        "atlas": 100.0,
+        "horizon": 0.0,
+        "verdict": 0.0,
+        "compass": 0.0,
+        "forge": 0.0,
+        "prove": 0.0,
+        "transit": 0.0,
+        "sunset": 0.0
+      },
+      "count_by_stage": {
+        "atlas": 4,
+        "horizon": 0,
+        "verdict": 0,
+        "compass": 0,
+        "forge": 0,
+        "prove": 0,
+        "transit": 0,
+        "sunset": 0
+      },
+      "avg_days_in_stage": {
+        "atlas": 5.2,
+        "horizon": 0.0,
+        "verdict": 0.0,
+        "compass": 0.0,
+        "forge": 0.0,
+        "prove": 0.0,
+        "transit": 0.0,
+        "sunset": 0.0
+      },
+      "stage_labels": {
+        "atlas": "Discover",
+        "horizon": "Plan",
+        "verdict": "Decide",
+        "compass": "Align",
+        "forge": "Build",
+        "prove": "Pilot",
+        "transit": "Migrate",
+        "sunset": "Retire"
+      }
+    },
+    "estate_economics": {
+      "objects_inventoried": 0,
+      "disposition_register": 0,
+      "survivors": 0,
+      "avoided": 0,
+      "avoid_pct": 0.0,
+      "by_disposition": {},
+      "estimated_monthly_infra_avoidance_usd": 0,
+      "estimated_annual_infra_avoidance_usd": 0,
+      "unit_cost_usd": 85,
+      "build_artifacts": 0
+    },
+    "delivery_quality": {
+      "reconcile_pass_rate_pct": null,
+      "reconcile_total": 0,
+      "reconcile_passed": 0,
+      "open_hitl_findings": 0,
+      "failed_agent_runs": 0,
+      "mapping_conformance_gaps": 0
+    },
+    "cutover_risk": {
+      "products_promoted": 0,
+      "consumers_switched": 0,
+      "consumers_blocked": 0,
+      "freeze_applied_estates": 0,
+      "production_signoffs_pending": 0
+    },
+    "activity": [],
+    "activity_trend": [
+      {
+        "day": "2026-08-22",
+        "label": "08-22",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-23",
+        "label": "08-23",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-24",
+        "label": "08-24",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-25",
+        "label": "08-25",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-26",
+        "label": "08-26",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-27",
+        "label": "08-27",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-28",
+        "label": "08-28",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-29",
+        "label": "08-29",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-30",
+        "label": "08-30",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-31",
+        "label": "08-31",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-01",
+        "label": "09-01",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-02",
+        "label": "09-02",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-03",
+        "label": "09-03",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-04",
+        "label": "09-04",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-05",
+        "label": "09-05",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-06",
+        "label": "09-06",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-07",
+        "label": "09-07",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-08",
+        "label": "09-08",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-09",
+        "label": "09-09",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-10",
+        "label": "09-10",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-11",
+        "label": "09-11",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-12",
+        "label": "09-12",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-13",
+        "label": "09-13",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-14",
+        "label": "09-14",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-15",
+        "label": "09-15",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-16",
+        "label": "09-16",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-17",
+        "label": "09-17",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-18",
+        "label": "09-18",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-19",
+        "label": "09-19",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-20",
+        "label": "09-20",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      }
+    ],
+    "estates": [
+      {
+        "id": 1,
+        "name": "Aq",
+        "sample_slug": "aq",
+        "phase": "0_mobilisation",
+        "suite_stage": "atlas",
+        "gated": true,
+        "complete": false,
+        "days_in_stage": 5.2,
+        "inventory_signed_off": false,
+        "plan_approved": false,
+        "disposition_approved": false,
+        "build_approved": false,
+        "objects_inventoried": 0,
+        "disposition_count": 0,
+        "build_artifacts": 0,
+        "open_hitl": 0
+      },
+      {
+        "id": 2,
+        "name": "Billing & Usage Wave-1",
+        "sample_slug": "billing-usage-wave1",
+        "phase": "0_mobilisation",
+        "suite_stage": "atlas",
+        "gated": true,
+        "complete": false,
+        "days_in_stage": 5.2,
+        "inventory_signed_off": false,
+        "plan_approved": false,
+        "disposition_approved": false,
+        "build_approved": false,
+        "objects_inventoried": 0,
+        "disposition_count": 0,
+        "build_artifacts": 0,
+        "open_hitl": 0
+      },
+      {
+        "id": 3,
+        "name": "dwh-m",
+        "sample_slug": "dwh-m",
+        "phase": "0_mobilisation",
+        "suite_stage": "atlas",
+        "gated": true,
+        "complete": false,
+        "days_in_stage": 5.2,
+        "inventory_signed_off": false,
+        "plan_approved": false,
+        "disposition_approved": false,
+        "build_approved": false,
+        "objects_inventoried": 0,
+        "disposition_count": 0,
+        "build_artifacts": 0,
+        "open_hitl": 0
+      },
+      {
+        "id": 5,
+        "name": "Party & Customer Account Wave-1",
+        "sample_slug": "party-customer-wave1",
+        "phase": "0_mobilisation",
+        "suite_stage": "atlas",
+        "gated": true,
+        "complete": false,
+        "days_in_stage": 5.2,
+        "inventory_signed_off": false,
+        "plan_approved": false,
+        "disposition_approved": false,
+        "build_approved": false,
+        "objects_inventoried": 0,
+        "disposition_count": 0,
+        "build_artifacts": 0,
+        "open_hitl": 0
+      }
+    ]
+  },
+  "GET /portfolio/dashboard?time_range=30d": {
+    "generated_at": "2026-09-20T15:43:57.199818Z",
+    "filters": {
+      "project_id": null,
+      "days": null,
+      "scope": "portfolio"
+    },
+    "portfolio_health": {
+      "active_estates": 4,
+      "total_estates": 4,
+      "complete_estates": 0,
+      "gated_estates": 4,
+      "pct_by_stage": {
+        "atlas": 100.0,
+        "horizon": 0.0,
+        "verdict": 0.0,
+        "compass": 0.0,
+        "forge": 0.0,
+        "prove": 0.0,
+        "transit": 0.0,
+        "sunset": 0.0
+      },
+      "count_by_stage": {
+        "atlas": 4,
+        "horizon": 0,
+        "verdict": 0,
+        "compass": 0,
+        "forge": 0,
+        "prove": 0,
+        "transit": 0,
+        "sunset": 0
+      },
+      "avg_days_in_stage": {
+        "atlas": 5.2,
+        "horizon": 0.0,
+        "verdict": 0.0,
+        "compass": 0.0,
+        "forge": 0.0,
+        "prove": 0.0,
+        "transit": 0.0,
+        "sunset": 0.0
+      },
+      "stage_labels": {
+        "atlas": "Discover",
+        "horizon": "Plan",
+        "verdict": "Decide",
+        "compass": "Align",
+        "forge": "Build",
+        "prove": "Pilot",
+        "transit": "Migrate",
+        "sunset": "Retire"
+      }
+    },
+    "estate_economics": {
+      "objects_inventoried": 0,
+      "disposition_register": 0,
+      "survivors": 0,
+      "avoided": 0,
+      "avoid_pct": 0.0,
+      "by_disposition": {},
+      "estimated_monthly_infra_avoidance_usd": 0,
+      "estimated_annual_infra_avoidance_usd": 0,
+      "unit_cost_usd": 85,
+      "build_artifacts": 0
+    },
+    "delivery_quality": {
+      "reconcile_pass_rate_pct": null,
+      "reconcile_total": 0,
+      "reconcile_passed": 0,
+      "open_hitl_findings": 0,
+      "failed_agent_runs": 0,
+      "mapping_conformance_gaps": 0
+    },
+    "cutover_risk": {
+      "products_promoted": 0,
+      "consumers_switched": 0,
+      "consumers_blocked": 0,
+      "freeze_applied_estates": 0,
+      "production_signoffs_pending": 0
+    },
+    "activity": [],
+    "activity_trend": [
+      {
+        "day": "2026-08-22",
+        "label": "08-22",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-23",
+        "label": "08-23",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-24",
+        "label": "08-24",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-25",
+        "label": "08-25",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-26",
+        "label": "08-26",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-27",
+        "label": "08-27",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-28",
+        "label": "08-28",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-29",
+        "label": "08-29",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-30",
+        "label": "08-30",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-08-31",
+        "label": "08-31",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-01",
+        "label": "09-01",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-02",
+        "label": "09-02",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-03",
+        "label": "09-03",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-04",
+        "label": "09-04",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-05",
+        "label": "09-05",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-06",
+        "label": "09-06",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-07",
+        "label": "09-07",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-08",
+        "label": "09-08",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-09",
+        "label": "09-09",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-10",
+        "label": "09-10",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-11",
+        "label": "09-11",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-12",
+        "label": "09-12",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-13",
+        "label": "09-13",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-14",
+        "label": "09-14",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-15",
+        "label": "09-15",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-16",
+        "label": "09-16",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-17",
+        "label": "09-17",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-18",
+        "label": "09-18",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-19",
+        "label": "09-19",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      },
+      {
+        "day": "2026-09-20",
+        "label": "09-20",
+        "audit": 0,
+        "discovery": 0,
+        "agent": 0,
+        "total": 0
+      }
+    ],
+    "estates": [
+      {
+        "id": 1,
+        "name": "Aq",
+        "sample_slug": "aq",
+        "phase": "0_mobilisation",
+        "suite_stage": "atlas",
+        "gated": true,
+        "complete": false,
+        "days_in_stage": 5.2,
+        "inventory_signed_off": false,
+        "plan_approved": false,
+        "disposition_approved": false,
+        "build_approved": false,
+        "objects_inventoried": 0,
+        "disposition_count": 0,
+        "build_artifacts": 0,
+        "open_hitl": 0
+      },
+      {
+        "id": 2,
+        "name": "Billing & Usage Wave-1",
+        "sample_slug": "billing-usage-wave1",
+        "phase": "0_mobilisation",
+        "suite_stage": "atlas",
+        "gated": true,
+        "complete": false,
+        "days_in_stage": 5.2,
+        "inventory_signed_off": false,
+        "plan_approved": false,
+        "disposition_approved": false,
+        "build_approved": false,
+        "objects_inventoried": 0,
+        "disposition_count": 0,
+        "build_artifacts": 0,
+        "open_hitl": 0
+      },
+      {
+        "id": 3,
+        "name": "dwh-m",
+        "sample_slug": "dwh-m",
+        "phase": "0_mobilisation",
+        "suite_stage": "atlas",
+        "gated": true,
+        "complete": false,
+        "days_in_stage": 5.2,
+        "inventory_signed_off": false,
+        "plan_approved": false,
+        "disposition_approved": false,
+        "build_approved": false,
+        "objects_inventoried": 0,
+        "disposition_count": 0,
+        "build_artifacts": 0,
+        "open_hitl": 0
+      },
+      {
+        "id": 5,
+        "name": "Party & Customer Account Wave-1",
+        "sample_slug": "party-customer-wave1",
+        "phase": "0_mobilisation",
+        "suite_stage": "atlas",
+        "gated": true,
+        "complete": false,
+        "days_in_stage": 5.2,
+        "inventory_signed_off": false,
+        "plan_approved": false,
+        "disposition_approved": false,
+        "build_approved": false,
+        "objects_inventoried": 0,
+        "disposition_count": 0,
+        "build_artifacts": 0,
+        "open_hitl": 0
+      }
+    ]
+  },
+  "GET /projects/5/mobilisation": {
+    "items": [
+      {
+        "id": "source_read",
+        "group": "access",
+        "label": "Read access to legacy warehouse / DW repos",
+        "hint": "Service account or read role on production mirrors and Git DW repos",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": true
+      },
+      {
+        "id": "scheduler_read",
+        "group": "access",
+        "label": "Read access to scheduler / DAG definitions",
+        "hint": "Airflow/Control-M export or Git-backed DAG repo cloneable",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": true
+      },
+      {
+        "id": "usage_logs",
+        "group": "access",
+        "label": "Query and report usage logs available",
+        "hint": "Representative observation window (\u226590 days preferred)",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": true
+      },
+      {
+        "id": "landing_zone",
+        "group": "environments",
+        "label": "Cloud landing zone provisioned",
+        "hint": "Non-prod project, network connectivity, IAM baselines",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": false
+      },
+      {
+        "id": "nonprod_deploy",
+        "group": "environments",
+        "label": "Team can deploy to non-production",
+        "hint": "CI identity can push to staging GCS / BQ / Composer stubs",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": false
+      },
+      {
+        "id": "secrets_store",
+        "group": "environments",
+        "label": "Secrets held in managed store (demo stub OK)",
+        "hint": "No standing human access to production credentials",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": false
+      },
+      {
+        "id": "control_plane",
+        "group": "tooling",
+        "label": "Mirage control plane + migration-repo layout ready",
+        "hint": "standards/, inventory/, products/ folders present",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": false
+      },
+      {
+        "id": "ci_hooks",
+        "group": "tooling",
+        "label": "CI hooks for discovery and agent reviews",
+        "hint": "Pipeline can call discovery/run and surface review items",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": false
+      },
+      {
+        "id": "scope_agreed",
+        "group": "freeze",
+        "label": "Wave-1 scope agreed with Change Board",
+        "hint": "Subject areas / marts in first wave documented",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": false
+      },
+      {
+        "id": "change_freeze",
+        "group": "freeze",
+        "label": "Change freeze window published",
+        "hint": "Enhancements deferred; freeze on migration-scope legacy objects",
+        "done": false,
+        "status": "open",
+        "notes": "",
+        "owner_email": "",
+        "verified_at": null,
+        "evidence_url": "",
+        "requires_evidence": false
+      }
+    ],
+    "decisions": [
+      {
+        "id": "wave1_scope",
+        "question": "Scope of the first wave \u2014 which subject areas, marts, or source systems?",
+        "value": "",
+        "status": "open",
+        "required_for_ready": true,
+        "decided_by": "",
+        "decided_at": null,
+        "notes": ""
+      },
+      {
+        "id": "target_platform",
+        "question": "Target cloud data platform services (warehouse engine; single vs multi-engine)?",
+        "value": "",
+        "status": "open",
+        "required_for_ready": false,
+        "decided_by": "",
+        "decided_at": null,
+        "notes": ""
+      },
+      {
+        "id": "reference_model",
+        "question": "Reference model and version to adopt (and API exposure now or later)?",
+        "value": "",
+        "status": "open",
+        "required_for_ready": true,
+        "decided_by": "",
+        "decided_at": null,
+        "notes": ""
+      },
+      {
+        "id": "usage_window",
+        "question": "Usage observation window and evidence threshold that justifies retirement?",
+        "value": "",
+        "status": "open",
+        "required_for_ready": true,
+        "decided_by": "",
+        "decided_at": null,
+        "notes": ""
+      },
+      {
+        "id": "parallel_run",
+        "question": "Parallel-run duration and reconciliation tolerance per product?",
+        "value": "",
+        "status": "open",
+        "required_for_ready": false,
+        "decided_by": "",
+        "decided_at": null,
+        "notes": ""
+      },
+      {
+        "id": "ownership_model",
+        "question": "Data ownership model and who appoints Data Product Owners?",
+        "value": "",
+        "status": "open",
+        "required_for_ready": false,
+        "decided_by": "",
+        "decided_at": null,
+        "notes": ""
+      },
+      {
+        "id": "archive_policy",
+        "question": "Archive retention policy and system of record for archived legacy data?",
+        "value": "",
+        "status": "open",
+        "required_for_ready": false,
+        "decided_by": "",
+        "decided_at": null,
+        "notes": ""
+      }
+    ],
+    "freeze": {
+      "freeze_start": "",
+      "freeze_end": "",
+      "scope_summary": "",
+      "in_scope_systems": [],
+      "change_board_ref": "",
+      "exception_policy": "",
+      "published": false,
+      "published_at": null,
+      "published_by": "",
+      "notified_consumers": [],
+      "deferred": false,
+      "deferred_note": ""
+    },
+    "team": {
+      "architect": "architect@demo.local",
+      "product_owner": "owner@demo.local",
+      "data_owner": "dataowner@demo.local",
+      "data_steward": "steward@demo.local",
+      "change_board": "board@demo.local",
+      "engineer_lead": "engineer@demo.local"
+    },
+    "team_roster": [
+      {
+        "id": "architect",
+        "label": "Solution architect",
+        "raci": "A",
+        "email": "architect@demo.local"
+      },
+      {
+        "id": "product_owner",
+        "label": "Product owner",
+        "raci": "A",
+        "email": "owner@demo.local"
+      },
+      {
+        "id": "data_owner",
+        "label": "Data owner",
+        "raci": "A",
+        "email": "dataowner@demo.local"
+      },
+      {
+        "id": "data_steward",
+        "label": "Data steward",
+        "raci": "R",
+        "email": "steward@demo.local"
+      },
+      {
+        "id": "change_board",
+        "label": "Change board",
+        "raci": "C",
+        "email": "board@demo.local"
+      },
+      {
+        "id": "engineer_lead",
+        "label": "Engineer lead",
+        "raci": "R",
+        "email": "engineer@demo.local"
+      }
+    ],
+    "hub_spoke_id": "",
+    "hub_probe": {},
+    "ready": false,
+    "progress": {
+      "done": 0,
+      "total": 10
+    },
+    "by_group": {
+      "access": {
+        "total": 3,
+        "done": 0
+      },
+      "environments": {
+        "total": 3,
+        "done": 0
+      },
+      "tooling": {
+        "total": 2,
+        "done": 0
+      },
+      "freeze": {
+        "total": 2,
+        "done": 0
+      }
+    },
+    "evidence_gaps": [],
+    "ready_checks": {
+      "checks": [
+        {
+          "id": "checklist",
+          "label": "Mobilisation checklist complete",
+          "passed": false,
+          "detail": {
+            "access": {
+              "total": 3,
+              "done": 0
+            },
+            "environments": {
+              "total": 3,
+              "done": 0
+            },
+            "tooling": {
+              "total": 2,
+              "done": 0
+            },
+            "freeze": {
+              "total": 2,
+              "done": 0
+            }
+          },
+          "fix_view": "access"
+        },
+        {
+          "id": "evidence",
+          "label": "Access items have notes, URL, or verified timestamp",
+          "passed": true,
+          "detail": {
+            "gaps": []
+          },
+          "soft": true,
+          "fix_view": "access"
+        },
+        {
+          "id": "decisions",
+          "label": "Minimum Wave-1 decisions recorded",
+          "passed": false,
+          "detail": {
+            "missing": [
+              "wave1_scope",
+              "reference_model",
+              "usage_window"
+            ]
+          },
+          "fix_view": "decisions"
+        },
+        {
+          "id": "freeze",
+          "label": "Change freeze published (or deferred with Change Board note)",
+          "passed": false,
+          "detail": {
+            "mode": "not_published",
+            "published": false
+          },
+          "fix_view": "freeze"
+        },
+        {
+          "id": "team",
+          "label": "Team RACI has architect and data owner",
+          "passed": true,
+          "detail": {
+            "missing": []
+          },
+          "fix_view": "team"
+        },
+        {
+          "id": "estate",
+          "label": "Sample estate bound or legacy source configured",
+          "passed": true,
+          "detail": {},
+          "fix_view": "sources",
+          "fix_phase": "1_discovery"
+        },
+        {
+          "id": "hub",
+          "label": "Platform Hub spoke bound and probe OK (optional)",
+          "passed": false,
+          "detail": {
+            "spoke_bound": false,
+            "probe_ok": false,
+            "hub_spoke_id": "",
+            "required": false
+          },
+          "soft": true,
+          "fix_view": "hub"
+        }
+      ],
+      "passed": false,
+      "soft_warnings": [
+        "hub"
+      ]
+    },
+    "exit_criterion": "Team can read source and deploy to non-production"
+  },
+  "GET /projects/5/udp-hub": {
+    "hub": {
+      "name": "platform-hub-nonprod",
+      "region": "europe-west2",
+      "state": "ready",
+      "services": [
+        {
+          "id": "dataplex",
+          "label": "Dataplex catalogue",
+          "status": "stub"
+        },
+        {
+          "id": "composer",
+          "label": "Cloud Composer",
+          "status": "stub"
+        },
+        {
+          "id": "bq",
+          "label": "BigQuery",
+          "status": "stub"
+        },
+        {
+          "id": "gcs",
+          "label": "Cloud Storage",
+          "status": "stub"
+        },
+        {
+          "id": "secret_manager",
+          "label": "Secret Manager",
+          "status": "stub"
+        }
+      ]
+    },
+    "spokes": [
+      {
+        "id": "spoke-landing",
+        "alias": "landing",
+        "label": "Landing zone",
+        "project": "lz-landing-nonprod",
+        "purpose": "Raw ingress (GCS)",
+        "iam": [
+          {
+            "principal": "sa-ingest@demo.local",
+            "role": "roles/storage.objectCreator"
+          },
+          {
+            "principal": "group:migration-engineers",
+            "role": "roles/viewer"
+          }
+        ],
+        "bound": false
+      },
+      {
+        "id": "spoke-conformance",
+        "alias": "conformance",
+        "label": "Conformance",
+        "project": "lz-conform-nonprod",
+        "purpose": "Standards-aligned transforms",
+        "iam": [
+          {
+            "principal": "sa-transform@demo.local",
+            "role": "roles/bigquery.dataEditor"
+          },
+          {
+            "principal": "group:architects",
+            "role": "roles/bigquery.dataViewer"
+          }
+        ],
+        "bound": false
+      },
+      {
+        "id": "spoke-products",
+        "alias": "products",
+        "label": "Data products",
+        "project": "lz-products-nonprod",
+        "purpose": "Published contracts",
+        "iam": [
+          {
+            "principal": "sa-product@demo.local",
+            "role": "roles/bigquery.dataOwner"
+          },
+          {
+            "principal": "group:data-owners",
+            "role": "roles/bigquery.dataViewer"
+          },
+          {
+            "principal": "group:consumers",
+            "role": "roles/bigquery.dataViewer"
+          }
+        ],
+        "bound": false
+      }
+    ],
+    "perimeter": {
+      "vpc_sc": "stub-perimeter",
+      "cmek": "projects/platform-hub/locations/europe-west2/keyRings/platform/cryptoKeys/data",
+      "no_standing_human_prod_access": true,
+      "secrets_in_store_only": true
+    },
+    "project_id": 5,
+    "hub_spoke_id": "",
+    "bound_spoke": null,
+    "last_probe": null,
+    "probe_ok": false,
+    "require_hub_probe": false,
+    "llm_mode": "mock",
+    "notes": [
+      "Hub holds shared platform services; spokes isolate landing / conformance / products.",
+      "Least-privilege IAM \u2014 no standing human access to production data.",
+      "Demo uses gcp_stub adapters; swap for real GCP when landing zone is live.",
+      "Bind a spoke then Run probe before Discovery when REQUIRE_HUB_PROBE=1 or LLM_MODE=openai."
+    ]
+  },
+  "GET /projects/5/inventory": [],
+  "GET /projects/5/lineage": {
+    "nodes": [],
+    "edges": [],
+    "stats": {
+      "edge_count": 0,
+      "linked_table_count": 0,
+      "unlinked_table_count": 0,
+      "inventory_table_count": 0,
+      "linked_tables": [],
+      "unlinked_tables": [],
+      "source": "lineage_stitcher"
+    }
+  },
+  "GET /projects/5/jobs": [],
+  "GET /projects/5/agents/runs": [],
+  "GET /projects/5/estate": {
+    "project_id": 5,
+    "sample_slug": "party-customer-wave1",
+    "legacy_source_type": "sample",
+    "legacy_root": "/Users/A104007227/Desktop/github/mig_ai/sample-data/projects/party-customer-wave1/legacy",
+    "estate_label": "Sample: party-customer-wave1",
+    "git_url": "",
+    "git_branch": "main",
+    "git_path_prefix": "",
+    "git_commit": "",
+    "last_synced_at": "2026-09-15T11:34:46.621022",
+    "exists": true,
+    "file_count": 20,
+    "tree_preview": [
+      {
+        "path": "catalog",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "catalog/tables.json",
+        "type": "file",
+        "size": 5863
+      },
+      {
+        "path": "dags",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "dags/billing_snap",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "dags/billing_snap/dag.json",
+        "type": "file",
+        "size": 547
+      },
+      {
+        "path": "dags/billing_snap/scripts",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "dags/billing_snap/scripts/01_billing_snap.sh",
+        "type": "file",
+        "size": 243
+      },
+      {
+        "path": "dags/billing_snap/sql",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "dags/billing_snap/sql/billing_snap.sql",
+        "type": "file",
+        "size": 257
+      },
+      {
+        "path": "dags/crm_daily",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "dags/crm_daily/dag.json",
+        "type": "file",
+        "size": 1075
+      },
+      {
+        "path": "dags/crm_daily/scripts",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "dags/crm_daily/scripts/01_stg_cust_ingest.sh",
+        "type": "file",
+        "size": 297
+      },
+      {
+        "path": "dags/crm_daily/scripts/02_load_cust_acct.sh",
+        "type": "file",
+        "size": 251
+      },
+      {
+        "path": "dags/crm_daily/scripts/03_mart_cust_360.sh",
+        "type": "file",
+        "size": 333
+      },
+      {
+        "path": "dags/crm_daily/sql",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "dags/crm_daily/sql/load_customer_account.sql",
+        "type": "file",
+        "size": 578
+      },
+      {
+        "path": "dags/crm_daily/sql/mart_cust_360_team_a.sql",
+        "type": "file",
+        "size": 352
+      },
+      {
+        "path": "dags/crm_daily/sql/mart_cust_360_team_b.sql",
+        "type": "file",
+        "size": 305
+      },
+      {
+        "path": "repo.json",
+        "type": "file",
+        "size": 553
+      },
+      {
+        "path": "scheduler",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "scheduler/scheduler.json",
+        "type": "file",
+        "size": 804
+      },
+      {
+        "path": "scripts",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "scripts/run_cust_load.sh",
+        "type": "file",
+        "size": 321
+      },
+      {
+        "path": "scripts/run_marts.sh",
+        "type": "file",
+        "size": 124
+      },
+      {
+        "path": "sql",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "sql/load_customer_account.sql",
+        "type": "file",
+        "size": 578
+      },
+      {
+        "path": "sql/mart_cust_360_team_a.sql",
+        "type": "file",
+        "size": 352
+      },
+      {
+        "path": "sql/mart_cust_360_team_b.sql",
+        "type": "file",
+        "size": 305
+      },
+      {
+        "path": "usage",
+        "type": "dir",
+        "size": null
+      },
+      {
+        "path": "usage/query_log.csv",
+        "type": "file",
+        "size": 791
+      },
+      {
+        "path": "usage/report_log.csv",
+        "type": "file",
+        "size": 502
+      }
+    ],
+    "readiness": {
+      "markers": [
+        {
+          "id": "orchestration",
+          "label": "dags / scheduler",
+          "paths": [
+            "dags",
+            "scheduler",
+            "legacy/dags",
+            "legacy/scheduler"
+          ],
+          "present": true,
+          "file_count": 10,
+          "matched_path": "dags"
+        },
+        {
+          "id": "scripts",
+          "label": "scripts",
+          "paths": [
+            "scripts",
+            "etl",
+            "legacy/scripts"
+          ],
+          "present": true,
+          "file_count": 2,
+          "matched_path": "scripts"
+        },
+        {
+          "id": "sql",
+          "label": "sql",
+          "paths": [
+            "sql",
+            "ddl",
+            "legacy/sql"
+          ],
+          "present": true,
+          "file_count": 3,
+          "matched_path": "sql"
+        },
+        {
+          "id": "catalog",
+          "label": "catalog",
+          "paths": [
+            "catalog",
+            "legacy/catalog"
+          ],
+          "present": true,
+          "file_count": 1,
+          "matched_path": "catalog"
+        },
+        {
+          "id": "usage",
+          "label": "usage",
+          "paths": [
+            "usage",
+            "legacy/usage"
+          ],
+          "present": true,
+          "file_count": 2,
+          "matched_path": "usage"
+        }
+      ],
+      "score": {
+        "present": 5,
+        "total": 5,
+        "ready": true
+      },
+      "discovery_hint": "Ready to run discovery"
+    },
+    "discovery_hint": "Ready to run discovery"
+  },
+  "GET /projects/5/discovery/runs": [],
+  "GET /projects/5/products": [
+    {
+      "id": 1,
+      "name": "Service Inventory Snapshot",
+      "sid_entities": [
+        "Service",
+        "Resource",
+        "ResourceSpecification"
+      ],
+      "contract": {
+        "name": "service_inventory_snapshot",
+        "version": "0.1.0",
+        "schema": [
+          {
+            "name": "service_id",
+            "type": "STRING",
+            "pk": true
+          },
+          {
+            "name": "resource_id",
+            "type": "STRING",
+            "pk": true
+          },
+          {
+            "name": "service_state",
+            "type": "STRING"
+          },
+          {
+            "name": "valid_from",
+            "type": "TIMESTAMP"
+          },
+          {
+            "name": "is_current",
+            "type": "BOOL"
+          }
+        ],
+        "freshness_slo_hours": 12,
+        "quality_rules": [
+          "service_id NOT NULL",
+          "resource_id NOT NULL"
+        ],
+        "deprecation_policy": "Breaking changes require 90-day deprecation window",
+        "versioning": "semver"
+      },
+      "version": "0.1.0",
+      "status": "suggested",
+      "owner": "",
+      "dataset_name": "products.dp_service_inventory_snapshot",
+      "pipeline_status": "idle",
+      "cost_estimate_monthly": 95.0,
+      "description": "Wave-2 candidate: consolidate service/resource extracts into one inventory grain for network ops.",
+      "product_kind": "service",
+      "product_tier": "adp",
+      "domain": "Customer",
+      "system_of_record": "Service Inventory",
+      "confidence": 0.82,
+      "freshness_slo_hours": 12,
+      "source_agent_run_id": null,
+      "consumers": [
+        "network_ops",
+        "assurance_desk"
+      ],
+      "input_ports": [
+        {
+          "name": "crm_cust_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_cust_mstr",
+          "schema_version": "0.1.0",
+          "sla": "12h",
+          "pii": true,
+          "tool": "IngestPipeline"
+        },
+        {
+          "name": "crm_acct_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_acct_mstr",
+          "schema_version": "0.1.0",
+          "sla": "12h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        }
+      ],
+      "output_ports": [
+        {
+          "name": "dp_service_inventory_snapshot",
+          "direction": "output",
+          "protocol": "bigquery",
+          "path": "products.dp_service_inventory_snapshot",
+          "schema_version": "0.1.0",
+          "sla": "12h",
+          "pii": true,
+          "tool": "BigQuery"
+        },
+        {
+          "name": "service_inventory_snapshot_contract",
+          "direction": "output",
+          "protocol": "odcs/yaml",
+          "path": "products/service_inventory_snapshot.yaml",
+          "schema_version": "0.1.0",
+          "sla": "n/a",
+          "pii": false,
+          "tool": "Contract Docs"
+        }
+      ],
+      "docs": [
+        {
+          "title": "Service Inventory Snapshot \u00b7 consumer guide",
+          "kind": "guide",
+          "path": "docs/products/service_inventory_snapshot/CONSUMER.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        },
+        {
+          "title": "Service Inventory Snapshot \u00b7 runbook",
+          "kind": "runbook",
+          "path": "docs/products/service_inventory_snapshot/RUNBOOK.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        }
+      ],
+      "code_links": {
+        "repo": "migration-repo (local)",
+        "branch": "main",
+        "prefix": "migration-repo",
+        "mr_url": "",
+        "mr_status": "not_opened",
+        "files": [
+          "transformations/service_inventory_snapshot.sql",
+          "transformations/tests/test_service_inventory_snapshot.sql",
+          "transformations/reconcile/service_inventory_snapshot.sql"
+        ],
+        "commit": ""
+      },
+      "collibra": {
+        "asset_id": "",
+        "asset_name": "Service Inventory Snapshot",
+        "domain": "Customer",
+        "status": "not_linked",
+        "url": "",
+        "last_sync": null,
+        "steward": ""
+      },
+      "cost_breakdown": {
+        "landing": 23.8,
+        "transform": 42.8,
+        "serve": 28.5,
+        "currency": "USD"
+      },
+      "usage_metrics": {
+        "query_count_7d": 0,
+        "row_reads_7d": 0,
+        "last_access": null,
+        "top_consumers": [
+          "network_ops",
+          "assurance_desk"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Trouble Ticket 360",
+      "sid_entities": [
+        "TroubleTicket",
+        "Party"
+      ],
+      "contract": {
+        "name": "trouble_ticket_360",
+        "version": "0.1.0",
+        "schema": [
+          {
+            "name": "ticket_id",
+            "type": "STRING",
+            "pk": true
+          },
+          {
+            "name": "party_id",
+            "type": "STRING"
+          },
+          {
+            "name": "severity",
+            "type": "STRING"
+          },
+          {
+            "name": "opened_at",
+            "type": "TIMESTAMP"
+          },
+          {
+            "name": "closed_at",
+            "type": "TIMESTAMP"
+          }
+        ],
+        "freshness_slo_hours": 1,
+        "quality_rules": [
+          "ticket_id NOT NULL"
+        ],
+        "deprecation_policy": "Breaking changes require 90-day deprecation window",
+        "versioning": "semver"
+      },
+      "version": "0.1.0",
+      "status": "suggested",
+      "owner": "",
+      "dataset_name": "products.dp_trouble_ticket_360",
+      "pipeline_status": "idle",
+      "cost_estimate_monthly": 70.0,
+      "description": "Wave-2 candidate: unify care tickets with party keys for 360 care desktop.",
+      "product_kind": "assurance",
+      "product_tier": "adp",
+      "domain": "Customer",
+      "system_of_record": "Care / TT",
+      "confidence": 0.76,
+      "freshness_slo_hours": 1,
+      "source_agent_run_id": null,
+      "consumers": [
+        "care_desktop"
+      ],
+      "input_ports": [
+        {
+          "name": "crm_cust_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_cust_mstr",
+          "schema_version": "0.1.0",
+          "sla": "1h",
+          "pii": true,
+          "tool": "IngestPipeline"
+        },
+        {
+          "name": "crm_acct_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_acct_mstr",
+          "schema_version": "0.1.0",
+          "sla": "1h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        }
+      ],
+      "output_ports": [
+        {
+          "name": "dp_trouble_ticket_360",
+          "direction": "output",
+          "protocol": "bigquery",
+          "path": "products.dp_trouble_ticket_360",
+          "schema_version": "0.1.0",
+          "sla": "1h",
+          "pii": true,
+          "tool": "BigQuery"
+        },
+        {
+          "name": "trouble_ticket_360_contract",
+          "direction": "output",
+          "protocol": "odcs/yaml",
+          "path": "products/trouble_ticket_360.yaml",
+          "schema_version": "0.1.0",
+          "sla": "n/a",
+          "pii": false,
+          "tool": "Contract Docs"
+        }
+      ],
+      "docs": [
+        {
+          "title": "Trouble Ticket 360 \u00b7 consumer guide",
+          "kind": "guide",
+          "path": "docs/products/trouble_ticket_360/CONSUMER.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        },
+        {
+          "title": "Trouble Ticket 360 \u00b7 runbook",
+          "kind": "runbook",
+          "path": "docs/products/trouble_ticket_360/RUNBOOK.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        }
+      ],
+      "code_links": {
+        "repo": "migration-repo (local)",
+        "branch": "main",
+        "prefix": "migration-repo",
+        "mr_url": "",
+        "mr_status": "not_opened",
+        "files": [
+          "transformations/trouble_ticket_360.sql",
+          "transformations/tests/test_trouble_ticket_360.sql",
+          "transformations/reconcile/trouble_ticket_360.sql"
+        ],
+        "commit": ""
+      },
+      "collibra": {
+        "asset_id": "",
+        "asset_name": "Trouble Ticket 360",
+        "domain": "Customer",
+        "status": "not_linked",
+        "url": "",
+        "last_sync": null,
+        "steward": ""
+      },
+      "cost_breakdown": {
+        "landing": 23.8,
+        "transform": 42.8,
+        "serve": 28.5,
+        "currency": "USD"
+      },
+      "usage_metrics": {
+        "query_count_7d": 0,
+        "row_reads_7d": 0,
+        "last_access": null,
+        "top_consumers": [
+          "care_desktop"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "name": "CRM Customer Master",
+      "sid_entities": [
+        "Party"
+      ],
+      "contract": {
+        "name": "sdp_crm_customer_master",
+        "version": "0.1.0",
+        "schema": [
+          {
+            "name": "cust_id",
+            "type": "STRING",
+            "pk": true,
+            "pii": false
+          },
+          {
+            "name": "cust_name",
+            "type": "STRING"
+          },
+          {
+            "name": "email",
+            "type": "STRING",
+            "pii": true
+          }
+        ],
+        "freshness_slo_hours": 24,
+        "quality_rules": [
+          "cust_id NOT NULL"
+        ]
+      },
+      "version": "0.1.0",
+      "status": "suggested",
+      "owner": "",
+      "dataset_name": "sdp.crm_customer_master",
+      "pipeline_status": "idle",
+      "cost_estimate_monthly": 40.0,
+      "description": "Source-aligned customer master at CRM grain (cust_id).",
+      "product_kind": "party",
+      "product_tier": "sdp",
+      "domain": "Customer",
+      "system_of_record": "CRM",
+      "confidence": 0.92,
+      "freshness_slo_hours": 24,
+      "source_agent_run_id": null,
+      "consumers": [],
+      "input_ports": [
+        {
+          "name": "crm_cust_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_cust_mstr",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": true,
+          "tool": "IngestPipeline"
+        },
+        {
+          "name": "crm_acct_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_acct_mstr",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        }
+      ],
+      "output_ports": [
+        {
+          "name": "crm_customer_master",
+          "direction": "output",
+          "protocol": "bigquery",
+          "path": "sdp.crm_customer_master",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": true,
+          "tool": "BigQuery"
+        },
+        {
+          "name": "sdp_crm_customer_master_contract",
+          "direction": "output",
+          "protocol": "odcs/yaml",
+          "path": "products/sdp_crm_customer_master.yaml",
+          "schema_version": "0.1.0",
+          "sla": "n/a",
+          "pii": false,
+          "tool": "Contract Docs"
+        }
+      ],
+      "docs": [
+        {
+          "title": "CRM Customer Master \u00b7 consumer guide",
+          "kind": "guide",
+          "path": "docs/products/sdp_crm_customer_master/CONSUMER.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        },
+        {
+          "title": "CRM Customer Master \u00b7 runbook",
+          "kind": "runbook",
+          "path": "docs/products/sdp_crm_customer_master/RUNBOOK.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        }
+      ],
+      "code_links": {
+        "repo": "migration-repo (local)",
+        "branch": "main",
+        "prefix": "migration-repo",
+        "mr_url": "",
+        "mr_status": "not_opened",
+        "files": [
+          "transformations/sdp_crm_customer_master.sql",
+          "transformations/tests/test_sdp_crm_customer_master.sql",
+          "transformations/reconcile/sdp_crm_customer_master.sql"
+        ],
+        "commit": ""
+      },
+      "collibra": {
+        "asset_id": "",
+        "asset_name": "CRM Customer Master",
+        "domain": "Customer",
+        "status": "not_linked",
+        "url": "",
+        "last_sync": null,
+        "steward": ""
+      },
+      "cost_breakdown": {
+        "landing": 30.0,
+        "transform": 54.0,
+        "serve": 36.0,
+        "currency": "USD"
+      },
+      "usage_metrics": {
+        "query_count_7d": 0,
+        "row_reads_7d": 0,
+        "last_access": null,
+        "top_consumers": []
+      }
+    },
+    {
+      "id": 4,
+      "name": "CRM Account Master",
+      "sid_entities": [
+        "CustomerAccount"
+      ],
+      "contract": {
+        "name": "sdp_crm_account_master",
+        "version": "0.1.0",
+        "schema": [
+          {
+            "name": "acct_id",
+            "type": "STRING",
+            "pk": true
+          },
+          {
+            "name": "cust_id",
+            "type": "STRING"
+          },
+          {
+            "name": "acct_status",
+            "type": "STRING"
+          },
+          {
+            "name": "billing_cycle",
+            "type": "STRING"
+          }
+        ],
+        "freshness_slo_hours": 24,
+        "quality_rules": [
+          "acct_id NOT NULL",
+          "cust_id NOT NULL"
+        ]
+      },
+      "version": "0.1.0",
+      "status": "suggested",
+      "owner": "",
+      "dataset_name": "sdp.crm_account_master",
+      "pipeline_status": "idle",
+      "cost_estimate_monthly": 40.0,
+      "description": "Source-aligned account master at CRM grain (acct_id).",
+      "product_kind": "party",
+      "product_tier": "sdp",
+      "domain": "Customer",
+      "system_of_record": "CRM",
+      "confidence": 0.91,
+      "freshness_slo_hours": 24,
+      "source_agent_run_id": null,
+      "consumers": [],
+      "input_ports": [
+        {
+          "name": "crm_cust_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_cust_mstr",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": true,
+          "tool": "IngestPipeline"
+        },
+        {
+          "name": "crm_acct_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_acct_mstr",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        }
+      ],
+      "output_ports": [
+        {
+          "name": "crm_account_master",
+          "direction": "output",
+          "protocol": "bigquery",
+          "path": "sdp.crm_account_master",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": true,
+          "tool": "BigQuery"
+        },
+        {
+          "name": "sdp_crm_account_master_contract",
+          "direction": "output",
+          "protocol": "odcs/yaml",
+          "path": "products/sdp_crm_account_master.yaml",
+          "schema_version": "0.1.0",
+          "sla": "n/a",
+          "pii": false,
+          "tool": "Contract Docs"
+        }
+      ],
+      "docs": [
+        {
+          "title": "CRM Account Master \u00b7 consumer guide",
+          "kind": "guide",
+          "path": "docs/products/sdp_crm_account_master/CONSUMER.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        },
+        {
+          "title": "CRM Account Master \u00b7 runbook",
+          "kind": "runbook",
+          "path": "docs/products/sdp_crm_account_master/RUNBOOK.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        }
+      ],
+      "code_links": {
+        "repo": "migration-repo (local)",
+        "branch": "main",
+        "prefix": "migration-repo",
+        "mr_url": "",
+        "mr_status": "not_opened",
+        "files": [
+          "transformations/sdp_crm_account_master.sql",
+          "transformations/tests/test_sdp_crm_account_master.sql",
+          "transformations/reconcile/sdp_crm_account_master.sql"
+        ],
+        "commit": ""
+      },
+      "collibra": {
+        "asset_id": "",
+        "asset_name": "CRM Account Master",
+        "domain": "Customer",
+        "status": "not_linked",
+        "url": "",
+        "last_sync": null,
+        "steward": ""
+      },
+      "cost_breakdown": {
+        "landing": 30.0,
+        "transform": 54.0,
+        "serve": 36.0,
+        "currency": "USD"
+      },
+      "usage_metrics": {
+        "query_count_7d": 0,
+        "row_reads_7d": 0,
+        "last_access": null,
+        "top_consumers": []
+      }
+    },
+    {
+      "id": 5,
+      "name": "Billing Usage Events",
+      "sid_entities": [
+        "CustomerUsage"
+      ],
+      "contract": {
+        "name": "sdp_billing_usage_events",
+        "version": "0.1.0",
+        "schema": [
+          {
+            "name": "account_id",
+            "type": "STRING",
+            "pk": true
+          },
+          {
+            "name": "usage_date",
+            "type": "DATE",
+            "pk": true
+          },
+          {
+            "name": "usage_quantity",
+            "type": "NUMERIC"
+          },
+          {
+            "name": "usage_amount",
+            "type": "NUMERIC"
+          }
+        ],
+        "freshness_slo_hours": 24,
+        "quality_rules": [
+          "account_id NOT NULL",
+          "usage_date NOT NULL"
+        ]
+      },
+      "version": "0.1.0",
+      "status": "suggested",
+      "owner": "",
+      "dataset_name": "sdp.billing_usage_events",
+      "pipeline_status": "idle",
+      "cost_estimate_monthly": 40.0,
+      "description": "Source-aligned usage events at account \u00d7 day grain.",
+      "product_kind": "usage_billing",
+      "product_tier": "sdp",
+      "domain": "Billing",
+      "system_of_record": "Billing",
+      "confidence": 0.88,
+      "freshness_slo_hours": 24,
+      "source_agent_run_id": null,
+      "consumers": [],
+      "input_ports": [
+        {
+          "name": "billing_usage_daily",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.billing_usage_daily",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        },
+        {
+          "name": "billing_invoice_hdr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.billing_invoice_hdr",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        }
+      ],
+      "output_ports": [
+        {
+          "name": "billing_usage_events",
+          "direction": "output",
+          "protocol": "bigquery",
+          "path": "sdp.billing_usage_events",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": true,
+          "tool": "BigQuery"
+        },
+        {
+          "name": "sdp_billing_usage_events_contract",
+          "direction": "output",
+          "protocol": "odcs/yaml",
+          "path": "products/sdp_billing_usage_events.yaml",
+          "schema_version": "0.1.0",
+          "sla": "n/a",
+          "pii": false,
+          "tool": "Contract Docs"
+        }
+      ],
+      "docs": [
+        {
+          "title": "Billing Usage Events \u00b7 consumer guide",
+          "kind": "guide",
+          "path": "docs/products/sdp_billing_usage_events/CONSUMER.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        },
+        {
+          "title": "Billing Usage Events \u00b7 runbook",
+          "kind": "runbook",
+          "path": "docs/products/sdp_billing_usage_events/RUNBOOK.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        }
+      ],
+      "code_links": {
+        "repo": "migration-repo (local)",
+        "branch": "main",
+        "prefix": "migration-repo",
+        "mr_url": "",
+        "mr_status": "not_opened",
+        "files": [
+          "transformations/sdp_billing_usage_events.sql",
+          "transformations/tests/test_sdp_billing_usage_events.sql",
+          "transformations/reconcile/sdp_billing_usage_events.sql"
+        ],
+        "commit": ""
+      },
+      "collibra": {
+        "asset_id": "",
+        "asset_name": "Billing Usage Events",
+        "domain": "Billing",
+        "status": "not_linked",
+        "url": "",
+        "last_sync": null,
+        "steward": ""
+      },
+      "cost_breakdown": {
+        "landing": 45.0,
+        "transform": 81.0,
+        "serve": 54.0,
+        "currency": "USD"
+      },
+      "usage_metrics": {
+        "query_count_7d": 0,
+        "row_reads_7d": 0,
+        "last_access": null,
+        "top_consumers": []
+      }
+    },
+    {
+      "id": 6,
+      "name": "Billing Invoice Header",
+      "sid_entities": [
+        "CustomerBill"
+      ],
+      "contract": {
+        "name": "sdp_billing_invoice_hdr",
+        "version": "0.1.0",
+        "schema": [
+          {
+            "name": "invoice_id",
+            "type": "STRING",
+            "pk": true
+          },
+          {
+            "name": "account_id",
+            "type": "STRING"
+          },
+          {
+            "name": "invoice_amount",
+            "type": "NUMERIC"
+          }
+        ],
+        "freshness_slo_hours": 24,
+        "quality_rules": [
+          "invoice_id NOT NULL"
+        ]
+      },
+      "version": "0.1.0",
+      "status": "suggested",
+      "owner": "",
+      "dataset_name": "sdp.billing_invoice_hdr",
+      "pipeline_status": "idle",
+      "cost_estimate_monthly": 40.0,
+      "description": "Source-aligned invoice headers from Billing SoR.",
+      "product_kind": "usage_billing",
+      "product_tier": "sdp",
+      "domain": "Billing",
+      "system_of_record": "Billing",
+      "confidence": 0.87,
+      "freshness_slo_hours": 24,
+      "source_agent_run_id": null,
+      "consumers": [],
+      "input_ports": [
+        {
+          "name": "billing_usage_daily",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.billing_usage_daily",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        },
+        {
+          "name": "billing_invoice_hdr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.billing_invoice_hdr",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        }
+      ],
+      "output_ports": [
+        {
+          "name": "billing_invoice_hdr",
+          "direction": "output",
+          "protocol": "bigquery",
+          "path": "sdp.billing_invoice_hdr",
+          "schema_version": "0.1.0",
+          "sla": "24h",
+          "pii": true,
+          "tool": "BigQuery"
+        },
+        {
+          "name": "sdp_billing_invoice_hdr_contract",
+          "direction": "output",
+          "protocol": "odcs/yaml",
+          "path": "products/sdp_billing_invoice_hdr.yaml",
+          "schema_version": "0.1.0",
+          "sla": "n/a",
+          "pii": false,
+          "tool": "Contract Docs"
+        }
+      ],
+      "docs": [
+        {
+          "title": "Billing Invoice Header \u00b7 consumer guide",
+          "kind": "guide",
+          "path": "docs/products/sdp_billing_invoice_hdr/CONSUMER.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        },
+        {
+          "title": "Billing Invoice Header \u00b7 runbook",
+          "kind": "runbook",
+          "path": "docs/products/sdp_billing_invoice_hdr/RUNBOOK.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        }
+      ],
+      "code_links": {
+        "repo": "migration-repo (local)",
+        "branch": "main",
+        "prefix": "migration-repo",
+        "mr_url": "",
+        "mr_status": "not_opened",
+        "files": [
+          "transformations/sdp_billing_invoice_hdr.sql",
+          "transformations/tests/test_sdp_billing_invoice_hdr.sql",
+          "transformations/reconcile/sdp_billing_invoice_hdr.sql"
+        ],
+        "commit": ""
+      },
+      "collibra": {
+        "asset_id": "",
+        "asset_name": "Billing Invoice Header",
+        "domain": "Billing",
+        "status": "not_linked",
+        "url": "",
+        "last_sync": null,
+        "steward": ""
+      },
+      "cost_breakdown": {
+        "landing": 45.0,
+        "transform": 81.0,
+        "serve": 54.0,
+        "currency": "USD"
+      },
+      "usage_metrics": {
+        "query_count_7d": 0,
+        "row_reads_7d": 0,
+        "last_access": null,
+        "top_consumers": []
+      }
+    },
+    {
+      "id": 7,
+      "name": "Service Inventory Extract",
+      "sid_entities": [
+        "Service",
+        "Resource"
+      ],
+      "contract": {
+        "name": "sdp_service_inventory_raw",
+        "version": "0.1.0",
+        "schema": [
+          {
+            "name": "service_id",
+            "type": "STRING",
+            "pk": true
+          },
+          {
+            "name": "resource_id",
+            "type": "STRING",
+            "pk": true
+          },
+          {
+            "name": "service_state",
+            "type": "STRING"
+          }
+        ],
+        "freshness_slo_hours": 12,
+        "quality_rules": [
+          "service_id NOT NULL"
+        ]
+      },
+      "version": "0.1.0",
+      "status": "suggested",
+      "owner": "",
+      "dataset_name": "sdp.service_inventory_raw",
+      "pipeline_status": "idle",
+      "cost_estimate_monthly": 40.0,
+      "description": "Source-aligned service/resource extract for Wave-2 SDP.",
+      "product_kind": "service",
+      "product_tier": "sdp",
+      "domain": "Customer",
+      "system_of_record": "Service Inventory",
+      "confidence": 0.84,
+      "freshness_slo_hours": 12,
+      "source_agent_run_id": null,
+      "consumers": [],
+      "input_ports": [
+        {
+          "name": "crm_cust_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_cust_mstr",
+          "schema_version": "0.1.0",
+          "sla": "12h",
+          "pii": true,
+          "tool": "IngestPipeline"
+        },
+        {
+          "name": "crm_acct_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_acct_mstr",
+          "schema_version": "0.1.0",
+          "sla": "12h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        }
+      ],
+      "output_ports": [
+        {
+          "name": "service_inventory_raw",
+          "direction": "output",
+          "protocol": "bigquery",
+          "path": "sdp.service_inventory_raw",
+          "schema_version": "0.1.0",
+          "sla": "12h",
+          "pii": true,
+          "tool": "BigQuery"
+        },
+        {
+          "name": "sdp_service_inventory_raw_contract",
+          "direction": "output",
+          "protocol": "odcs/yaml",
+          "path": "products/sdp_service_inventory_raw.yaml",
+          "schema_version": "0.1.0",
+          "sla": "n/a",
+          "pii": false,
+          "tool": "Contract Docs"
+        }
+      ],
+      "docs": [
+        {
+          "title": "Service Inventory Extract \u00b7 consumer guide",
+          "kind": "guide",
+          "path": "docs/products/sdp_service_inventory_raw/CONSUMER.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        },
+        {
+          "title": "Service Inventory Extract \u00b7 runbook",
+          "kind": "runbook",
+          "path": "docs/products/sdp_service_inventory_raw/RUNBOOK.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        }
+      ],
+      "code_links": {
+        "repo": "migration-repo (local)",
+        "branch": "main",
+        "prefix": "migration-repo",
+        "mr_url": "",
+        "mr_status": "not_opened",
+        "files": [
+          "transformations/sdp_service_inventory_raw.sql",
+          "transformations/tests/test_sdp_service_inventory_raw.sql",
+          "transformations/reconcile/sdp_service_inventory_raw.sql"
+        ],
+        "commit": ""
+      },
+      "collibra": {
+        "asset_id": "",
+        "asset_name": "Service Inventory Extract",
+        "domain": "Customer",
+        "status": "not_linked",
+        "url": "",
+        "last_sync": null,
+        "steward": ""
+      },
+      "cost_breakdown": {
+        "landing": 23.8,
+        "transform": 42.8,
+        "serve": 28.5,
+        "currency": "USD"
+      },
+      "usage_metrics": {
+        "query_count_7d": 0,
+        "row_reads_7d": 0,
+        "last_access": null,
+        "top_consumers": []
+      }
+    },
+    {
+      "id": 8,
+      "name": "Trouble Ticket Extract",
+      "sid_entities": [
+        "TroubleTicket"
+      ],
+      "contract": {
+        "name": "sdp_trouble_ticket_raw",
+        "version": "0.1.0",
+        "schema": [
+          {
+            "name": "ticket_id",
+            "type": "STRING",
+            "pk": true
+          },
+          {
+            "name": "party_id",
+            "type": "STRING"
+          },
+          {
+            "name": "severity",
+            "type": "STRING"
+          }
+        ],
+        "freshness_slo_hours": 1,
+        "quality_rules": [
+          "ticket_id NOT NULL"
+        ]
+      },
+      "version": "0.1.0",
+      "status": "suggested",
+      "owner": "",
+      "dataset_name": "sdp.trouble_ticket_raw",
+      "pipeline_status": "idle",
+      "cost_estimate_monthly": 40.0,
+      "description": "Source-aligned trouble ticket extract for care desk.",
+      "product_kind": "assurance",
+      "product_tier": "sdp",
+      "domain": "Customer",
+      "system_of_record": "Care / TT",
+      "confidence": 0.82,
+      "freshness_slo_hours": 1,
+      "source_agent_run_id": null,
+      "consumers": [],
+      "input_ports": [
+        {
+          "name": "crm_cust_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_cust_mstr",
+          "schema_version": "0.1.0",
+          "sla": "1h",
+          "pii": true,
+          "tool": "IngestPipeline"
+        },
+        {
+          "name": "crm_acct_mstr",
+          "direction": "input",
+          "protocol": "batch/gcs",
+          "path": "landing.crm_acct_mstr",
+          "schema_version": "0.1.0",
+          "sla": "1h",
+          "pii": false,
+          "tool": "IngestPipeline"
+        }
+      ],
+      "output_ports": [
+        {
+          "name": "trouble_ticket_raw",
+          "direction": "output",
+          "protocol": "bigquery",
+          "path": "sdp.trouble_ticket_raw",
+          "schema_version": "0.1.0",
+          "sla": "1h",
+          "pii": true,
+          "tool": "BigQuery"
+        },
+        {
+          "name": "sdp_trouble_ticket_raw_contract",
+          "direction": "output",
+          "protocol": "odcs/yaml",
+          "path": "products/sdp_trouble_ticket_raw.yaml",
+          "schema_version": "0.1.0",
+          "sla": "n/a",
+          "pii": false,
+          "tool": "Contract Docs"
+        }
+      ],
+      "docs": [
+        {
+          "title": "Trouble Ticket Extract \u00b7 consumer guide",
+          "kind": "guide",
+          "path": "docs/products/sdp_trouble_ticket_raw/CONSUMER.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        },
+        {
+          "title": "Trouble Ticket Extract \u00b7 runbook",
+          "kind": "runbook",
+          "path": "docs/products/sdp_trouble_ticket_raw/RUNBOOK.md",
+          "generated_by": "ContractDocs",
+          "status": "pending"
+        }
+      ],
+      "code_links": {
+        "repo": "migration-repo (local)",
+        "branch": "main",
+        "prefix": "migration-repo",
+        "mr_url": "",
+        "mr_status": "not_opened",
+        "files": [
+          "transformations/sdp_trouble_ticket_raw.sql",
+          "transformations/tests/test_sdp_trouble_ticket_raw.sql",
+          "transformations/reconcile/sdp_trouble_ticket_raw.sql"
+        ],
+        "commit": ""
+      },
+      "collibra": {
+        "asset_id": "",
+        "asset_name": "Trouble Ticket Extract",
+        "domain": "Customer",
+        "status": "not_linked",
+        "url": "",
+        "last_sync": null,
+        "steward": ""
+      },
+      "cost_breakdown": {
+        "landing": 23.8,
+        "transform": 42.8,
+        "serve": 28.5,
+        "currency": "USD"
+      },
+      "usage_metrics": {
+        "query_count_7d": 0,
+        "row_reads_7d": 0,
+        "last_access": null,
+        "top_consumers": []
+      }
+    }
+  ],
+  "GET /projects/5/mappings": [],
+  "GET /projects/5/mappings/scorecard": {
+    "total": 0,
+    "approved": 0,
+    "gaps": 0,
+    "by_conformance": {},
+    "conformance_pct": 0.0,
+    "coverage_pct": 0.0
+  },
+  "GET /projects/5/disposition": [],
+  "GET /projects/5/disposition/benefits": {
+    "by_disposition": {},
+    "by_object_type": {},
+    "mix": [],
+    "retirement_states": {},
+    "register_size": 0,
+    "survivors": 0,
+    "objects_not_migrated": 0,
+    "avoid_pct": 0.0,
+    "migrate_pct": 0.0,
+    "estimated_monthly_infra_saved_usd": 0,
+    "estimated_annual_infra_saved_usd": 0,
+    "unit_cost_usd": 85,
+    "narrative": "Run Analyze on the Board to build the decommission benefits case."
+  },
+  "GET /projects/5/metadata": [],
+  "GET /projects/5/metadata/completeness": {
+    "complete": false,
+    "checks": [
+      {
+        "entity_key": "Party",
+        "complete": false,
+        "missing": [
+          "owner",
+          "steward",
+          "definition",
+          "sensitivity"
+        ],
+        "domain": "",
+        "sources": [],
+        "attributes": [],
+        "attribute_count": 0,
+        "mapping_count": 0
+      },
+      {
+        "entity_key": "CustomerAccount",
+        "complete": false,
+        "missing": [
+          "owner",
+          "steward",
+          "definition",
+          "sensitivity"
+        ],
+        "domain": "",
+        "sources": [],
+        "attributes": [],
+        "attribute_count": 0,
+        "mapping_count": 0
+      }
+    ],
+    "entities": [],
+    "required_count": 2
+  },
+  "GET /projects/5/catalogue/tags": {},
+  "GET /projects/5/build/artifacts": [],
+  "GET /projects/5/build/summary": {
+    "total": 0,
+    "by_kind": {
+      "table": 0,
+      "code": 0,
+      "dag": 0,
+      "data": 0
+    },
+    "reviewed": 0,
+    "survivors": 0,
+    "ready": false,
+    "lanes": [
+      {
+        "id": "dag",
+        "kind": "dag",
+        "asset_type": "dag",
+        "label": "DAGs / orchestration",
+        "source_tech": "airflow",
+        "source_label": "Apache Airflow",
+        "source_counts": {
+          "airflow": 2
+        },
+        "object_types": {
+          "dag": 2
+        },
+        "object_count": 2,
+        "in_scope_count": 0,
+        "target": "composer",
+        "target_options": [
+          {
+            "id": "composer",
+            "label": "Cloud Composer (Airflow)"
+          },
+          {
+            "id": "mwaa",
+            "label": "Amazon MWAA (Airflow)"
+          },
+          {
+            "id": "airflow_k8s",
+            "label": "Airflow on GKE / K8s"
+          },
+          {
+            "id": "cloud_scheduler",
+            "label": "Cloud Scheduler + jobs"
+          }
+        ]
+      }
+    ],
+    "narrative": "0 conversion artifacts from 0 migrate/rebuild survivors (0 tables, 0 code jobs, 0 DAGs).",
+    "build_approved": false,
+    "metadata_complete": false
+  },
+  "GET /projects/5/reviews": [],
+  "GET /projects/5/pipeline/runs": [],
+  "GET /projects/5/cutover": {
+    "id": 1,
+    "status": "open",
+    "items": [
+      {
+        "id": "prod_promote",
+        "label": "Promote Service Inventory Snapshot to production",
+        "done": false,
+        "group": "prepare"
+      },
+      {
+        "id": "dual_run",
+        "label": "Pilot dual-run evidence accepted for Service Inventory Snapshot",
+        "done": false,
+        "group": "prepare"
+      },
+      {
+        "id": "reconcile",
+        "label": "Production reconcile within tolerance",
+        "done": false,
+        "group": "prepare"
+      },
+      {
+        "id": "consumers",
+        "label": "Consumers switched to production contract",
+        "done": false,
+        "group": "cutover"
+      },
+      {
+        "id": "freeze",
+        "label": "Legacy objects frozen for cutover window",
+        "done": false,
+        "group": "cutover"
+      },
+      {
+        "id": "consumer_signoff",
+        "label": "Consumer owners signed off",
+        "done": false,
+        "group": "gate"
+      },
+      {
+        "id": "signoff",
+        "label": "Change Board production cutover sign-off",
+        "done": false,
+        "group": "gate"
+      }
+    ],
+    "product_id": 1,
+    "products": [
+      {
+        "id": 1,
+        "name": "Service Inventory Snapshot"
+      },
+      {
+        "id": 2,
+        "name": "Trouble Ticket 360"
+      },
+      {
+        "id": 3,
+        "name": "CRM Customer Master"
+      },
+      {
+        "id": 4,
+        "name": "CRM Account Master"
+      },
+      {
+        "id": 5,
+        "name": "Billing Usage Events"
+      },
+      {
+        "id": 6,
+        "name": "Billing Invoice Header"
+      },
+      {
+        "id": 7,
+        "name": "Service Inventory Extract"
+      },
+      {
+        "id": 8,
+        "name": "Trouble Ticket Extract"
+      }
+    ],
+    "by_product": [
+      {
+        "product_id": 1,
+        "product_name": "Service Inventory Snapshot",
+        "dataset_name": "products.dp_service_inventory_snapshot",
+        "product_status": "suggested",
+        "id": 1,
+        "status": "open",
+        "items": [
+          {
+            "id": "prod_promote",
+            "label": "Promote Service Inventory Snapshot to production",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "dual_run",
+            "label": "Pilot dual-run evidence accepted for Service Inventory Snapshot",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "reconcile",
+            "label": "Production reconcile within tolerance",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "consumers",
+            "label": "Consumers switched to production contract",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "freeze",
+            "label": "Legacy objects frozen for cutover window",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "consumer_signoff",
+            "label": "Consumer owners signed off",
+            "done": false,
+            "group": "gate"
+          },
+          {
+            "id": "signoff",
+            "label": "Change Board production cutover sign-off",
+            "done": false,
+            "group": "gate"
+          }
+        ],
+        "reconcile_passed": false
+      },
+      {
+        "product_id": 2,
+        "product_name": "Trouble Ticket 360",
+        "dataset_name": "products.dp_trouble_ticket_360",
+        "product_status": "suggested",
+        "id": 2,
+        "status": "open",
+        "items": [
+          {
+            "id": "prod_promote",
+            "label": "Promote Trouble Ticket 360 to production",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "dual_run",
+            "label": "Pilot dual-run evidence accepted for Trouble Ticket 360",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "reconcile",
+            "label": "Production reconcile within tolerance",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "consumers",
+            "label": "Consumers switched to production contract",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "freeze",
+            "label": "Legacy objects frozen for cutover window",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "consumer_signoff",
+            "label": "Consumer owners signed off",
+            "done": false,
+            "group": "gate"
+          },
+          {
+            "id": "signoff",
+            "label": "Change Board production cutover sign-off",
+            "done": false,
+            "group": "gate"
+          }
+        ],
+        "reconcile_passed": false
+      },
+      {
+        "product_id": 3,
+        "product_name": "CRM Customer Master",
+        "dataset_name": "sdp.crm_customer_master",
+        "product_status": "suggested",
+        "id": 3,
+        "status": "open",
+        "items": [
+          {
+            "id": "prod_promote",
+            "label": "Promote CRM Customer Master to production",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "dual_run",
+            "label": "Pilot dual-run evidence accepted for CRM Customer Master",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "reconcile",
+            "label": "Production reconcile within tolerance",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "consumers",
+            "label": "Consumers switched to production contract",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "freeze",
+            "label": "Legacy objects frozen for cutover window",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "consumer_signoff",
+            "label": "Consumer owners signed off",
+            "done": false,
+            "group": "gate"
+          },
+          {
+            "id": "signoff",
+            "label": "Change Board production cutover sign-off",
+            "done": false,
+            "group": "gate"
+          }
+        ],
+        "reconcile_passed": false
+      },
+      {
+        "product_id": 4,
+        "product_name": "CRM Account Master",
+        "dataset_name": "sdp.crm_account_master",
+        "product_status": "suggested",
+        "id": 4,
+        "status": "open",
+        "items": [
+          {
+            "id": "prod_promote",
+            "label": "Promote CRM Account Master to production",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "dual_run",
+            "label": "Pilot dual-run evidence accepted for CRM Account Master",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "reconcile",
+            "label": "Production reconcile within tolerance",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "consumers",
+            "label": "Consumers switched to production contract",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "freeze",
+            "label": "Legacy objects frozen for cutover window",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "consumer_signoff",
+            "label": "Consumer owners signed off",
+            "done": false,
+            "group": "gate"
+          },
+          {
+            "id": "signoff",
+            "label": "Change Board production cutover sign-off",
+            "done": false,
+            "group": "gate"
+          }
+        ],
+        "reconcile_passed": false
+      },
+      {
+        "product_id": 5,
+        "product_name": "Billing Usage Events",
+        "dataset_name": "sdp.billing_usage_events",
+        "product_status": "suggested",
+        "id": 5,
+        "status": "open",
+        "items": [
+          {
+            "id": "prod_promote",
+            "label": "Promote Billing Usage Events to production",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "dual_run",
+            "label": "Pilot dual-run evidence accepted for Billing Usage Events",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "reconcile",
+            "label": "Production reconcile within tolerance",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "consumers",
+            "label": "Consumers switched to production contract",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "freeze",
+            "label": "Legacy objects frozen for cutover window",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "consumer_signoff",
+            "label": "Consumer owners signed off",
+            "done": false,
+            "group": "gate"
+          },
+          {
+            "id": "signoff",
+            "label": "Change Board production cutover sign-off",
+            "done": false,
+            "group": "gate"
+          }
+        ],
+        "reconcile_passed": false
+      },
+      {
+        "product_id": 6,
+        "product_name": "Billing Invoice Header",
+        "dataset_name": "sdp.billing_invoice_hdr",
+        "product_status": "suggested",
+        "id": 6,
+        "status": "open",
+        "items": [
+          {
+            "id": "prod_promote",
+            "label": "Promote Billing Invoice Header to production",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "dual_run",
+            "label": "Pilot dual-run evidence accepted for Billing Invoice Header",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "reconcile",
+            "label": "Production reconcile within tolerance",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "consumers",
+            "label": "Consumers switched to production contract",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "freeze",
+            "label": "Legacy objects frozen for cutover window",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "consumer_signoff",
+            "label": "Consumer owners signed off",
+            "done": false,
+            "group": "gate"
+          },
+          {
+            "id": "signoff",
+            "label": "Change Board production cutover sign-off",
+            "done": false,
+            "group": "gate"
+          }
+        ],
+        "reconcile_passed": false
+      },
+      {
+        "product_id": 7,
+        "product_name": "Service Inventory Extract",
+        "dataset_name": "sdp.service_inventory_raw",
+        "product_status": "suggested",
+        "id": 7,
+        "status": "open",
+        "items": [
+          {
+            "id": "prod_promote",
+            "label": "Promote Service Inventory Extract to production",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "dual_run",
+            "label": "Pilot dual-run evidence accepted for Service Inventory Extract",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "reconcile",
+            "label": "Production reconcile within tolerance",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "consumers",
+            "label": "Consumers switched to production contract",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "freeze",
+            "label": "Legacy objects frozen for cutover window",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "consumer_signoff",
+            "label": "Consumer owners signed off",
+            "done": false,
+            "group": "gate"
+          },
+          {
+            "id": "signoff",
+            "label": "Change Board production cutover sign-off",
+            "done": false,
+            "group": "gate"
+          }
+        ],
+        "reconcile_passed": false
+      },
+      {
+        "product_id": 8,
+        "product_name": "Trouble Ticket Extract",
+        "dataset_name": "sdp.trouble_ticket_raw",
+        "product_status": "suggested",
+        "id": 8,
+        "status": "open",
+        "items": [
+          {
+            "id": "prod_promote",
+            "label": "Promote Trouble Ticket Extract to production",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "dual_run",
+            "label": "Pilot dual-run evidence accepted for Trouble Ticket Extract",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "reconcile",
+            "label": "Production reconcile within tolerance",
+            "done": false,
+            "group": "prepare"
+          },
+          {
+            "id": "consumers",
+            "label": "Consumers switched to production contract",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "freeze",
+            "label": "Legacy objects frozen for cutover window",
+            "done": false,
+            "group": "cutover"
+          },
+          {
+            "id": "consumer_signoff",
+            "label": "Consumer owners signed off",
+            "done": false,
+            "group": "gate"
+          },
+          {
+            "id": "signoff",
+            "label": "Change Board production cutover sign-off",
+            "done": false,
+            "group": "gate"
+          }
+        ],
+        "reconcile_passed": false
+      }
+    ],
+    "prod_env_ready": false,
+    "prod_env": {
+      "consumers": {
+        "assurance_desk": {
+          "status": "pending",
+          "contract": "",
+          "notes": "",
+          "updated_at": null
+        },
+        "care_desktop": {
+          "status": "pending",
+          "contract": "",
+          "notes": "",
+          "updated_at": null
+        },
+        "network_ops": {
+          "status": "pending",
+          "contract": "",
+          "notes": "",
+          "updated_at": null
+        }
+      }
+    },
+    "readiness": {
+      "products": 8,
+      "in_scope_products": 8,
+      "reconcile_ok": 0,
+      "pending_reconcile": [
+        {
+          "id": 1,
+          "name": "Service Inventory Snapshot"
+        },
+        {
+          "id": 2,
+          "name": "Trouble Ticket 360"
+        },
+        {
+          "id": 3,
+          "name": "CRM Customer Master"
+        },
+        {
+          "id": 4,
+          "name": "CRM Account Master"
+        },
+        {
+          "id": 5,
+          "name": "Billing Usage Events"
+        },
+        {
+          "id": 6,
+          "name": "Billing Invoice Header"
+        },
+        {
+          "id": 7,
+          "name": "Service Inventory Extract"
+        },
+        {
+          "id": 8,
+          "name": "Trouble Ticket Extract"
+        }
+      ],
+      "consumers_total": 3,
+      "consumers_switched": 0,
+      "consumers_blocked": 0,
+      "freeze_candidates": 0,
+      "frozen": 0,
+      "checklists_complete": 0,
+      "checklists_total": 8,
+      "gates": [
+        {
+          "id": "pilot_reconcile",
+          "label": "Pilot reconcile passed for each promoted product",
+          "done": false,
+          "detail": "8 pending: Service Inventory Snapshot, Trouble Ticket 360, CRM Customer Master, CRM Account Master\u2026",
+          "pending": [
+            {
+              "id": 1,
+              "name": "Service Inventory Snapshot"
+            },
+            {
+              "id": 2,
+              "name": "Trouble Ticket 360"
+            },
+            {
+              "id": 3,
+              "name": "CRM Customer Master"
+            },
+            {
+              "id": 4,
+              "name": "CRM Account Master"
+            },
+            {
+              "id": 5,
+              "name": "Billing Usage Events"
+            },
+            {
+              "id": 6,
+              "name": "Billing Invoice Header"
+            },
+            {
+              "id": 7,
+              "name": "Service Inventory Extract"
+            },
+            {
+              "id": 8,
+              "name": "Trouble Ticket Extract"
+            }
+          ]
+        },
+        {
+          "id": "test_env",
+          "label": "Test environment dual-run completed",
+          "done": false
+        },
+        {
+          "id": "prod_promote",
+          "label": "Products promoted to production",
+          "done": false
+        },
+        {
+          "id": "consumers",
+          "label": "All consumers switched (none blocked)",
+          "done": false
+        },
+        {
+          "id": "freeze",
+          "label": "Legacy freeze applied",
+          "done": false
+        },
+        {
+          "id": "signoff",
+          "label": "Change Board production sign-off",
+          "done": false,
+          "detail": "Blocked until earlier gates are met"
+        }
+      ],
+      "ready_for_signoff": false,
+      "prod_env_ready": false
+    }
+  },
+  "GET /projects/5/audit": [],
+  "GET /projects/5/hypercare": {
+    "metrics": [
+      {
+        "product_id": 1,
+        "product_name": "Service Inventory Snapshot",
+        "freshness_slo": "Healthy",
+        "reconcile_passed": false,
+        "consumer_contract": "On new contract",
+        "pii_tags": "Enforced",
+        "cost_attribution": "Within estimate"
+      },
+      {
+        "product_id": 2,
+        "product_name": "Trouble Ticket 360",
+        "freshness_slo": "Healthy",
+        "reconcile_passed": false,
+        "consumer_contract": "On new contract",
+        "pii_tags": "Enforced",
+        "cost_attribution": "Within estimate"
+      },
+      {
+        "product_id": 3,
+        "product_name": "CRM Customer Master",
+        "freshness_slo": "Healthy",
+        "reconcile_passed": false,
+        "consumer_contract": "On new contract",
+        "pii_tags": "Enforced",
+        "cost_attribution": "Within estimate"
+      },
+      {
+        "product_id": 4,
+        "product_name": "CRM Account Master",
+        "freshness_slo": "Healthy",
+        "reconcile_passed": false,
+        "consumer_contract": "On new contract",
+        "pii_tags": "Enforced",
+        "cost_attribution": "Within estimate"
+      },
+      {
+        "product_id": 5,
+        "product_name": "Billing Usage Events",
+        "freshness_slo": "Healthy",
+        "reconcile_passed": false,
+        "consumer_contract": "On new contract",
+        "pii_tags": "Enforced",
+        "cost_attribution": "Within estimate"
+      },
+      {
+        "product_id": 6,
+        "product_name": "Billing Invoice Header",
+        "freshness_slo": "Healthy",
+        "reconcile_passed": false,
+        "consumer_contract": "On new contract",
+        "pii_tags": "Enforced",
+        "cost_attribution": "Within estimate"
+      },
+      {
+        "product_id": 7,
+        "product_name": "Service Inventory Extract",
+        "freshness_slo": "Healthy",
+        "reconcile_passed": false,
+        "consumer_contract": "On new contract",
+        "pii_tags": "Enforced",
+        "cost_attribution": "Within estimate"
+      },
+      {
+        "product_id": 8,
+        "product_name": "Trouble Ticket Extract",
+        "freshness_slo": "Healthy",
+        "reconcile_passed": false,
+        "consumer_contract": "On new contract",
+        "pii_tags": "Enforced",
+        "cost_attribution": "Within estimate"
+      }
+    ],
+    "infra": {
+      "jobs_archived": 0,
+      "jobs_total": 0,
+      "infra_release_ready": false,
+      "licence_release_notes": "Legacy warehouse licence release pending finance sign-off"
+    },
+    "change_closed": false
+  },
+  "GET /projects/5/plan": {
+    "plan_approved": false,
+    "plan": {
+      "waves": [],
+      "unassigned_object_ids": [],
+      "active_wave_id": "",
+      "recommended_at": null,
+      "approved_at": null,
+      "approved_by": "",
+      "factors": [
+        "dependency_cluster",
+        "pipeline_complexity",
+        "consumer_criticality",
+        "usage_intensity",
+        "object_volume",
+        "retention_risk"
+      ],
+      "narrative": ""
+    },
+    "active_wave": null,
+    "inventory_signed_off": false
+  },
+  "GET /projects/5/discovery/hitl": {
+    "decisions": {}
+  },
+  "GET /projects/5/products/1/data": [],
+  "GET /projects/5/products/1/reconcile": [],
+  "GET /projects/5/products/1/pipeline/blueprint": {
+    "product_id": 1,
+    "product_name": "Service Inventory Snapshot",
+    "product_status": "suggested",
+    "pipeline_status": "idle",
+    "product_tier": "adp",
+    "tier_label": "Aggregated / domain data product (ADP)",
+    "dataset_name": "products.dp_service_inventory_snapshot",
+    "system_of_record": "Service Inventory",
+    "title": "ADP pipeline \u00b7 Service Inventory Snapshot",
+    "subtitle": "Upstream SDPs \u2192 transform \u2192 this aggregated / domain product",
+    "nodes": [
+      {
+        "id": "sdp_service",
+        "kind": "product",
+        "tier": "sdp",
+        "label": "SDP \u00b7 Service Inventory Extract",
+        "dataset": "sdp.service_inventory_raw",
+        "grain": "service_id",
+        "status": "pending"
+      },
+      {
+        "id": "transform",
+        "kind": "transform",
+        "label": "Transform",
+        "tool": "Code generator",
+        "blurb": "SID align \u00b7 SCD2 \u00b7 tests \u00b7 reconcile",
+        "files": [
+          "transformations/service_inventory_snapshot.sql",
+          "transformations/tests/test_service_inventory_snapshot.sql",
+          "transformations/reconcile/service_inventory_snapshot.sql"
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "focus",
+        "kind": "product",
+        "tier": "adp",
+        "label": "Service Inventory Snapshot",
+        "dataset": "products.dp_service_inventory_snapshot",
+        "grain": "focus product",
+        "status": "ready",
+        "sid_entities": [
+          "Service",
+          "Resource",
+          "ResourceSpecification"
+        ],
+        "consumers": [
+          "network_ops",
+          "assurance_desk"
+        ],
+        "focus": true
+      }
+    ],
+    "edges": [
+      {
+        "from": "sdp_service",
+        "to": "transform",
+        "via": "transform"
+      },
+      {
+        "from": "transform",
+        "to": "focus",
+        "via": ""
+      }
+    ],
+    "focus": {
+      "id": "focus",
+      "kind": "product",
+      "tier": "adp",
+      "label": "Service Inventory Snapshot",
+      "dataset": "products.dp_service_inventory_snapshot",
+      "grain": "focus product",
+      "status": "ready",
+      "sid_entities": [
+        "Service",
+        "Resource",
+        "ResourceSpecification"
+      ],
+      "consumers": [
+        "network_ops",
+        "assurance_desk"
+      ],
+      "focus": true
+    },
+    "policies": {
+      "freshness_slo_hours": 12,
+      "quality_rules": [
+        "service_id NOT NULL",
+        "resource_id NOT NULL"
+      ],
+      "pii_columns": [],
+      "retention": "7y archive (demo)",
+      "dataplex_tags": {},
+      "collibra": {
+        "status": "not_linked",
+        "asset_id": "",
+        "url": "",
+        "domain": "Customer"
+      },
+      "deprecation_policy": "Breaking changes require 90-day deprecation window"
+    },
+    "transform": {
+      "tool": "Code generator",
+      "files": [
+        "transformations/service_inventory_snapshot.sql",
+        "transformations/tests/test_service_inventory_snapshot.sql",
+        "transformations/reconcile/service_inventory_snapshot.sql"
+      ],
+      "repo": "migration-repo (local)"
+    },
+    "ingestion": {
+      "tool": "IngestPipeline",
+      "pattern": "extract \u2192 validate \u2192 land \u2192 catalogue"
+    },
+    "stages": [
+      {
+        "id": "sdp_service",
+        "label": "SDP \u00b7 Service Inventory Extract",
+        "tier": "sdp",
+        "blurb": "",
+        "status": "pending"
+      },
+      {
+        "id": "transform",
+        "label": "Transform",
+        "tier": "transform",
+        "blurb": "SID align \u00b7 SCD2 \u00b7 tests \u00b7 reconcile",
+        "status": "pending"
+      },
+      {
+        "id": "focus",
+        "label": "Service Inventory Snapshot",
+        "tier": "adp",
+        "blurb": "",
+        "status": "ready"
+      }
+    ]
+  }
+}

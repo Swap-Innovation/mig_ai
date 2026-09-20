@@ -1,6 +1,10 @@
 // Prefer 127.0.0.1 — on macOS `localhost` often resolves to ::1, which can hit a
 // different listener on :8000 (e.g. Docker) while uvicorn binds IPv4 only.
+import { DEMO_MODE, DEMO_TOKEN } from "@/lib/demo/mode";
+import { mockApi } from "@/lib/demo/mockApi";
+
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+export { DEMO_MODE };
 
 export type Session = {
   token: string;
@@ -52,6 +56,22 @@ export function setSession(s: Session | null) {
     );
 }
 
+/** One-click demo session (architect persona). */
+export function startDemoSession(): Session {
+  const session: Session = {
+    token: DEMO_TOKEN,
+    role: "architect",
+    name: "Alex Architect",
+    email: "architect@demo.local",
+  };
+  setSession(session);
+  if (typeof window !== "undefined") {
+    localStorage.setItem("mirage_active_project_id", "5");
+    localStorage.setItem("mirage_demo_mode", "1");
+  }
+  return session;
+}
+
 export class ApiError extends Error {
   status: number;
   constructor(message: string, status: number) {
@@ -77,6 +97,20 @@ export async function api<T = any>(
   path: string,
   opts: RequestInit = {}
 ): Promise<T> {
+  if (DEMO_MODE) {
+    const result = await mockApi(path, opts);
+    if (result.status === 204) return undefined as T;
+    if (result.status >= 400) {
+      const message =
+        typeof (result.body as any)?.detail === "string"
+          ? (result.body as any).detail
+          : `Demo API error (${result.status})`;
+      if (result.status === 401) setSession(null);
+      throw new ApiError(message, result.status);
+    }
+    return result.body as T;
+  }
+
   const session = getSession();
   const headers: Record<string, string> = {
     ...(opts.headers as Record<string, string>),
@@ -113,6 +147,30 @@ export async function api<T = any>(
 }
 
 export async function login(email: string, password: string): Promise<Session> {
+  if (DEMO_MODE) {
+    const result = await mockApi("/auth/login", {
+      method: "POST",
+      body: new URLSearchParams({ username: email, password }).toString(),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
+    if (result.status >= 400) {
+      throw new Error(
+        typeof (result.body as any)?.detail === "string"
+          ? (result.body as any).detail
+          : "Login failed"
+      );
+    }
+    const data = result.body as any;
+    const session = {
+      token: data.access_token,
+      role: data.role,
+      name: data.name,
+      email: data.email,
+    };
+    setSession(session);
+    return session;
+  }
+
   const body = new URLSearchParams();
   body.set("username", email);
   body.set("password", password);
@@ -144,7 +202,7 @@ export async function login(email: string, password: string): Promise<Session> {
   return session;
 }
 
-/** Confirm stored JWT still works against the live API. */
+/** Confirm stored JWT still works against the live API (or demo mock). */
 export async function validateSession(): Promise<Session | null> {
   const session = getSession();
   if (!session) return null;
