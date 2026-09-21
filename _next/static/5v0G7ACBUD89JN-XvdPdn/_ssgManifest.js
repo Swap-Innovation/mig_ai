@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fworkspace\u002Fapps\u002F[appId]","\u002Fworkspace\u002Fphase\u002F[phaseId]","\u002Fworkspace\u002Fphase\u002F[phaseId]\u002F[view]","\u002Fworkspace\u002Ftools\u002F[toolId]","\u002Fworkspace\u002Ftools\u002F[toolId]\u002F[view]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
