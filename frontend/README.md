@@ -23,7 +23,10 @@ Local never sets `DEMO_MODE` or `BASE_PATH`. The UI talks to the API in `.env.lo
 Static export with in-browser mock API. Built only from `.env.pages`.
 
 ```bash
-npm run sync:demo        # optional: refresh fixtures from local API
+# Refresh Atlas discovery/profiling fixtures from sample-data/demo (no API needed)
+python3 ../scripts/seed-demo-discovery-fixtures.py
+
+npm run sync:demo        # optional: refresh other fixtures from a running local API
 npm run preview:pages    # build + serve at http://127.0.0.1:4173/mig_ai/
 npm run publish:pages    # build + force-push branch gh-pages
 ```
