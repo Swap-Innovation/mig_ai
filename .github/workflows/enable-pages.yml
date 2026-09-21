@@ -1,0 +1,50 @@
+name: Enable GitHub Pages
+
+# Turns on Pages for branch gh-pages (and tries to make the repo public).
+# Trigger: git push origin HEAD:enable-pages
+# Or: Actions → Enable GitHub Pages → Run workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [enable-pages]
+
+permissions:
+  contents: write
+  pages: write
+  administration: write
+
+jobs:
+  enable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure Pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -u
+          echo "Repository: $REPO"
+
+          echo "Attempting visibility=public (needed for free org Pages)…"
+          if gh api -X PATCH "repos/$REPO" -f private=false -f visibility=public; then
+            echo "Repo set to public."
+          else
+            echo "Visibility change skipped (token may lack admin). Continuing…"
+          fi
+
+          echo "Existing Pages config:"
+          gh api "repos/$REPO/pages" || echo "(none yet)"
+
+          BODY='{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}'
+          if echo "$BODY" | gh api -X POST "repos/$REPO/pages" --input -; then
+            echo "Pages site created."
+          else
+            echo "Create failed; updating existing Pages source…"
+            echo "$BODY" | gh api -X PUT "repos/$REPO/pages" --input -
+          fi
+
+          echo "Final Pages status:"
+          gh api "repos/$REPO/pages"
+          HTML_URL=$(gh api "repos/$REPO/pages" --jq .html_url || true)
+          echo "Live URL: ${HTML_URL:-https://swap-innovation.github.io/mig_ai/}"

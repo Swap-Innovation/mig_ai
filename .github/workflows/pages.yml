@@ -16,6 +16,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  administration: write
 
 concurrency:
   group: pages-publish
@@ -49,3 +51,15 @@ jobs:
           force_orphan: true
           enable_jekyll: false
           commit_message: "Publish Mirage Pages from ${{ github.sha }}"
+
+      - name: Ensure Pages is enabled (gh-pages / root)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -u
+          gh api -X PATCH "repos/$REPO" -f private=false -f visibility=public || true
+          BODY='{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}'
+          echo "$BODY" | gh api -X POST "repos/$REPO/pages" --input - \
+            || echo "$BODY" | gh api -X PUT "repos/$REPO/pages" --input -
+          gh api "repos/$REPO/pages"
