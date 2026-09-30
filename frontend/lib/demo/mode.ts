@@ -5,7 +5,7 @@ export const DEMO_MODE =
 
 /** Fake JWT that passes looksLikeJwt() (3 segments). */
 export const DEMO_TOKEN =
-  "eyJhbGciOiJub25lIn0.eyJzdWIiOiJhcmNoaXRlY3RAZGVtby5sb2NhbCIsImRlbW8iOnRydWV9.bWlyYWdlLWRlbW8";
+  "";
 
 export const DEMO_USERS = [
   {
